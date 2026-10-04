@@ -1,0 +1,33 @@
+{
+  "name": "@portfolio/kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared server utilities: Postgres/PGlite driver switch, rate limiting, API errors, security headers.",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./db": "./src/db.ts",
+    "./schema": "./src/schema.ts",
+    "./headers": "./src/headers.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-pgvector": "0.0.9",
+    "drizzle-orm": "0.45.3",
+    "postgres": "3.4.9"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.0",
+    "@portfolio/ai": "*"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "vitest": "5.0.3",
+    "zod": "4.6.5",
+    "@types/node": "22.20.5"
+  }
+}
