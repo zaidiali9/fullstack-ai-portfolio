@@ -1,0 +1,59 @@
+# Local stack: Postgres + pgvector, one-off migrate/seed, the app, and optional Mailpit / Ollama.
+#   docker compose -f apps/helpdesk/docker-compose.yml up --build
+#   docker compose -f apps/helpdesk/docker-compose.yml --profile mail --profile ollama up --build
+# The build context is the repository root (monorepo).
+name: tidal-desk
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: helpdesk
+    ports: ["5432:5432"]
+    volumes: [db-data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d helpdesk"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  migrate:
+    build: { context: ../.., dockerfile: apps/helpdesk/Dockerfile, target: builder }
+    working_dir: /repo/apps/helpdesk
+    command: sh -c "npm run db:migrate && npm run db:seed"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/helpdesk
+    depends_on:
+      db: { condition: service_healthy }
+
+  app:
+    build: { context: ../.., dockerfile: apps/helpdesk/Dockerfile, target: runner }
+    ports: ["3001:3000"]
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/helpdesk
+      APP_URL: http://localhost:3001
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-change-me-local-compose-secret-0123456789}
+      # Optional: point at the ollama service (profile "ollama") or set a hosted key.
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      SMTP_URL: ${SMTP_URL:-}
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+
+  mailpit:
+    image: axllent/mailpit:latest
+    profiles: [mail]
+    ports: ["8025:8025", "1025:1025"]
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: [ollama]
+    ports: ["11434:11434"]
+    volumes: [ollama-data:/root/.ollama]
+
+volumes:
+  db-data:
+  ollama-data:

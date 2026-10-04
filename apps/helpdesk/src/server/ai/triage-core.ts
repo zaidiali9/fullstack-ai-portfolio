@@ -1,4 +1,4 @@
-import { fence, UNTRUSTED_NOTICE, type ChatMessage } from "@portfolio/ai";
+import { fence, stripInjection, UNTRUSTED_NOTICE, type ChatMessage } from "@portfolio/ai";
 import { z } from "zod";
 
 export const CATEGORIES = ["billing", "technical", "account", "other"] as const;
@@ -93,10 +93,27 @@ ${UNTRUSTED_NOTICE}`;
 
 const ticketText = (subject: string, body: string) => fence("ticket", `Subject: ${subject}\n\n${body}`, 4000);
 
+/**
+ * Prompt-injection defense in layers: (1) sentences that look like instructions to the AI are
+ * removed, (2) the rest is fenced as untrusted data, (3) the output is schema-validated and
+ * (4) `guardTriage` refuses automatic "urgent" when injection text was detected.
+ */
+export function prepareTicketForTriage(subject: string, body: string) {
+  const s = stripInjection(subject);
+  const b = stripInjection(body);
+  return { subject: s.text || "(no subject)", body: b.text || "(empty)", injectionDetected: s.removed + b.removed > 0 };
+}
+
 export function buildTriageMessages(subject: string, body: string): ChatMessage[] {
+  const clean = prepareTicketForTriage(subject, body);
   const shots: ChatMessage[] = EXAMPLES.flatMap((ex) => [
     { role: "user" as const, content: ticketText(ex.subject, ex.body) },
     { role: "assistant" as const, content: JSON.stringify(ex.answer) },
   ]);
-  return [{ role: "system", content: TRIAGE_SYSTEM }, ...shots, { role: "user", content: ticketText(subject, body) }];
+  return [{ role: "system", content: TRIAGE_SYSTEM }, ...shots, { role: "user", content: ticketText(clean.subject, clean.body) }];
+}
+
+/** Deterministic post-check: a ticket containing injection-like text never gets auto-escalated to urgent. */
+export function guardTriage(t: Triage, injectionDetected: boolean): Triage {
+  return injectionDetected && t.priority === "urgent" ? { ...t, priority: "high" } : t;
 }

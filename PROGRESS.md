@@ -24,30 +24,30 @@ Environment flags (see DECISIONS.md):
 - [x] Confirm or swap default apps — swapped D to Real-time Booking & Scheduling (DECISIONS.md)
 
 ## Shared foundations
-- [ ] packages/ai: provider-agnostic AI layer (local Transformers.js, Ollama, Groq, Gemini, HF, optional paid), timeouts, retries/backoff, zod structured output, usage logging hook, input/output caps, "AI unavailable" status
-- [ ] packages/ai unit tests
-- [ ] packages/db-kit (or per-app): Drizzle driver switch PGlite <-> postgres-js, migrator
-- [ ] Shared rate limiter + security headers helpers
+- [x] packages/ai: provider-agnostic AI layer (local Transformers.js, Ollama, Groq, Gemini, HF, optional paid), timeouts, retries/backoff, zod structured output, usage logging hook, input/output caps, "AI unavailable" status
+- [x] packages/ai unit tests
+- [x] packages/kit: Drizzle driver switch PGlite <-> postgres-js, migrator
+- [x] Shared rate limiter + security headers helpers
 
-## App A — AI Helpdesk (`apps/helpdesk`)
-- [ ] Plan + scaffold (Next.js, TS, Tailwind, shadcn/ui, Drizzle, Better Auth)
-- [ ] DB schema + migrations + indexes (orgs, members, tickets, messages, kb articles, audit log, usage, subscriptions)
-- [ ] Auth: email+password + GitHub OAuth, organizations, RBAC admin/agent/customer
-- [ ] Ticket flows: customer submit/view; agent dashboard list/filter/paginate, assign, status, reply
-- [ ] AI: triage (category/priority/sentiment), KB-grounded reply draft (streamed), thread summary
-- [ ] Notifications (email log / Mailpit-compatible SMTP in dev), audit log
-- [ ] Stripe test-mode subscription (checkout, portal, webhook) with graceful "not configured"
-- [ ] Security: zod, CSRF-safe, rate limits (auth + AI), secure headers, authz on every route/action
-- [ ] Seed script (labeled seed data) + demo logins
-- [ ] UI: responsive 360px+, a11y, dark mode, skeletons, empty/error states, toasts
-- [ ] Unit tests (Vitest) incl. AI output parsing
-- [ ] Playwright E2E main journey (stubbed AI labeled)
-- [ ] Coverage %, Lighthouse x2 pages, eval script (>=15 cases, triage accuracy) — real runs saved
-- [ ] Dockerfile, docker-compose, CI workflow, env var table
-- [ ] Dependency audit
-- [ ] README (all required sections, real screenshots, Mermaid arch + ER)
-- [ ] docs/helpdesk/case-study.md, docs/helpdesk/marketing.md
-- [ ] docs/verification.md complete; commit "feat(helpdesk): complete app, tests, docs"
+## App A — AI Helpdesk (`apps/helpdesk`) — DONE (see apps/helpdesk/docs/verification.md)
+- [x] Plan + scaffold (Next.js, TS, Tailwind, shadcn/ui, Drizzle, Better Auth)
+- [x] DB schema + migrations + indexes (orgs, members, tickets, messages, kb articles, audit log, usage, subscriptions)
+- [~] Auth: email+password, organizations, RBAC admin/agent/customer verified; GitHub OAuth wired but unverified (needs OAuth app credentials)
+- [x] Ticket flows: customer submit/view; agent dashboard list/filter/paginate, assign, status, reply
+- [x] AI: triage (category/priority/sentiment), KB-grounded reply draft (streamed), thread summary
+- [x] Notifications (email outbox / Mailpit-compatible SMTP), audit log
+- [~] Stripe test-mode subscription: webhook logic + signature verification tested with locally signed events; live checkout unverified (needs Stripe test keys)
+- [x] Security: zod, CSRF-safe, rate limits (auth verified 5/min -> 429; AI per-user + per-plan), secure headers, authz on every route/action
+- [x] Seed script (labeled seed data) + demo logins; optional real-model triage (--with-ai)
+- [x] UI: responsive 360px+ (E2E verified), a11y (axe 0 violations light+dark), dark mode, skeletons, empty/error states, toasts
+- [x] Unit tests (Vitest) incl. AI output parsing — 57 passed
+- [x] Playwright E2E main journey (stubbed AI labeled) — 14 passed
+- [x] Coverage 81.67% lines, Lighthouse x2 (landing 95/100/100/100, tickets 90/100/100/100), triage eval 24 cases (91.7% category)
+- [~] Dockerfile, docker-compose, CI workflow, env var table — written; Docker/compose unverified locally (no Docker), CI not yet run (no remote)
+- [x] Dependency audit (prod: 0 vulns; dev-only braces advisory has no fix)
+- [x] README (all required sections, real screenshots, Mermaid arch + ER)
+- [x] docs/helpdesk/case-study.md, docs/helpdesk/marketing.md
+- [x] docs/verification.md complete; commit "feat(helpdesk): complete app, tests, docs"
 
 ## App B — Knowledge Base Chat (`apps/kb-chat`)
 - [ ] Plan + scaffold

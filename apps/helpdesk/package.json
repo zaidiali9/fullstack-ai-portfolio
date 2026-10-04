@@ -17,7 +17,8 @@
     "db:migrate": "tsx --env-file-if-exists=.env drizzle/migrate.ts",
     "db:seed": "tsx --conditions=react-server --env-file-if-exists=.env drizzle/seed.ts",
     "setup": "npm run db:migrate && npm run db:seed",
-    "eval": "tsx --conditions=react-server --env-file-if-exists=.env scripts/eval-triage.ts"
+    "eval": "tsx --env-file-if-exists=.env scripts/eval-triage.ts",
+    "screenshots": "playwright test --config playwright.screenshots.config.ts"
   },
   "dependencies": {
     "@portfolio/ai": "*",
@@ -38,6 +39,7 @@
     "zod": "4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4.3.3",
     "@types/node": "22.20.5",

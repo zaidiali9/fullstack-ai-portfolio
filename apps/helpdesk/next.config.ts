@@ -5,7 +5,8 @@ import { securityHeaders } from "@portfolio/kit/headers";
 const isDev = process.env.NODE_ENV !== "production";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Standalone output for the Docker image (BUILD_STANDALONE=1); `next start` is used otherwise.
+  output: process.env.BUILD_STANDALONE ? "standalone" : undefined,
   poweredByHeader: false,
   reactStrictMode: true,
   transpilePackages: ["@portfolio/ai", "@portfolio/kit", "@portfolio/ui"],

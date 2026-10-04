@@ -1,5 +1,4 @@
 import "server-only";
-import path from "node:path";
 import { createDatabase, lazyDatabase } from "@portfolio/kit/db";
 import * as schema from "@db/schema";
 import { env } from "@/lib/env";
@@ -7,7 +6,8 @@ import { env } from "@/lib/env";
 const lazy = lazyDatabase(() =>
   createDatabase(schema, {
     url: env().DATABASE_URL,
-    dataDir: env().PGLITE_DIR.startsWith("memory://") ? env().PGLITE_DIR : path.resolve(process.cwd(), env().PGLITE_DIR),
+    // Relative paths resolve against the working directory (the app folder).
+    dataDir: env().PGLITE_DIR,
   }),
 );
 

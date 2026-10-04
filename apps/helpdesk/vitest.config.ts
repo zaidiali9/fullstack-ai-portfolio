@@ -4,16 +4,27 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      "@db": path.resolve(__dirname, "drizzle"),
+      "@": path.resolve(import.meta.dirname, "src"),
+      "@db": path.resolve(import.meta.dirname, "drizzle"),
       // server-only throws outside React Server Components; tests call server code directly.
-      "server-only": path.resolve(__dirname, "tests/unit/server-only-stub.ts"),
+      "server-only": path.resolve(import.meta.dirname, "tests/unit/server-only-stub.ts"),
     },
   },
   test: {
     include: ["tests/unit/**/*.test.ts"],
     environment: "node",
     testTimeout: 30_000,
+    setupFiles: ["tests/unit/setup.ts"],
+    env: {
+      NODE_ENV: "test",
+      PGLITE_DIR: "memory://",
+      AI_PROVIDER: "none",
+      AI_EMBED_PROVIDER: "none",
+      APP_URL: "http://localhost:3001",
+      STRIPE_SECRET_KEY: "sk_test_unit_dummy",
+      STRIPE_WEBHOOK_SECRET: "whsec_unit_test_secret",
+      STRIPE_PRICE_PRO: "price_unit_test",
+    },
     hookTimeout: 60_000,
     pool: "forks",
     coverage: {

@@ -1,6 +1,6 @@
 import "server-only";
 import { asc, eq } from "drizzle-orm";
-import { AIError, looksLikeInjection } from "@portfolio/ai";
+import { AIError } from "@portfolio/ai";
 import { HttpError } from "@portfolio/kit";
 import { db, schema } from "@/db";
 import { getAI } from "@/lib/ai";
@@ -10,7 +10,7 @@ import { retrieveArticles, type RetrievedArticle } from "../kb";
 import { getTicketByNumber } from "../tickets";
 import { enforceOrgQuota } from "./quota";
 import { buildDraftMessages, buildSummaryMessages, type ThreadMessage } from "./reply-core";
-import { buildTriageMessages, normalizeTriage, triageSchema } from "./triage-core";
+import { buildTriageMessages, guardTriage, normalizeTriage, prepareTicketForTriage, triageSchema } from "./triage-core";
 
 /**
  * Classify a ticket with the configured model and store the result. Runs after the create
@@ -52,7 +52,8 @@ export async function runTriage(ticketId: string, opts: { actorId?: string } = {
       messages: buildTriageMessages(ticket.subject, first?.body ?? ""),
       maxOutputTokens: 120,
     });
-    const t = result.object;
+    const { injectionDetected } = prepareTicketForTriage(ticket.subject, first?.body ?? "");
+    const t = guardTriage(result.object, injectionDetected);
     await db.transaction(async (tx) => {
       await tx
         .update(schema.tickets)
@@ -64,7 +65,7 @@ export async function runTriage(ticketId: string, opts: { actorId?: string } = {
         action: "ticket.triaged",
         targetType: "ticket",
         targetId: ticketId,
-        meta: { number: ticket.number, ...t, model: result.model, provider: result.provider, possibleInjection: looksLikeInjection(first?.body ?? "") },
+        meta: { number: ticket.number, ...t, model: result.model, provider: result.provider, possibleInjection: injectionDetected },
       });
     });
   } catch (err) {

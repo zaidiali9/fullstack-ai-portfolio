@@ -42,3 +42,17 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 ## Market research (Step 1)
 - **Swapped App D: Real-time Project Manager -> Real-time Booking & Scheduling** — searches found several recent Upwork client posts for custom booking systems and none for custom Kanban builds (see docs/market-research.md); booking keeps the real-time, optimistic-UI and conflict-handling requirements.
 - **Apps A, B, C, E kept** — each maps to a recurring gig type with direct client job posts cited in docs/market-research.md.
+
+## App A — Helpdesk
+- **Custom orgs/memberships tables instead of Better Auth's organization plugin** — explicit RBAC matrix and queries are easier to test and to explain to clients; Better Auth handles only identity.
+- **URL-scoped tenancy (`/o/<slug>/...`)** — every request names its tenant; non-members get 404 so org existence isn't revealed.
+- **Seed tickets never carry invented AI output** — older seed tickets have agent-set category/priority (`triage_status=manual`); newest ones are triaged only by a real model (`--with-ai`) or marked "AI unavailable".
+- **Triage runs in `after()`** — customers aren't kept waiting on a ~15 s CPU model call; failures are recorded on the ticket.
+- **Few-shot triage prompt + `normalizeTriage`** — the 1.5B model misclassified "charged twice" without examples; examples are distinct from the eval set.
+- **Internal notes excluded from draft prompts** — drafts are customer-facing; summaries (agent-only) include them.
+- **Qwen3-1.7B rejected as default** — scored 5/8 vs Qwen2.5-1.5B 6/8 on a quick triage probe and was slower (3.2 s vs 2.3 s per answer).
+- **Sign-in limit 5/min per IP, configurable (`AUTH_SIGNIN_PER_MINUTE`)** — E2E raises it; production default unchanged.
+- **Standalone output only for Docker (`BUILD_STANDALONE=1`)** — `next start` warns with standalone output, so local/CI E2E builds stay non-standalone.
+- **Docker deps stage copies the whole (dockerignored) tree** — npm workspaces need every workspace manifest for `npm ci`; simplicity over layer caching.
+- **CI has a real-Postgres job** — the build machine has no Postgres, so migrations/seed/health are verified against `pgvector/pgvector:pg17` in GitHub Actions.
+- **Client/server boundary** — client components import only `@/lib/form-state` (types) and server actions; a bug where `@portfolio/kit` leaked into the client bundle was fixed and a scan confirmed no other leaks.

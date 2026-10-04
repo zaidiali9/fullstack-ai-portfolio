@@ -21,6 +21,8 @@ const schema = z.object({
   /** Daily AI calls per organization by plan. */
   AI_DAILY_LIMIT_FREE: z.coerce.number().int().positive().default(100),
   AI_DAILY_LIMIT_PRO: z.coerce.number().int().positive().default(2000),
+  /** Sign-in attempts per IP per minute (Better Auth limiter). */
+  AUTH_SIGNIN_PER_MINUTE: z.coerce.number().int().positive().default(5),
   /** Per-user AI requests per minute. */
   AI_USER_PER_MINUTE: z.coerce.number().int().positive().default(20),
 });
