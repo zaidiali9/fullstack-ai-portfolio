@@ -84,3 +84,20 @@ describe("stripInjection", () => {
     expect(looksLikeInjection("Can you change my plan to annual?")).toBe(false);
   });
 });
+
+describe("stream metadata trailer", () => {
+  it("delivers a trailer built from the generator's return value without showing it as text", async () => {
+    async function* g() {
+      yield "Hello ";
+      yield "world";
+      return { citations: [1] };
+    }
+    const res = await streamResponse(g(), { onEarlyError: () => new Response(null, { status: 500 }), trailer: (rv) => rv });
+    let meta: unknown;
+    const seen: string[] = [];
+    const text = await readTextStream(res, (t) => seen.push(t), (m) => (meta = m));
+    expect(text).toBe("Hello world");
+    expect(seen.every((t) => !t.includes("\u0000"))).toBe(true);
+    expect(meta).toEqual({ citations: [1] });
+  });
+});

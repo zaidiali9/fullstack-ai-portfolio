@@ -6,6 +6,8 @@
 import { AIError } from "./errors";
 
 export const ERROR_MARKER = "\u0000AI_ERROR:";
+/** Optional JSON trailer sent after the text (e.g. citations computed once the answer is complete). */
+export const META_MARKER = "\u0000AI_META:";
 
 export interface StreamFailure {
   code: string;
@@ -19,7 +21,13 @@ export interface StreamFailure {
  */
 export async function streamResponse(
   gen: AsyncGenerator<string, unknown>,
-  opts: { onEarlyError: (err: unknown) => Response; headers?: HeadersInit; onComplete?: (text: string) => void | Promise<void> },
+  opts: {
+    onEarlyError: (err: unknown) => Response;
+    headers?: HeadersInit;
+    onComplete?: (text: string) => void | Promise<void>;
+    /** Build a JSON trailer from the generator's return value; sent after the text if not undefined. */
+    trailer?: (returnValue: unknown) => unknown;
+  },
 ): Promise<Response> {
   let first: IteratorResult<string, unknown>;
   try {
@@ -32,15 +40,18 @@ export async function streamResponse(
   const body = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
+        let last: IteratorResult<string, unknown> = first;
         if (!first.done) {
           full += first.value;
           controller.enqueue(encoder.encode(first.value));
-          for (let r = await gen.next(); !r.done; r = await gen.next()) {
-            full += r.value;
-            controller.enqueue(encoder.encode(r.value));
+          for (last = await gen.next(); !last.done; last = await gen.next()) {
+            full += last.value;
+            controller.enqueue(encoder.encode(last.value));
           }
         }
         await opts.onComplete?.(full);
+        const meta = opts.trailer?.(last.value);
+        if (meta !== undefined) controller.enqueue(encoder.encode(META_MARKER + JSON.stringify(meta)));
       } catch (err) {
         const failure: StreamFailure =
           err instanceof AIError
@@ -66,8 +77,11 @@ export async function streamResponse(
   });
 }
 
-/** Browser/Node reader for streamResponse bodies. Resolves with the full text or rejects with StreamFailure. */
-export async function readTextStream(res: Response, onText: (fullTextSoFar: string) => void): Promise<string> {
+/**
+ * Browser/Node reader for streamResponse bodies. Resolves with the full text or rejects with
+ * StreamFailure. A metadata trailer (if any) is passed to `onMeta` and never shown as text.
+ */
+export async function readTextStream(res: Response, onText: (fullTextSoFar: string) => void, onMeta?: (meta: unknown) => void): Promise<string> {
   if (!res.body) return "";
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
@@ -88,7 +102,18 @@ export async function readTextStream(res: Response, onText: (fullTextSoFar: stri
       }
       throw Object.assign(new Error(failure.message), { code: failure.code, partial: visible });
     }
-    onText(text);
+    const metaAt = text.indexOf(META_MARKER);
+    onText(metaAt >= 0 ? text.slice(0, metaAt) : text);
+  }
+  text += decoder.decode();
+  const metaAt = text.indexOf(META_MARKER);
+  if (metaAt >= 0) {
+    try {
+      onMeta?.(JSON.parse(text.slice(metaAt + META_MARKER.length)));
+    } catch {
+      /* ignore a malformed trailer */
+    }
+    return text.slice(0, metaAt);
   }
   return text;
 }

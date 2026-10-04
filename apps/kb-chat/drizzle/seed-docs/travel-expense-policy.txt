@@ -1,0 +1,11 @@
+Travel and Expense Policy
+SEED DATA: written for the Cairn demo (fictional company Brightline Studio). Rendered to a 3-page PDF by the seed script; pages are separated by a form feed.
+
+Booking travel
+All business travel must be booked through the TravelDesk portal at least 14 days in advance whenever possible. Economy class is required for flights shorter than 6 hours. Business class is allowed for flights longer than 6 hours, but only with written approval from a director. Hotels should be booked at the negotiated corporate rate; if no corporate hotel is available, choose a mid-range hotel within walking distance of the client office. Rental cars need manager approval and must be the smallest practical size.
+
+Meals and per diem
+Client dinners are reimbursable up to $75 per person, including tax and tip. Write the names of the attendees on the receipt. When you travel without a client meal, you receive a daily per diem of $60 for domestic trips and $80 for international trips instead of submitting meal receipts. Alcohol is not reimbursable, except at client dinners, where it is limited to two drinks per person.
+
+Submitting expenses
+Submit expenses within 30 days of the purchase in the Ledger app. Attach an itemized receipt for every expense over $25. Approved expenses are reimbursed in the next payroll cycle. Personal car use for business is reimbursed at $0.67 per mile; log the start and end address of each trip. Expenses submitted after 90 days are not reimbursed.

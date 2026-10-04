@@ -1,0 +1,14 @@
+New Hire Onboarding Checklist
+SEED DATA: written for the Cairn demo (fictional company Brightline Studio).
+
+Before your first day
+Sign your contract and tax forms in the People portal. Choose your laptop (Mac or Windows) by replying to the IT welcome email.
+
+Day 1
+Collect your laptop and badge from reception at 9:30. Set up Vaultkeeper and multi-factor authentication with IT. Have lunch with your onboarding buddy, who is assigned before you start.
+
+Week 1
+Read the Employee Handbook and the Security Incident Response guide. Complete the 45-minute security awareness course. Meet your manager to agree on goals for your first 90 days.
+
+First month
+Shadow at least two client calls. Order home office equipment with your $500 stipend. Book a 30-day check-in with your manager.

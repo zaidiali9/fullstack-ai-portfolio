@@ -1,0 +1,17 @@
+Security Incident Response Guide
+SEED DATA: written for the Cairn demo (fictional company Brightline Studio). Converted to a Word (.docx) document by the seed script.
+
+Reporting an incident
+If you suspect a security incident, report it within 1 hour by emailing security@brightline.example or posting in the #sec-incidents channel. Do not try to investigate on your own and do not power off an affected device, because evidence in memory can be lost; disconnect it from the network instead.
+
+Severity levels
+SEV1 means customer data is exposed or a core system is down; the on-call security lead responds within 15 minutes. SEV2 means a contained compromise such as a single infected laptop; response within 4 hours. SEV3 covers suspicious activity with no confirmed impact; response by the next business day.
+
+Phishing
+Forward suspicious emails as attachments to phishing@brightline.example and then delete them. Never click links or open attachments in a message you are unsure about.
+
+Lost or stolen devices
+Report a lost or stolen laptop or phone immediately, even outside working hours. IT will remotely wipe the device and revoke its access tokens. File a police report for stolen devices and share the reference number with IT.
+
+Passwords and access
+Passwords must be at least 14 characters long. The Vaultkeeper password manager is mandatory for all work accounts, and multi-factor authentication is required on email, the VPN and all client systems.

@@ -49,19 +49,21 @@ Environment flags (see DECISIONS.md):
 - [x] docs/helpdesk/case-study.md, docs/helpdesk/marketing.md
 - [x] docs/verification.md complete; commit "feat(helpdesk): complete app, tests, docs"
 
-## App B — Knowledge Base Chat (`apps/kb-chat`)
-- [ ] Plan + scaffold
-- [ ] Schema: workspaces, members, documents, chunks (pgvector), ingestion jobs, conversations, messages, usage
-- [ ] Auth + workspace isolation
-- [ ] Upload PDF/DOCX/TXT/MD/URL with validation; background ingestion + job status
-- [ ] Chunk + embed + vector search; streamed answers with citations
-- [ ] Conversation history; usage limits; embeddable widget snippet
-- [ ] Security basics + AI safety (prompt-injection mitigation for document content)
-- [ ] Seed + demo login
-- [ ] UI quality bar
-- [ ] Unit tests, E2E, coverage, Lighthouse x2, eval (>=15, citation correctness)
-- [ ] Docker, compose, CI, env table, audit
-- [ ] README, case study, marketing, verification; commit
+## App B — Knowledge Base Chat "Cairn" (`apps/kb-chat`) — IN PROGRESS
+- [x] Plan + scaffold (reused App A infra; port 3002)
+- [x] Schema: workspaces, members, documents, blobs, chunks (pgvector), ingestion jobs, conversations, messages + migration
+- [x] Auth + workspace isolation (owner/editor/viewer RBAC; verified in tests)
+- [x] Upload PDF/DOCX/MD/TXT (magic-byte validation) + URL (SSRF-safe, robots.txt); background ingestion + live job status
+- [x] Chunk + embed + hybrid search (pgvector + FTS, RRF); streamed answers with citations (+ labeled matched citations)
+- [x] Conversation history; monthly question / document limits; embeddable widget (/embed/[key], public/widget.js)
+- [x] Security: SSRF IP-literal hole found by tests and fixed; untrusted fencing; rate limits
+- [x] Seed (5 docs in 4 formats via real pipeline) + demo logins (owner/editor/viewer@cairn.demo)
+- [x] RAG eval (22 cases, real local model): hit@5 100%, fact 100%, citations correct 88.2%, refusals 5/5, 0 leaks -> docs/metrics/eval-rag.json
+- [ ] NEXT: fix failing test "recovers jobs whose worker died" in tests/unit/pipeline-chat.test.ts (a job left queued by the previous test is claimed first; isolate by draining/clearing jobs before claiming). 41/42 pass.
+- [ ] Action/route authz tests (viewer cannot upload; widget origin check), coverage %
+- [ ] UI verification in browser (dev server :3002), E2E (Playwright), Lighthouse x2, screenshots
+- [ ] .env.example, docker-compose, CI workflow (.github/workflows/kb-chat.yml), audit
+- [ ] README, docs/kb-chat/case-study.md + marketing.md, docs/verification.md; commit "feat(kb-chat): complete app, tests, docs"
 
 ## App C — E-commerce Storefront (`apps/storefront`)
 - [ ] Plan + scaffold
