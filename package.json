@@ -1,0 +1,16 @@
+{
+  "name": "fullstack-ai-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Portfolio monorepo: five full-stack web apps with AI features.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test:packages": "npm run test --workspaces --if-present --workspace=packages/*"
+  }
+}

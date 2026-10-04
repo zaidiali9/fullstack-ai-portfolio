@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# env files (never commit secrets) — .env.example is the only allowed one
+.env
+.env.*
+!.env.example
+
+# build output
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# local data
+.data/
+uploads/
+*.db
+*.sqlite
+hf-cache/
+.cache/
+
+# test output
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# misc
+.DS_Store
+Thumbs.db
+*.log
+.vercel
+.turbo
