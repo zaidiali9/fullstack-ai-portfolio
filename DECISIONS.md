@@ -38,3 +38,7 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Local generation model: `onnx-community/Qwen2.5-1.5B-Instruct` (q4, Apache-2.0)** — probe: ~5s warm load, ~3s for a 30-token JSON answer on CPU. DirectML GPU was slower (18.6s) so CPU is default. Qwen2.5-3B was rejected because its license is not Apache-2.0.
 - **Embeddings: `Xenova/all-MiniLM-L6-v2` (384 dims, Apache-2.0)** — probe: sim("refund my order","I want my money back")=0.569 vs 0.245 for an unrelated pair. The same model is served by HF Inference (`sentence-transformers/all-MiniLM-L6-v2`), so vectors stay compatible between local dev and a serverless deploy.
 - **Hosted adapters (Groq/Gemini/HF/OpenAI-compatible) are implemented and unit-tested against mocked HTTP only** — no keys available; marked "not verified live" in each README.
+
+## Market research (Step 1)
+- **Swapped App D: Real-time Project Manager -> Real-time Booking & Scheduling** — searches found several recent Upwork client posts for custom booking systems and none for custom Kanban builds (see docs/market-research.md); booking keeps the real-time, optimistic-UI and conflict-handling requirements.
+- **Apps A, B, C, E kept** — each maps to a recurring gig type with direct client job posts cited in docs/market-research.md.

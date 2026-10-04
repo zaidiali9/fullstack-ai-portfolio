@@ -19,9 +19,9 @@ Environment flags (see DECISIONS.md):
 - [x] Monorepo root (npm workspaces) committed
 
 ## Step 1 — Market research
-- [ ] Web research on Upwork/Fiverr demand (job posts, gig listings, categories)
-- [ ] docs/market-research.md: sources, top 8 gig types, client pain points, why these 5 apps
-- [ ] Confirm or swap default apps (log any swap in DECISIONS.md)
+- [x] Web research on Upwork/Fiverr demand (job posts, gig listings, categories)
+- [x] docs/market-research.md: sources, top 8 gig types, client pain points, why these 5 apps
+- [x] Confirm or swap default apps — swapped D to Real-time Booking & Scheduling (DECISIONS.md)
 
 ## Shared foundations
 - [ ] packages/ai: provider-agnostic AI layer (local Transformers.js, Ollama, Groq, Gemini, HF, optional paid), timeouts, retries/backoff, zod structured output, usage logging hook, input/output caps, "AI unavailable" status
@@ -75,14 +75,15 @@ Environment flags (see DECISIONS.md):
 - [ ] Docker, compose, CI, env table, audit
 - [ ] README, case study, marketing, verification; commit
 
-## App D — Real-time Project Manager (`apps/project-board`)
+## App D — Real-time Booking & Scheduling (`apps/booking`) — swapped in for Project Manager
 - [ ] Plan + scaffold
-- [ ] Schema: workspaces, boards, columns, cards (fractional ordering, version), comments, activity, notifications
-- [ ] Kanban drag-and-drop (keyboard accessible), optimistic UI, conflict handling (versioning)
-- [ ] Live collaboration via SSE; activity feed; notifications
-- [ ] AI: goal -> tasks, weekly board summary, due-date suggestions
+- [ ] Schema: businesses, staff, services, availability rules, bookings (exclusion constraint vs double booking, version), activity, notifications
+- [ ] Public booking flow: pick service/staff/slot, hold, confirm; Stripe test-mode deposit (graceful if not configured)
+- [ ] Live availability via SSE; optimistic UI; conflict handling (slot taken -> clear recovery)
+- [ ] Owner/staff dashboard: calendar/day view, reschedule/cancel, activity feed, notifications
+- [ ] AI: natural-language booking request -> zod-validated slot search; weekly schedule digest; alternative-time suggestions
 - [ ] Seed + demo logins; UI quality bar
-- [ ] Unit, E2E, coverage, Lighthouse x2, eval (>=15)
+- [ ] Unit, E2E, coverage, Lighthouse x2, eval (>=15, NL request parsing accuracy)
 - [ ] Docker, compose, CI, env table, audit
 - [ ] README, case study, marketing, verification; commit
 
