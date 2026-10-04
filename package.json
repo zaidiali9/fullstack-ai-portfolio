@@ -12,5 +12,10 @@
   },
   "scripts": {
     "test:packages": "npm run test --workspaces --if-present --workspace=packages/*"
+  },
+  "overrides": {
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
   }
 }

@@ -88,3 +88,24 @@ export async function action<T>(fn: () => Promise<T>): Promise<ActionResult<T>> 
     return { ok: false, error: toErrorPayload(err).body.error };
   }
 }
+
+/**
+ * CSRF defense for cookie-authenticated route handlers (server actions get Next's built-in check).
+ * Browsers always send Origin on cross-site POSTs; reject when it doesn't match this host.
+ */
+export function assertSameOrigin(req: Request): void {
+  const origin = req.headers.get("origin");
+  const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
+  if (origin) {
+    let originHost: string;
+    try {
+      originHost = new URL(origin).host;
+    } catch {
+      throw new HttpError(403, "csrf", "Cross-site request blocked.");
+    }
+    if (originHost !== host) throw new HttpError(403, "csrf", "Cross-site request blocked.");
+    return;
+  }
+  const site = req.headers.get("sec-fetch-site");
+  if (site && site !== "same-origin" && site !== "none") throw new HttpError(403, "csrf", "Cross-site request blocked.");
+}

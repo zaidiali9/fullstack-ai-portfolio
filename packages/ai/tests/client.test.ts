@@ -190,3 +190,17 @@ describe("embed (stub provider)", () => {
     expect(spy).toHaveBeenCalledTimes(2);
   });
 });
+
+describe("generateObject prepare hook (stub provider)", () => {
+  it("normalizes raw output before validation", async () => {
+    const schema = z.object({ category: z.enum(["billing", "technical"]) });
+    const ai = createAI({ chat: createStubChatProvider(() => '{"category":" Billing "}'), embeddings: null });
+    const r = await ai.generateObject({
+      feature: "t",
+      schema,
+      messages: msgs,
+      prepare: (raw) => ({ category: String((raw as { category: string }).category).trim().toLowerCase() }),
+    });
+    expect(r.object.category).toBe("billing");
+  });
+});

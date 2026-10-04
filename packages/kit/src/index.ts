@@ -2,6 +2,7 @@ export { createDatabase, lazyDatabase, rowsOf, type Database, type DbHandle, typ
 export {
   HttpError,
   action,
+  assertSameOrigin,
   conflict,
   errorResponse,
   forbidden,

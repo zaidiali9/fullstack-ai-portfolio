@@ -44,6 +44,16 @@ export interface ObjectResult<T> extends TextResult {
 
 export type AIClient = ReturnType<typeof createAI>;
 
+function schemaJson(schema: z.ZodType): string {
+  try {
+    const json = z.toJSONSchema(schema, { unrepresentable: "any" }) as Record<string, unknown>;
+    delete json.$schema;
+    return JSON.stringify(json);
+  } catch {
+    return "(see the instructions above)";
+  }
+}
+
 const defaultSleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export function createAI(opts: AIClientOptions = {}) {
@@ -172,7 +182,14 @@ export function createAI(opts: AIClientOptions = {}) {
    * invalid output gets up to `maxAttempts - 1` repair turns that quote the validation errors.
    */
   async function generateObject<S extends z.ZodType>(
-    call: CallOptions & { messages: ChatMessage[]; schema: S; maxAttempts?: number; schemaHint?: boolean },
+    call: CallOptions & {
+      messages: ChatMessage[];
+      schema: S;
+      maxAttempts?: number;
+      schemaHint?: boolean;
+      /** Normalize the raw parsed JSON before validation (e.g. lowercase enum values). */
+      prepare?: (raw: unknown) => unknown;
+    },
   ): Promise<ObjectResult<z.output<S>>> {
     const maxAttempts = call.maxAttempts ?? 3;
     const hint =
@@ -196,7 +213,7 @@ export function createAI(opts: AIClientOptions = {}) {
         messages.push({ role: "assistant", content: last.text.slice(0, 2000) }, { role: "user", content: `${lastError} Reply with only the JSON value.` });
         continue;
       }
-      const result = call.schema.safeParse(parsed);
+      const result = call.schema.safeParse(call.prepare ? call.prepare(parsed) : parsed);
       if (result.success) return { ...last, object: result.data, attempts: attempt };
       lastError = z.prettifyError(result.error).slice(0, 1000);
       messages.push(

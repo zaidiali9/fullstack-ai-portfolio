@@ -5,7 +5,7 @@ import { AIError } from "@portfolio/ai";
 import { sql } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
-import { action, createDatabase, enforceRateLimit, HttpError, rateLimit, rowsOf, securityHeaders, toErrorPayload } from "../src";
+import { action, assertSameOrigin, createDatabase, enforceRateLimit, HttpError, rateLimit, rowsOf, securityHeaders, toErrorPayload } from "../src";
 import * as schema from "../src/schema";
 
 describe("rate limiter (PGlite in-memory)", () => {
@@ -100,5 +100,17 @@ describe("security headers", () => {
     expect(h["X-Frame-Options"]).toBeUndefined();
     expect(h["Content-Security-Policy"]).toContain("frame-ancestors *");
     expect(h["Strict-Transport-Security"]).toBeUndefined();
+  });
+});
+
+describe("assertSameOrigin", () => {
+  const req = (h: Record<string, string>) => new Request("http://app.test/api/x", { method: "POST", headers: h });
+  it("allows same-origin and non-browser requests", () => {
+    expect(() => assertSameOrigin(req({ origin: "http://app.test", host: "app.test" }))).not.toThrow();
+    expect(() => assertSameOrigin(req({ host: "app.test" }))).not.toThrow();
+  });
+  it("blocks cross-site requests", () => {
+    expect(() => assertSameOrigin(req({ origin: "https://evil.example", host: "app.test" }))).toThrow(/Cross-site/);
+    expect(() => assertSameOrigin(req({ host: "app.test", "sec-fetch-site": "cross-site" }))).toThrow(/Cross-site/);
   });
 });
