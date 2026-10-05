@@ -34,8 +34,8 @@ export function CartLines({ lines }: { lines: Line[] }) {
   return (
     <ul className="divide-y rounded-xl border bg-card" aria-busy={pending}>
       {optimistic.map((l) => (
-        <li key={l.productId} className="flex gap-4 p-4">
-          <Link href={`/products/${l.slug}`} className="relative size-20 shrink-0 overflow-hidden rounded-lg border bg-muted sm:size-24">
+        <li key={l.productId} className="flex gap-3 p-3 sm:gap-4 sm:p-4">
+          <Link href={`/products/${l.slug}`} aria-hidden="true" tabIndex={-1} className="relative size-16 shrink-0 overflow-hidden rounded-lg border bg-muted sm:size-24">
             <Image src={l.imagePath} alt="" fill sizes="96px" className="object-cover" />
           </Link>
           <div className="flex min-w-0 flex-1 flex-col justify-between gap-2 sm:flex-row sm:items-center">
@@ -45,7 +45,7 @@ export function CartLines({ lines }: { lines: Line[] }) {
               </Link>
               <p className="text-sm text-muted-foreground">{money(l.unitPriceCents)} each</p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <div className="flex items-center rounded-lg border" role="group" aria-label={`Quantity of ${l.name}`}>
                 <Button variant="ghost" size="icon-sm" aria-label="Decrease quantity" onClick={() => change(l.productId, l.quantity - 1)}>
                   <Minus className="size-3.5" aria-hidden />
@@ -57,7 +57,7 @@ export function CartLines({ lines }: { lines: Line[] }) {
                   <Plus className="size-3.5" aria-hidden />
                 </Button>
               </div>
-              <p className="w-20 text-right font-medium tabular-nums">{money(l.unitPriceCents * l.quantity)}</p>
+              <p className="min-w-16 text-right font-medium tabular-nums">{money(l.unitPriceCents * l.quantity)}</p>
               <Button variant="ghost" size="icon-sm" aria-label={`Remove ${l.name}`} onClick={() => change(l.productId, 0)}>
                 <Trash2 className="size-4" aria-hidden />
               </Button>

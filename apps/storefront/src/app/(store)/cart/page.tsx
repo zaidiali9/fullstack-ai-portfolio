@@ -68,16 +68,16 @@ export default async function CartPage({ searchParams }: PageProps<"/cart">) {
             </div>
           </dl>
           {toFree > 0 ? <p className="text-xs text-muted-foreground">Add {money(toFree)} more for free shipping.</p> : null}
-          {!features.stripe() ? (
-            <p className="rounded-md bg-muted p-3 text-xs">Payments are not configured on this server (Stripe test-mode keys required), so checkout is disabled.</p>
-          ) : user ? (
+          {!user ? (
+            <Link href="/sign-in?next=%2Fcart" className={buttonVariants({ className: "h-10 w-full" })}>
+              Sign in to check out
+            </Link>
+          ) : features.stripe() ? (
             <ActionButton className="h-10 w-full" disabled={cart.problems.length > 0} action={checkoutAction}>
               Checkout securely with Stripe
             </ActionButton>
           ) : (
-            <Link href="/sign-in?next=%2Fcart" className={buttonVariants({ className: "h-10 w-full" })}>
-              Sign in to check out
-            </Link>
+            <p className="rounded-md bg-muted p-3 text-xs">Payments are not configured on this server (Stripe test-mode keys required), so checkout is disabled.</p>
           )}
           <p className="text-xs text-muted-foreground">Test mode: use card 4242 4242 4242 4242, any future date and CVC.</p>
         </aside>

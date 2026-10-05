@@ -68,3 +68,14 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **SSRF: IP-literal check added** — undici skips custom DNS lookup for IP hosts; caught by tests.
 - **Members added by existing email (no invitations)** — App A already demonstrates invitations; kept B smaller per scope rule.
 - **Widget allowlist via Referer** — headers can't vary per workspace statically; `/embed/*` is frameable and the page checks the embedding origin.
+- **Bug fix (A, B, C): demo-account buttons on the sign-in page dropped the `next` redirect** — found by the storefront E2E; fixed in the shared auth form copy of each app.
+
+## App C — Storefront (Fernwood Supply)
+- **Procedurally generated product art (SVG -> WebP via sharp)** — zero image-licensing risk at $0; real `next/image` optimization still applies.
+- **User role as a Better Auth additional field with `input: false`** — simplest RBAC for a single-tenant store; can't be set at sign-up.
+- **Stripe session created before the order row** — a Stripe failure leaves no orphaned pending order; the webhook remains the only path to "paid".
+- **Guarded stock decrement (`greatest(stock - q, 0)`) on payment, not at add-to-cart** — no reservations (documented limitation); avoids negative stock under races.
+- **Guest cart cookie + `/app` merge route** — route handlers can set cookies; server components can't.
+- **Search embeds the query, so it is rate limited per IP with silent keyword fallback** — protects CPU/API cost without breaking browsing.
+- **Description rules in the zod schema (repair turns) but length as a warning** — measured: rules-in-schema cut banned content from 8/15 to 0; a 30-word minimum dropped validity to 33%, so it became an advisory.
+- **Bug fix (A, B, C): sign-in demo buttons dropped the `next` redirect** — found by storefront E2E.

@@ -64,17 +64,19 @@ Environment flags (see DECISIONS.md):
 - [x] Dependency audit (prod 0 vulns)
 - [x] README, case study, marketing, verification; commit
 
-## App C — E-commerce Storefront (`apps/storefront`)
-- [ ] Plan + scaffold
-- [ ] Schema: products, variants/images, carts, orders, order items, embeddings
-- [ ] Catalog, product pages, cart, Stripe test checkout + webhooks, order history
-- [ ] Admin panel (products CRUD, orders) with RBAC
-- [ ] AI: semantic search, AI product descriptions (editable before save), similar items
-- [ ] SEO: metadata, sitemap, robots, JSON-LD; image optimization
-- [ ] Seed + demo logins; UI quality bar
-- [ ] Unit, E2E, coverage, Lighthouse x2, eval (>=15)
-- [ ] Docker, compose, CI, env table, audit
-- [ ] README, case study, marketing, verification; commit
+## App C — E-commerce Storefront "Fernwood Supply" (`apps/storefront`) — DONE (see apps/storefront/docs/verification.md)
+- [x] Plan + scaffold (port 3003)
+- [x] Schema: products (pgvector), carts, cart items, orders, order items (snapshots), stripe events; CHECK constraints
+- [x] Catalog, product pages, cart (guest cookie + merge at sign-in), Stripe test checkout + signed idempotent webhooks, order history
+- [~] Live Stripe Checkout unverified (needs Stripe test keys); webhook logic tested with locally signed events
+- [x] Admin panel (products CRUD, orders, mark shipped) with role checks
+- [x] AI: semantic search (hybrid + fallback), AI product descriptions (schema-enforced rules, human edit), similar items
+- [x] SEO: metadata, canonical, sitemap, robots, Product JSON-LD; next/image with generated WebP art
+- [x] Seed + demo logins; UI quality bar (axe 0 violations light+dark, 360px)
+- [x] Unit 22 passed (79.12% lines), E2E 14 passed, Lighthouse home 91/100/100/100 product 89/100/100/100, search eval 18 cases, description eval 18 cases
+- [~] Docker, compose, CI, env table — written; Docker/compose unverified locally; CI not yet run
+- [x] Dependency audit (prod 0 vulns)
+- [x] README, case study, marketing, verification; commit
 
 ## App D — Real-time Booking & Scheduling (`apps/booking`) — swapped in for Project Manager
 - [ ] Plan + scaffold

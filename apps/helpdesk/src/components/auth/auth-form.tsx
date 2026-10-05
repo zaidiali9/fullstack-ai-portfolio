@@ -61,7 +61,7 @@ export function AuthForm({ mode, githubEnabled }: { mode: "sign-in" | "sign-up";
           <div className="mt-2 flex flex-wrap gap-2">
             {(Object.keys(DEMO_ACCOUNTS) as DemoRole[]).map((r) => (
               <Button key={r} variant={demo === r ? "default" : "outline"} size="sm" asChild>
-                <Link href={`/sign-in?demo=${r}`} replace>
+                <Link href={`/sign-in?demo=${r}${rawNext ? `&next=${encodeURIComponent(next)}` : ""}`} replace>
                   {DEMO_ACCOUNTS[r].label}
                 </Link>
               </Button>
