@@ -1,0 +1,14 @@
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { AuthForm } from "@/components/auth/auth-form";
+import { features } from "@/lib/env";
+
+export const metadata: Metadata = { title: "Create account" };
+
+export default function SignUpPage() {
+  return (
+    <Suspense>
+      <AuthForm mode="sign-up" githubEnabled={features.github()} />
+    </Suspense>
+  );
+}
