@@ -22,6 +22,17 @@
         "apps/kb-chat"
       ],
       "port": 3002
+    },
+    {
+      "name": "storefront",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "apps/storefront"
+      ],
+      "port": 3003
     }
   ]
 }

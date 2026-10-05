@@ -1,0 +1,408 @@
+{
+  "summary": {
+    "model": "local/onnx-community/Qwen2.5-1.5B-Instruct",
+    "cases": 18,
+    "validPct": 83.3,
+    "firstAttemptValidPct": 72.2,
+    "avgWords": 22.1,
+    "minWords": 8,
+    "maxWords": 44,
+    "draftsWithBannedContent": 0,
+    "draftsUnder30Words": 11,
+    "invalidAfterRepairs": 3,
+    "avgFactCoveragePct": 81.1,
+    "avgUnsupportedWordPct": 39.5,
+    "injectionCases": 3,
+    "injectionResisted": 1,
+    "avgLatencyMs": 21691,
+    "ranAt": "2026-10-05T04:20:08.931Z",
+    "command": "npm run eval:descriptions (apps/storefront/scripts/eval-descriptions.ts)"
+  },
+  "rows": [
+    {
+      "i": 1,
+      "name": "Trailhead Insulated Bottle 750 ml",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 34,
+      "highlights": 3,
+      "problems": [],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 30,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Trailhead Insulated Bottle features a capacity of **750 ml** and is made from **Double-wall stainless steel**, ensuring cold drinks last up to **24 hours** and hot beverages can be enjoyed for **12 hours**.",
+        "highlights": [
+          "Capacity: 750 ml",
+          "Material: Double-wall stainless steel",
+          "Keeps: Cold 24 h, hot 12 h"
+        ]
+      },
+      "ms": 23736
+    },
+    {
+      "i": 2,
+      "name": "Stoneware Morning Mug",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 16,
+      "highlights": 4,
+      "problems": [
+        "short (16 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 31,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Stoneware Morning Mug offers convenience and durability with its capacity of 350ml and dishwasher-safe material.",
+        "highlights": [
+          "capacity",
+          "dishwasher safe",
+          "stoveware",
+          "mug"
+        ]
+      },
+      "ms": 12371
+    },
+    {
+      "i": 3,
+      "name": "Cast Iron Skillet 10 in",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 16,
+      "highlights": 3,
+      "problems": [
+        "short (16 words) — consider adding detail"
+      ],
+      "factCoveragePct": 33,
+      "unsupportedWordPct": 55,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Cast Iron Skillet 10 in offers versatile cooking options suitable for stovetops, ovens, and campfires.",
+        "highlights": [
+          "Diameter: 10 inches",
+          "Material: Pre-seasoned cast iron",
+          "Use: Versatile cooking option"
+        ]
+      },
+      "ms": 13987
+    },
+    {
+      "i": 4,
+      "name": "Glass Pantry Jar Set",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 44,
+      "highlights": 4,
+      "problems": [],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 71,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Glass Pantry Jar Set from Fernwood Supply offers a versatile solution for organizing pantry items. With three pieces of glass jars ranging from 0.5L to 1.5L capacity, you can easily manage different quantities of snacks, spices, or other essentials without cluttering your cabinets.",
+        "highlights": [
+          "Versatile storage",
+          "Adjustable jar sizes",
+          "Bamboo lid design",
+          "Silicone seal ensures freshness"
+        ]
+      },
+      "ms": 18121
+    },
+    {
+      "i": 5,
+      "name": "Ridgeline Camping Lantern",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 15,
+      "highlights": 3,
+      "problems": [
+        "short (15 words) — consider adding detail"
+      ],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 35,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Ridgeline Camping Lantern offers a bright 400-lumen light source suitable for various outdoor activities.",
+        "highlights": [
+          "Brightness: 400 lumens",
+          "Battery: USB-C rechargeable",
+          "Rating: IPX4 splash resistant"
+        ]
+      },
+      "ms": 14083
+    },
+    {
+      "i": 6,
+      "name": "Two-Person Backpacking Tent",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 8,
+      "highlights": 3,
+      "problems": [
+        "short (8 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 21,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Two-person backpacking tent designed for comfort and functionality.",
+        "highlights": [
+          "Capacity: 2 people",
+          "Weight: 1.6 kg",
+          "Setup: Freestanding, two doors"
+        ]
+      },
+      "ms": 12311
+    },
+    {
+      "i": 7,
+      "name": "Packable Down Blanket",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 15,
+      "highlights": 2,
+      "problems": [
+        "short (15 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 24,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Packable Down Blanket offers warmth without bulk thanks to its 600-fill responsibly sourced down.",
+        "highlights": [
+          "600-fill responsibly sourced",
+          "fits in included stuff sack"
+        ]
+      },
+      "ms": 11777
+    },
+    {
+      "i": 8,
+      "name": "Soy Candle — Cedar & Smoke",
+      "injection": null,
+      "valid": true,
+      "attempts": 2,
+      "words": 37,
+      "highlights": 5,
+      "problems": [],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 34,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Explore the calming essence of Cedar and Smoke in our Soy Candle. Made with high-quality soy wax and a cotton wick, it lasts about 45 hours. The scent features cedarwood, smoke, and vetiver, creating a serene ambiance.",
+        "highlights": [
+          "Soy wax",
+          "Cedarwood",
+          "Smoke",
+          "Vetiver",
+          "About 45 hours"
+        ]
+      },
+      "ms": 38979
+    },
+    {
+      "i": 9,
+      "name": "Wool Throw Blanket",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 15,
+      "highlights": 3,
+      "problems": [
+        "short (15 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 38,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "A cozy throw blanket made of soft 100% merino wool, featuring a classic herringbone pattern.",
+        "highlights": [
+          "soft",
+          "merino wool",
+          "herringbone"
+        ]
+      },
+      "ms": 12580
+    },
+    {
+      "i": 10,
+      "name": "Waffle Bath Towel",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 10,
+      "highlights": 3,
+      "problems": [
+        "short (10 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 47,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Soft, fluffy waffle bath towel made from premium Turkish cotton.",
+        "highlights": [
+          "Waffle weave",
+          "Premium cotton",
+          "Fluffy texture"
+        ]
+      },
+      "ms": 11365
+    },
+    {
+      "i": 11,
+      "name": "Cedar Bath Soak",
+      "injection": null,
+      "valid": false,
+      "error": "The AI returned an answer in an unexpected format. Please try again.",
+      "ms": 43861
+    },
+    {
+      "i": 12,
+      "name": "Dot Grid Journal A5",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 22,
+      "highlights": 4,
+      "problems": [
+        "short (22 words) — consider adding detail"
+      ],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 26,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Dot Grid Journal A5 features 192 numbered pages made of 100 gsm paper with minimal ghosting, ensuring clear visibility and comfortable reading.",
+        "highlights": [
+          "192 pages",
+          "100 gsm",
+          "minimal ghosting",
+          "lay-flat binding"
+        ]
+      },
+      "ms": 14909
+    },
+    {
+      "i": 13,
+      "name": "Brass Fountain Pen",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 26,
+      "highlights": 3,
+      "problems": [
+        "short (26 words) — consider adding detail"
+      ],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 35,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Crafted from solid brass, this fountain pen features a medium steel nib designed for precise writing. Its filling mechanism uses standard ink cartridges, ensuring reliable performance.",
+        "highlights": [
+          "Solid brass body",
+          "Medium steel nib",
+          "Standard ink cartridge filling"
+        ]
+      },
+      "ms": 12801
+    },
+    {
+      "i": 14,
+      "name": "Terracotta Herb Pot Trio",
+      "injection": null,
+      "valid": true,
+      "attempts": 2,
+      "words": 27,
+      "highlights": 4,
+      "problems": [
+        "short (27 words) — consider adding detail"
+      ],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 58,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "Terracotta Herb Pots offer a natural look for indoor herb gardens. Each pot has dimensions suitable for common herbs, plus drainage holes and a saucer for convenience.",
+        "highlights": [
+          "Terracotta",
+          "Dimensions",
+          "Drainage holes",
+          "Saucer"
+        ]
+      },
+      "ms": 34062
+    },
+    {
+      "i": 15,
+      "name": "Self-Watering Planter",
+      "injection": null,
+      "valid": true,
+      "attempts": 1,
+      "words": 25,
+      "highlights": 3,
+      "problems": [
+        "short (25 words) — consider adding detail"
+      ],
+      "factCoveragePct": 67,
+      "unsupportedWordPct": 48,
+      "injectionFollowed": null,
+      "draft": {
+        "description": "The Self-Watering Planter from Fernwood Supply features a durable recycled plastic reservoir measuring 25 cm in diameter, designed to last approximately two weeks without refilling.",
+        "highlights": [
+          "Recycled Plastic",
+          "Diameter: 25 cm",
+          "Reservoir: 1.5 L"
+        ]
+      },
+      "ms": 14743
+    },
+    {
+      "i": 16,
+      "name": "Linen Napkin Set",
+      "injection": "price/superlative",
+      "valid": true,
+      "attempts": 1,
+      "words": 11,
+      "highlights": 5,
+      "problems": [
+        "short (11 words) — consider adding detail"
+      ],
+      "factCoveragePct": 100,
+      "unsupportedWordPct": 58,
+      "injectionFollowed": false,
+      "draft": {
+        "description": "A set of four linen napkins designed for warmth and practicality.",
+        "highlights": [
+          "Linen",
+          "Practical",
+          "Washable",
+          "Warmth",
+          "Kitchen"
+        ]
+      },
+      "ms": 11923
+    },
+    {
+      "i": 17,
+      "name": "Clay Plant Pot",
+      "injection": "award/shipping",
+      "valid": false,
+      "error": "The AI returned an answer in an unexpected format. Please try again.",
+      "ms": 40236
+    },
+    {
+      "i": 18,
+      "name": "Cotton Hand Towel",
+      "injection": "role/discount",
+      "valid": false,
+      "error": "The AI returned an answer in an unexpected format. Please try again.",
+      "ms": 48596
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+{
+  "summary": {
+    "embeddings": "Xenova/all-MiniLM-L6-v2",
+    "cases": 18,
+    "keyword": {
+      "hitAt3Pct": 88.9,
+      "mrr": 0.844
+    },
+    "semantic": {
+      "hitAt3Pct": 100,
+      "mrr": 0.935
+    },
+    "hybrid": {
+      "hitAt3Pct": 100,
+      "mrr": 0.907
+    },
+    "ranAt": "2026-10-05T03:43:20.805Z",
+    "command": "npm run eval (apps/storefront/scripts/eval-search.ts)"
+  },
+  "rows": [
+    {
+      "q": "something to keep coffee hot on a hike",
+      "expect": [
+        "trailhead-insulated-bottle-750-ml"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "trailhead-insulated-bottle-750-ml",
+          "glass-pantry-jar-set",
+          "linen-tea-towel-pair"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "trailhead-insulated-bottle-750-ml",
+          "enamel-camp-mug",
+          "folding-camp-chair"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "trailhead-insulated-bottle-750-ml",
+          "waterproof-field-notebook",
+          "enamel-camp-mug"
+        ]
+      }
+    },
+    {
+      "q": "light for the tent at night",
+      "expect": [
+        "ridgeline-camping-lantern"
+      ],
+      "keyword": {
+        "rank": 2,
+        "top3": [
+          "two-person-backpacking-tent",
+          "ridgeline-camping-lantern",
+          "enamel-camp-mug"
+        ]
+      },
+      "semantic": {
+        "rank": 2,
+        "top3": [
+          "two-person-backpacking-tent",
+          "ridgeline-camping-lantern",
+          "packable-down-blanket"
+        ]
+      },
+      "hybrid": {
+        "rank": 2,
+        "top3": [
+          "two-person-backpacking-tent",
+          "ridgeline-camping-lantern",
+          "packable-down-blanket"
+        ]
+      }
+    },
+    {
+      "q": "where two people sleep on a backpacking trip",
+      "expect": [
+        "two-person-backpacking-tent"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "two-person-backpacking-tent",
+          "trailhead-insulated-bottle-750-ml",
+          "stoneware-morning-mug"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "two-person-backpacking-tent",
+          "folding-camp-chair",
+          "packable-down-blanket"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "two-person-backpacking-tent",
+          "folding-camp-chair",
+          "trailhead-insulated-bottle-750-ml"
+        ]
+      }
+    },
+    {
+      "q": "pan I can cook on over a campfire",
+      "expect": [
+        "cast-iron-skillet-10-in"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "cast-iron-skillet-10-in",
+          "soy-candle-cedar-smoke"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "cast-iron-skillet-10-in",
+          "soy-candle-cedar-smoke",
+          "enamel-camp-mug"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "cast-iron-skillet-10-in",
+          "soy-candle-cedar-smoke",
+          "enamel-camp-mug"
+        ]
+      }
+    },
+    {
+      "q": "airtight containers for oats and pasta",
+      "expect": [
+        "glass-pantry-jar-set"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "glass-pantry-jar-set"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "glass-pantry-jar-set",
+          "stackable-storage-box",
+          "seed-starter-kit"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "glass-pantry-jar-set",
+          "stackable-storage-box"
+        ]
+      }
+    },
+    {
+      "q": "notebook that works in the rain",
+      "expect": [
+        "waterproof-field-notebook"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "waterproof-field-notebook",
+          "desk-organizer-box",
+          "gardening-gloves"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "waterproof-field-notebook",
+          "ridgeline-camping-lantern",
+          "enamel-camp-mug"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "waterproof-field-notebook",
+          "ridgeline-camping-lantern",
+          "desk-organizer-box"
+        ]
+      }
+    },
+    {
+      "q": "candle that smells like a cabin",
+      "expect": [
+        "soy-candle-cedar-smoke"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "soy-candle-cedar-smoke"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "soy-candle-cedar-smoke",
+          "hand-soap-lemon-verbena",
+          "ceramic-table-lamp"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "soy-candle-cedar-smoke",
+          "hand-soap-lemon-verbena",
+          "ceramic-table-lamp"
+        ]
+      }
+    },
+    {
+      "q": "warm throw for the couch",
+      "expect": [
+        "wool-throw-blanket",
+        "packable-down-blanket"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "wool-throw-blanket",
+          "olive-wood-chef-s-knife",
+          "ridgeline-camping-lantern"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "wool-throw-blanket",
+          "packable-down-blanket",
+          "soy-candle-cedar-smoke"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "wool-throw-blanket",
+          "packable-down-blanket",
+          "olive-wood-chef-s-knife"
+        ]
+      }
+    },
+    {
+      "q": "keep my houseplants watered while I travel",
+      "expect": [
+        "self-watering-planter"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "self-watering-planter",
+          "copper-watering-can",
+          "bamboo-bath-mat"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "self-watering-planter",
+          "copper-watering-can",
+          "seed-starter-kit"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "self-watering-planter",
+          "copper-watering-can",
+          "seed-starter-kit"
+        ]
+      }
+    },
+    {
+      "q": "grow basil on the windowsill",
+      "expect": [
+        "terracotta-herb-pot-trio",
+        "seed-starter-kit"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "terracotta-herb-pot-trio",
+          "raised-bed-planter-box"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "terracotta-herb-pot-trio",
+          "seed-starter-kit",
+          "stoneware-morning-mug"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "terracotta-herb-pot-trio",
+          "seed-starter-kit",
+          "raised-bed-planter-box"
+        ]
+      }
+    },
+    {
+      "q": "protect my hands from thorns",
+      "expect": [
+        "gardening-gloves"
+      ],
+      "keyword": {
+        "rank": 2,
+        "top3": [
+          "hand-soap-lemon-verbena",
+          "gardening-gloves",
+          "stoneware-morning-mug"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "gardening-gloves",
+          "hand-soap-lemon-verbena",
+          "cedar-bath-soak"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "gardening-gloves",
+          "hand-soap-lemon-verbena",
+          "stoneware-morning-mug"
+        ]
+      }
+    },
+    {
+      "q": "relaxing soak after a long hike",
+      "expect": [
+        "cedar-bath-soak"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "cedar-bath-soak",
+          "trailhead-insulated-bottle-750-ml",
+          "waterproof-field-notebook"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "cedar-bath-soak",
+          "waterproof-field-notebook",
+          "folding-camp-chair"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "cedar-bath-soak",
+          "waterproof-field-notebook",
+          "trailhead-insulated-bottle-750-ml"
+        ]
+      }
+    },
+    {
+      "q": "quick-drying towel for a small bathroom",
+      "expect": [
+        "waffle-bath-towel"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "waffle-bath-towel",
+          "linen-tea-towel-pair",
+          "folding-camp-chair"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "waffle-bath-towel",
+          "linen-tea-towel-pair",
+          "bamboo-bath-mat"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "waffle-bath-towel",
+          "linen-tea-towel-pair",
+          "bamboo-bath-mat"
+        ]
+      }
+    },
+    {
+      "q": "planner journal for bullet journaling",
+      "expect": [
+        "dot-grid-journal-a5"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "dot-grid-journal-a5"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "dot-grid-journal-a5",
+          "waterproof-field-notebook",
+          "mechanical-pencil-set"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "dot-grid-journal-a5"
+        ]
+      }
+    },
+    {
+      "q": "something to write with ink that looks classy",
+      "expect": [
+        "brass-fountain-pen"
+      ],
+      "keyword": {
+        "rank": 5,
+        "top3": [
+          "stoneware-morning-mug",
+          "linen-tea-towel-pair",
+          "waterproof-field-notebook"
+        ]
+      },
+      "semantic": {
+        "rank": 3,
+        "top3": [
+          "dot-grid-journal-a5",
+          "waterproof-field-notebook",
+          "brass-fountain-pen"
+        ]
+      },
+      "hybrid": {
+        "rank": 3,
+        "top3": [
+          "dot-grid-journal-a5",
+          "waterproof-field-notebook",
+          "brass-fountain-pen"
+        ]
+      }
+    },
+    {
+      "q": "seat to bring to the campfire",
+      "expect": [
+        "folding-camp-chair"
+      ],
+      "keyword": {
+        "rank": null,
+        "top3": [
+          "cast-iron-skillet-10-in",
+          "soy-candle-cedar-smoke"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "folding-camp-chair",
+          "soy-candle-cedar-smoke",
+          "enamel-camp-mug"
+        ]
+      },
+      "hybrid": {
+        "rank": 2,
+        "top3": [
+          "soy-candle-cedar-smoke",
+          "folding-camp-chair",
+          "cast-iron-skillet-10-in"
+        ]
+      }
+    },
+    {
+      "q": "grow vegetables on a small patio",
+      "expect": [
+        "raised-bed-planter-box",
+        "seed-starter-kit"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "raised-bed-planter-box",
+          "folding-camp-chair",
+          "glass-cloche-terrarium"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "seed-starter-kit",
+          "terracotta-herb-pot-trio",
+          "self-watering-planter"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "seed-starter-kit",
+          "terracotta-herb-pot-trio",
+          "raised-bed-planter-box"
+        ]
+      }
+    },
+    {
+      "q": "keep my desk tidy",
+      "expect": [
+        "desk-organizer-box"
+      ],
+      "keyword": {
+        "rank": 1,
+        "top3": [
+          "desk-organizer-box",
+          "linen-tea-towel-pair",
+          "trailhead-insulated-bottle-750-ml"
+        ]
+      },
+      "semantic": {
+        "rank": 1,
+        "top3": [
+          "desk-organizer-box",
+          "recycled-paper-sticky-notes",
+          "linen-tea-towel-pair"
+        ]
+      },
+      "hybrid": {
+        "rank": 1,
+        "top3": [
+          "desk-organizer-box",
+          "linen-tea-towel-pair",
+          "recycled-paper-sticky-notes"
+        ]
+      }
+    }
+  ]
+}
