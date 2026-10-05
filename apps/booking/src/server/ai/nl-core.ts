@@ -180,10 +180,11 @@ ${services}
 Staff:
 ${staff}
 Return JSON with:
-- "service": the slug of the single best-matching service, or null if the request doesn't say what they want
-- "staff": the staff member's first name if they asked for a specific person, else null
+- "service": the slug of the best-matching service. Match by meaning: customers use their own words
+  (e.g. "stretching", "needles", "skin", "knots"). Use null only if no treatment is described at all.
+- "staff": a first name ONLY if the customer wrote that person's name. Never pick staff from the service.
 - "timeOfDay": "morning" (before 12:00), "afternoon" (12:00-17:00), "evening" (after 17:00) or "any"
-- "after" / "before": explicit start-time limits in 24h "HH:MM" (e.g. "after 3pm" -> after "15:00"), else null
+- "after" / "before": ONLY if the customer wrote a clock time (e.g. "after 3pm" -> after "15:00"), else null.
 Ignore dates; they are handled separately.
 ${UNTRUSTED_NOTICE}`;
   return [
@@ -193,13 +194,33 @@ ${UNTRUSTED_NOTICE}`;
 }
 
 /** Map validated model output onto known catalog entries; unknown values become null with a note. */
+const GENERIC_NAME_WORDS = new Set(["session", "signature", "the", "and", "with"]);
+
+/**
+ * Fallback when the model returns no valid service: if the request literally names exactly one
+ * service by a distinctive word ("acupuncture", "facial", "stretching"), use it. Words shared by
+ * several services ("massage") are ambiguous and never match.
+ */
+export function lexicalService<S extends { slug: string; name: string }>(text: string, services: S[]): S | null {
+  const words = (t: string) => t.toLowerCase().match(/[a-z]+/g) ?? [];
+  const keys = services.map((s) => words(s.name).filter((w) => w.length > 3 && !GENERIC_NAME_WORDS.has(w)));
+  const counts = new Map<string, number>();
+  for (const k of keys) for (const w of new Set(k)) counts.set(w, (counts.get(w) ?? 0) + 1);
+  const said = words(text);
+  const hits = services.filter((_, i) => keys[i]!.some((k) => counts.get(k) === 1 && said.some((w) => w.startsWith(k))));
+  return hits.length === 1 ? hits[0]! : null;
+}
+
 export function resolveNl<S extends { slug: string; id: string; staffIds: string[]; name: string }, P extends { id: string; name: string }>(
   parsed: NlRequest,
   services: S[],
   staff: P[],
-): { service: S | null; staffMember: P | null; notes: string[] } {
+  requestText = "",
+): { service: S | null; staffMember: P | null; notes: string[]; serviceSource: "model" | "name match" | null } {
   const notes: string[] = [];
-  const service = parsed.service ? (services.find((s) => s.slug === parsed.service) ?? null) : null;
+  const fromModel = parsed.service ? (services.find((s) => s.slug === parsed.service) ?? null) : null;
+  const service = fromModel ?? lexicalService(requestText, services);
+  const serviceSource = fromModel ? "model" : service ? "name match" : null;
   let staffMember: P | null = null;
   if (parsed.staff) {
     const q = parsed.staff.trim().toLowerCase();
@@ -210,7 +231,72 @@ export function resolveNl<S extends { slug: string; id: string; staffIds: string
     notes.push(`${staffMember.name.split(" ")[0]} doesn't offer ${service.name}, so we searched everyone who does.`);
     staffMember = null;
   }
-  return { service, staffMember, notes };
+  return { service, staffMember, notes, serviceSource };
+}
+
+/* ------------------------------------------------- explicit time parsing (code, not model) */
+
+const CLOCK = String.raw`(\d{1,2})(?::(\d{2}))?\s*(am|pm|a\.m\.|p\.m\.)?`;
+
+/** "5" -> 17:00 inside studio hours; explicit am/pm wins. */
+function clock(h: string, m: string | undefined, suffix: string | undefined, inherit?: string): string | null {
+  let hour = Number(h);
+  const min = Number(m ?? 0);
+  const sfx = suffix ?? inherit;
+  if (hour > 23 || min > 59) return null;
+  if (sfx?.startsWith("p") && hour < 12) hour += 12;
+  else if (sfx?.startsWith("a") && hour === 12) hour = 0;
+  else if (!sfx && hour >= 1 && hour <= 7) hour += 12; // "after 5" means 5pm at a studio
+  return `${pad(hour)}:${pad(min)}`;
+}
+
+const addMin = (hhmm: string, d: number) => {
+  const t = Math.min(Math.max(Number(hhmm.slice(0, 2)) * 60 + Number(hhmm.slice(3)) + d, 0), 23 * 60 + 59);
+  return `${pad(Math.floor(t / 60))}:${pad(t % 60)}`;
+};
+
+/**
+ * Explicit time preferences written in the request. Code handles these because they are exact
+ * ("after 4pm" must never become "after 5pm"); the model handles fuzzy phrasing ("after work").
+ */
+export function parseTimePrefs(text: string): Partial<Pick<NlRequest, "timeOfDay" | "after" | "before">> {
+  const t = text.toLowerCase();
+  const out: Partial<Pick<NlRequest, "timeOfDay" | "after" | "before">> = {};
+  let m: RegExpMatchArray | null;
+  if ((m = t.match(new RegExp(String.raw`\bbetween ${CLOCK} (?:and|-|to) ${CLOCK}`)))) {
+    out.after = clock(m[1]!, m[2], m[3], m[6]);
+    out.before = clock(m[4]!, m[5], m[6]);
+  } else {
+    if ((m = t.match(new RegExp(String.raw`\b(?:after|from|later than) ${CLOCK}`)))) out.after = clock(m[1]!, m[2], m[3]);
+    if (/\bbefore (?:noon|midday|lunch)\b/.test(t)) out.before = "12:00";
+    else if ((m = t.match(new RegExp(String.raw`\b(?:before|by|earlier than) ${CLOCK}`)))) out.before = clock(m[1]!, m[2], m[3]);
+    if ((m = t.match(new RegExp(String.raw`\b(?:at|around|about) ${CLOCK}`))) && (m[3] || /around|about/.test(m[0]))) {
+      const c = clock(m[1]!, m[2], m[3]);
+      if (c) [out.after, out.before] = [addMin(c, /around|about/.test(m[0]) ? -60 : 0), addMin(c, 60)];
+    }
+  }
+  if (/\b(?:tonight|evenings?)\b/.test(t)) out.timeOfDay = "evening";
+  else if (/\bafternoons?\b/.test(t)) out.timeOfDay = "afternoon";
+  else if (/\bmornings?\b/.test(t)) out.timeOfDay = "morning";
+  for (const k of ["after", "before"] as const) if (out[k] === null) delete out[k];
+  return out;
+}
+
+const HAS_CLOCK = /\b\d{1,2}(?::\d{2})?\s*(?:am|pm|a\.m\.|p\.m\.)|\b\d{1,2}:\d{2}\b|\bnoon\b|\bmidday\b|\bmidnight\b/;
+
+/**
+ * Final time preference: explicit times/day-parts parsed by code win; the model's clock times are
+ * kept only if the request actually contains a time (guards against invented "after 14:00").
+ */
+export function mergeTimePrefs(model: Pick<NlRequest, "timeOfDay" | "after" | "before">, text: string): Pick<NlRequest, "timeOfDay" | "after" | "before"> {
+  const explicit = parseTimePrefs(text);
+  const anyExplicitClock = explicit.after !== undefined || explicit.before !== undefined;
+  const clockOk = HAS_CLOCK.test(text) && !anyExplicitClock;
+  return {
+    timeOfDay: explicit.timeOfDay ?? (anyExplicitClock ? "any" : model.timeOfDay),
+    after: explicit.after ?? (clockOk ? model.after : null),
+    before: explicit.before ?? (clockOk ? model.before : null),
+  };
 }
 
 /** Local-time start window from the parsed preference (minutes from midnight). */

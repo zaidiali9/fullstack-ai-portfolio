@@ -11,7 +11,7 @@ import { findOpenings, pickOpenings, today } from "../availability";
 import { getBusiness, listServices, listStaff } from "../catalog";
 import { addDays, dateInTz, dayBounds, formatDateLong, weekdayOf, WEEKDAYS } from "../scheduling/time";
 import { buildDigestMessages, unverifiedNumbers, type DigestStats } from "./digest-core";
-import { buildNlMessages, nlRequestSchema, normalizeNl, resolveDates, resolveNl, timeWindow } from "./nl-core";
+import { buildNlMessages, mergeTimePrefs, nlRequestSchema, normalizeNl, resolveDates, resolveNl, timeWindow } from "./nl-core";
 
 async function enforceAiRate(userKey: string) {
   await enforceRateLimit(db, `ai:${userKey}`, {
@@ -70,13 +70,14 @@ export async function searchFromRequest(rateKey: string, raw: unknown, userId?: 
     temperature: 0,
   });
   const parsed = result.object;
-  const { service, staffMember, notes } = resolveNl(parsed, services, staff);
+  const { service, staffMember, notes } = resolveNl(parsed, services, staff, request);
 
   const now = new Date();
   const t = today(b.timezone, now);
   const resolved = resolveDates(request, t);
   const dates = resolved ? { ...resolved, explicit: true } : { from: t, to: addDays(t, 6), label: "the next 7 days", explicit: false };
-  const window = timeWindow(parsed);
+  // Explicit clock times and day-parts are parsed by code; the model fills in fuzzy phrasing.
+  const window = timeWindow(mergeTimePrefs(parsed, request));
   const interpretation: NlResult["interpretation"] = {
     service: service ? { id: service.id, slug: service.slug, name: service.name } : null,
     staff: staffMember ? { id: staffMember.id, name: staffMember.name } : null,

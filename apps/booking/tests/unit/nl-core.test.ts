@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { allowedNumbers, unverifiedNumbers, type DigestStats } from "@/server/ai/digest-core";
-import { buildNlMessages, nlRequestSchema, normalizeNl, resolveDates, resolveNl, timeWindow, to24h } from "@/server/ai/nl-core";
+import { buildNlMessages, lexicalService, mergeTimePrefs, nlRequestSchema, normalizeNl, parseTimePrefs, resolveDates, resolveNl, timeWindow, to24h } from "@/server/ai/nl-core";
 
 // 2026-10-07 is a Wednesday.
 const TODAY = "2026-10-07";
@@ -100,6 +100,37 @@ describe("model output normalization and validation", () => {
     expect(timeWindow({ timeOfDay: "evening", after: "16:00", before: null })).toEqual({ fromMin: 960, toMin: 1440 });
   });
 
+  it.each([
+    ["after 4pm", { after: "16:00" }],
+    ["after 5", { after: "17:00" }],
+    ["after 10am", { after: "10:00" }],
+    ["before 11am", { before: "11:00" }],
+    ["before noon", { before: "12:00" }],
+    ["between 2 and 4pm", { after: "14:00", before: "16:00" }],
+    ["between 9:30am and 11am", { after: "09:30", before: "11:00" }],
+    ["at 3pm", { after: "15:00", before: "16:00" }],
+    ["around 2", { after: "13:00", before: "15:00" }],
+    ["tomorrow morning", { timeOfDay: "morning" }],
+    ["Friday afternoon after 3pm", { timeOfDay: "afternoon", after: "15:00" }],
+    ["acupuncture tonight", { timeOfDay: "evening" }],
+    ["on the 15th", {}],
+    ["at the studio", {}],
+  ])("parses explicit time preferences in code: %s", (text, expected) => {
+    expect(parseTimePrefs(text)).toEqual(expected);
+  });
+
+  it("merges code-parsed times over the model and drops model-invented clock times", () => {
+    const model = { timeOfDay: "afternoon" as const, after: "14:00", before: null };
+    // No time written: the model's invented "after 14:00" is discarded, its day-part kept.
+    expect(mergeTimePrefs(model, "skin treatment on October 20th")).toEqual({ timeOfDay: "afternoon", after: null, before: null });
+    // Explicit time wins over the model ("after 4pm" is not "afternoon").
+    expect(mergeTimePrefs({ timeOfDay: "afternoon", after: null, before: null }, "massage after 4pm")).toEqual({ timeOfDay: "any", after: "16:00", before: null });
+    // Fuzzy phrasing is left to the model.
+    expect(mergeTimePrefs({ timeOfDay: "evening", after: null, before: null }, "after work")).toEqual({ timeOfDay: "evening", after: null, before: null });
+    // A time the parser can't read but that exists in the text keeps the model's value.
+    expect(mergeTimePrefs({ timeOfDay: "any", after: "15:00", before: null }, "3pm-ish works")).toEqual({ timeOfDay: "any", after: "15:00", before: null });
+  });
+
   it("fences the customer's text as untrusted data in the prompt", () => {
     const msgs = buildNlMessages(
       { services: [{ slug: "acupuncture", name: "Acupuncture", description: "Needles", durationMin: 45 }], staff: [{ name: "Alex Chen", title: "Acupuncturist" }] },
@@ -127,5 +158,25 @@ describe("digest number check", () => {
     const text = "- 23 appointments last week, 18 completed.\n- Booked value was $2,140.\n- Sam is at 41% next week; utilization overall is 55%.\n1. Monday, October 12 is quiet.";
     expect(unverifiedNumbers(text, stats)).toEqual(["55%"]);
     expect(unverifiedNumbers("Revenue grew 300%", stats)).toEqual(["300%"]);
+  });
+});
+
+describe("lexical service fallback", () => {
+  const services = [
+    { slug: "swedish-massage", name: "Swedish massage" },
+    { slug: "deep-tissue-massage", name: "Deep tissue massage" },
+    { slug: "signature-facial", name: "Signature facial" },
+    { slug: "acupuncture", name: "Acupuncture session" },
+    { slug: "assisted-stretch", name: "Assisted stretch" },
+  ];
+  it.each([
+    ["acupuncture tonight", "acupuncture"],
+    ["a quick stretching session", "assisted-stretch"],
+    ["two facials please", "signature-facial"],
+    ["a massage", null], // shared word: ambiguous
+    ["a facial or acupuncture", null], // two services named
+    ["something relaxing", null],
+  ])("%s -> %s", (text, slug) => {
+    expect(lexicalService(text, services)?.slug ?? null).toBe(slug);
   });
 });
