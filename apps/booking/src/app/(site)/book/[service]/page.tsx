@@ -14,7 +14,7 @@ async function load(slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/book/[service]">): Promise<Metadata> {
   const s = await load((await params).service);
-  return { title: s ? `Book ${s.name}` : "Book" };
+  return s ? { title: `Book ${s.name}`, description: s.description, alternates: { canonical: `/book/${s.slug}` } } : { title: "Book" };
 }
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

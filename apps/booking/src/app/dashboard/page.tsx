@@ -60,7 +60,7 @@ export default async function DashboardPage({ searchParams }: PageProps<"/dashbo
             <label htmlFor="jump-date" className="sr-only">
               Go to date
             </label>
-            <Input id="jump-date" type="date" name="date" defaultValue={date} className="h-9 w-40" />
+            <Input key={date} id="jump-date" type="date" name="date" defaultValue={date} className="h-9 w-40" />
             <button type="submit" className={buttonVariants({ variant: "outline" })}>
               Go
             </button>

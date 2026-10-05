@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   description: "Book massage, facials and acupuncture online with live availability. A Bookwell portfolio demo with a fictional studio.",
   applicationName: "Bookwell",
   openGraph: { type: "website", siteName: "Bookwell", title: "Lumen Wellness Studio — book online", description: "Live availability, instant confirmation." },
-  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {

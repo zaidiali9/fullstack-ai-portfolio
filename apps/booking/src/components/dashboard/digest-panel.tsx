@@ -13,7 +13,7 @@ interface Meta {
 }
 
 /** Model output is shown as plain text; stray markdown markers are removed rather than rendered. */
-const plain = (t: string) => t.replace(/\*\*|__|^#{1,6}\s*/gm, "");
+const plain = (t: string) => t.replace(/\*+|__|^#{1,6}\s*/gm, "");
 
 /** Streams the owner's weekly digest. The narrative is AI-written; numbers not found in the stats are flagged. */
 export function DigestPanel({ aiAvailable }: { aiAvailable: boolean }) {

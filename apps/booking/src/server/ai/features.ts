@@ -82,7 +82,13 @@ export async function searchFromRequest(rateKey: string, raw: unknown, userId?: 
     service: service ? { id: service.id, slug: service.slug, name: service.name } : null,
     staff: staffMember ? { id: staffMember.id, name: staffMember.name } : null,
     dates,
-    time: window ? `${fmtMin(window.fromMin)}–${window.toMin >= 1440 ? "close" : fmtMin(window.toMin)}` : null,
+    time: window
+      ? window.fromMin === 0
+        ? `before ${fmtMin(window.toMin)}`
+        : window.toMin >= 1440
+          ? `after ${fmtMin(window.fromMin)}`
+          : `${fmtMin(window.fromMin)}–${fmtMin(window.toMin)}`
+      : null,
   };
   const model = { provider: result.provider, model: result.model };
   if (!service) {

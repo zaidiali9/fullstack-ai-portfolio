@@ -21,7 +21,7 @@ describe("natural-language search (stub AI)", () => {
     expect(r.interpretation.service?.slug).toBe("deep-tissue-massage");
     expect(r.interpretation.staff?.name).toBe("Sam Rivera");
     expect(r.interpretation.dates).toMatchObject({ label: "next week", explicit: true });
-    expect(r.interpretation.time).toBe("12am–12pm");
+    expect(r.interpretation.time).toBe("before 12pm");
     expect(r.model.provider).toBe("stub");
     expect(r.options.length).toBeGreaterThan(0);
     expect(r.options.length).toBeLessThanOrEqual(6);

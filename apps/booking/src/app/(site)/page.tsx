@@ -1,10 +1,14 @@
 import { ArrowRight, CalendarCheck, Clock, Radio, ShieldCheck } from "lucide-react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { buttonVariants } from "@portfolio/ui/button";
 import { AssistantBox } from "@/components/booking/assistant-box";
 import { aiStatus } from "@/lib/ai";
 import { durationLabel, money } from "@/lib/format";
 import { getBusiness, listServices, listStaff } from "@/server/catalog";
+
+// Canonical is set per page (a layout-level canonical would make every page claim to be "/").
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
   const [b, services, staff] = await Promise.all([getBusiness(), listServices(), listStaff()]);
