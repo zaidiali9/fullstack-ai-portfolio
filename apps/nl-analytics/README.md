@@ -198,12 +198,12 @@ The scorer compares result sets (any row order, numbers within 0.5%), not SQL te
   always shown and editable. A hosted model or a semantic layer of named metrics should do much better; neither was measured.
 - **Slow on CPU**: median 37 s per question with the local 1.5B model (first load adds model start-up time).
 - **PGlite ignores `statement_timeout`** (measured); there, the EXPLAIN cost ceiling and row cap are what bound a query.
-  On real Postgres the timeout also applies, but that path was **not run on this machine** (no Docker/Postgres) — the CI
-  `postgres` job runs the guard and executor tests against Postgres once the repo is pushed.
+  On real Postgres the timeout also applies. The guard and executor tests (reader role, READ ONLY, cost ceiling) pass
+  against Postgres 17 in CI, but no test makes a query actually hit the timeout there.
 - Managed Postgres hosts that don't allow `CREATE ROLE` run without the reader role (the guard, read-only transaction,
   `search_path` and limits still apply) and log a warning.
 - The shared dashboard page scores Performance 82 on mobile Lighthouse because of chart JavaScript; charts could be lazy-loaded.
-- One built-in dataset; connecting your own database is a client extension (see below). Docker/compose not run here.
+- One built-in dataset; connecting your own database is a client extension (see below). The Docker image builds in CI; `docker compose up` as a whole stack was not run.
 
 ## Licenses
 | Asset | Source | License |

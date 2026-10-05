@@ -224,7 +224,7 @@ and resisted 0 of 3 injection attempts — kept in [`eval-triage-baseline.json`]
 - On serverless hosts, triage runs in `after()`; very long model calls can exceed function time limits — a queue (e.g. a cron-driven retry of `pending` tickets) would be the next step.
 - Hosted provider adapters (Groq, Gemini, Hugging Face, OpenAI-compatible) are unit-tested against mocked HTTP, not against live APIs (no keys were available while building).
 - GitHub OAuth and live Stripe checkout are wired but were not exercised end to end (they need real OAuth / Stripe test credentials); the webhook handler is tested with locally signed events.
-- Docker images and docker-compose were written but not run on the build machine (no Docker available); the CI workflow builds the image and runs migrations against real Postgres.
+- The Docker image builds and migrations/seed run against real Postgres in CI (GitHub Actions, passing); `docker compose up` as a whole stack was not run.
 - No email verification or password-reset flow yet; no file attachments on tickets.
 
 ## Licenses

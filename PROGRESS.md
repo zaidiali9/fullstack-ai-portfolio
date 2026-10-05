@@ -33,12 +33,14 @@ light and dark; each README lists its Lighthouse scores.
 
 **Honest limits (details in each README and `docs/improvements.md`)**
 - All AI numbers come from free local models on a CPU (13–37 s per call). Hosted models were not measured.
-- Not run here: Docker images/compose, the CI workflows (incl. the real-Postgres jobs for booking and Tally), GitHub
-  OAuth, live Stripe, hosted AI providers. These are the first items in `docs/HUMAN-TODO.md`.
+- Published to https://github.com/zaidiali9/fullstack-ai-portfolio; all 5 CI workflows pass there (unit + E2E,
+  Docker image builds, real-Postgres jobs incl. booking's concurrency tests and Tally's SQL safety tests). First runs
+  failed on a Windows-only lockfile and a Google Fonts download — fixed (lockfile regenerated, fonts self-hosted).
+- Still not verified: `docker compose up` as a whole stack, GitHub OAuth, live Stripe, hosted AI providers.
 - Stripe deposit for booking was dropped under the scope rule; Tally's accuracy is about half, so its SQL is always
   shown and editable.
 
-**Next for you:** `docs/HUMAN-TODO.md` (push to GitHub so CI runs → deploy with a free Groq/Gemini key → replace
+**Next for you:** `docs/HUMAN-TODO.md` (deploy with a free Groq/Gemini key → replace
 `[DEMO LINK]`/`[YOUR NAME]` placeholders → profiles and outreach).
 
 Legend: `[x]` done and verified (evidence in the app's `docs/verification.md`), `[ ]` open,
@@ -82,7 +84,7 @@ Environment flags (see DECISIONS.md):
 - [x] Unit tests (Vitest) incl. AI output parsing — 57 passed
 - [x] Playwright E2E main journey (stubbed AI labeled) — 14 passed
 - [x] Coverage 81.67% lines, Lighthouse x2 (landing 95/100/100/100, tickets 90/100/100/100), triage eval 24 cases (91.7% category)
-- [~] Dockerfile, docker-compose, CI workflow, env var table — written; Docker/compose unverified locally (no Docker), CI not yet run (no remote)
+- [x] Dockerfile, docker-compose, CI workflow, env var table — Docker image build + CI (incl. real Postgres) pass on GitHub Actions; `docker compose up` itself not run
 - [x] Dependency audit (prod: 0 vulns; dev-only braces advisory has no fix)
 - [x] README (all required sections, real screenshots, Mermaid arch + ER)
 - [x] docs/helpdesk/case-study.md, docs/helpdesk/marketing.md
@@ -99,7 +101,7 @@ Environment flags (see DECISIONS.md):
 - [x] Seed (5 docs in 4 formats via real pipeline) + demo logins
 - [x] UI quality bar (axe 0 violations light+dark, 360px verified, skeleton-free streaming states, toasts)
 - [x] Unit/integration 54 passed (87.75% lines); E2E 15 passed; Lighthouse landing 95/100/100/100, chat 92/100/100/100; RAG eval 22 cases
-- [~] Docker, compose, CI, env table — written; Docker/compose unverified locally (no Docker); CI not yet run (no remote)
+- [x] Docker, compose, CI, env table — Docker image build + CI (incl. real Postgres) pass on GitHub Actions; `docker compose up` itself not run
 - [x] Dependency audit (prod 0 vulns)
 - [x] README, case study, marketing, verification; commit
 
@@ -113,7 +115,7 @@ Environment flags (see DECISIONS.md):
 - [x] SEO: metadata, canonical, sitemap, robots, Product JSON-LD; next/image with generated WebP art
 - [x] Seed + demo logins; UI quality bar (axe 0 violations light+dark, 360px)
 - [x] Unit 22 passed (79.12% lines), E2E 14 passed, Lighthouse home 91/100/100/100 product 89/100/100/100, search eval 18 cases, description eval 18 cases
-- [~] Docker, compose, CI, env table — written; Docker/compose unverified locally; CI not yet run
+- [x] Docker, compose, CI, env table — Docker image build + CI (incl. real Postgres) pass on GitHub Actions; `docker compose up` itself not run
 - [x] Dependency audit (prod 0 vulns)
 - [x] README, case study, marketing, verification; commit
 
@@ -127,7 +129,7 @@ Environment flags (see DECISIONS.md):
 - [x] AI: natural-language booking request -> zod-validated filters -> real slot search; weekly digest with number check; alternative times (algorithmic)
 - [x] Seed + demo logins; UI quality bar (360 px, axe light/dark, dark mode, skeletons, empty/error states, toasts)
 - [x] Unit (91, 90.15% lines), E2E (18), Lighthouse x2 (90/100/100/100 both), eval (22 cases: 89.5% end-to-end)
-- [~] Docker, compose, CI, env table, audit — written; audit 0 vulnerabilities; Docker/compose/CI not run (no Docker, no remote)
+- [x] Docker, compose, CI, env table, audit — Docker image build + CI (incl. real Postgres) pass on GitHub Actions; `docker compose up` itself not run
 - [x] README, case study, marketing, verification; commit
 
 ## App E — NL Analytics Dashboard (`apps/nl-analytics`, "Tally")
@@ -138,7 +140,7 @@ Environment flags (see DECISIONS.md):
 - [x] Saved queries, shareable dashboards (revocable read-only links), CSV export (formula-injection safe)
 - [x] Seed + demo logins; UI quality bar (axe 0 on 6 pages light/dark, 360 px, dark mode, empty/error states, toasts)
 - [x] Unit (96, 81.17% lines, 65 guard tests); E2E (20); Lighthouse x2 (landing 93/100/100/100, shared 82/100/100/63 noindex); eval 26 cases (50% exec accuracy, 4/4 safety, dataset unchanged)
-- [~] Docker, compose, CI, env table, audit — written; audit 0 vulnerabilities; Docker/compose/CI not run (no Docker, no remote)
+- [x] Docker, compose, CI, env table, audit — Docker image build + CI (incl. real Postgres) pass on GitHub Actions; `docker compose up` itself not run
 - [x] README, case study, marketing, verification; commit
 
 ## Step 3 — Portfolio site

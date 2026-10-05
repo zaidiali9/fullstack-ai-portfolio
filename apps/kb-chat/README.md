@@ -197,7 +197,7 @@ labeled attribution + deterministic decoding. All runs are kept in `docs/metrics
 - Scanned PDFs (images without a text layer) are rejected — no OCR.
 - Vercel's free plan runs cron jobs once a day; ingestion normally finishes in `after()`, and failed jobs retry on the next cron run.
 - The widget's site check relies on the Referer header; a site that strips referrers can't embed it.
-- Hosted provider adapters are tested against mocked HTTP only; Docker/compose and CI were written but not run on this machine.
+- Hosted provider adapters are tested against mocked HTTP only. The Docker image build and the real-Postgres CI job pass on GitHub Actions; `docker compose up` as a whole stack was not run.
 - Members must already have an account to be added (no email invitations in this app).
 
 ## Licenses

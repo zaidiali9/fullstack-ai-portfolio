@@ -7,8 +7,9 @@ measured limitation (eval, Lighthouse, tests) or something the README lists unde
 1. **Measure a hosted model.** All AI numbers in this repo come from free local 1.5B models on a CPU (13–33 s per call).
    Re-run every eval (`npm run eval` in each app) against a free-tier hosted model (Groq/Gemini) and publish both
    columns side by side. Expect large accuracy and latency gains, but report only what the runs show.
-2. **Run CI on real Postgres and Docker** (pushing the repo is enough; see HUMAN-TODO). Booking's LISTEN/NOTIFY and
-   exclusion constraint and Tally's role/timeout layer are written for Postgres but were only run on PGlite locally.
+2. **Test the remaining deployment paths.** CI now passes on GitHub (Docker image builds; real-Postgres jobs incl.
+   booking's concurrency tests and Tally's SQL safety tests). Still untested: `docker compose up` as a full stack, a
+   multi-instance booking deployment (LISTEN/NOTIFY fan-out across servers), and a query hitting Postgres' timeout in Tally.
 3. **Background job runner.** helpdesk triage and kb-chat ingestion use `after()` plus cron retries. A small Postgres
    queue worker (the kb-chat job table already supports `FOR UPDATE SKIP LOCKED`) would remove serverless time limits.
 4. **Shared UI fixes back-ported**: sonner's success-toast contrast (4.25:1) was fixed in booking and Tally only; port the

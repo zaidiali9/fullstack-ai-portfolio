@@ -175,7 +175,7 @@ ranking on this set. A stricter description schema (≥30 words) was tried and r
 - The local 1.5B model writes short descriptions (median 22 words in the eval) and sometimes adds unsupported wording (e.g. "moisture retention" in the admin screenshot); the draft-only workflow and warnings exist for this reason. A hosted model would write better copy, but that was not measured.
 - Mobile Lighthouse performance is 89–91 (LCP ~3.5 s under throttling) because pages are rendered per request (cart cookie in the header) and load two web fonts.
 - No product image upload yet (new products get a category placeholder), no tax calculation, inventory reservation during checkout, or discount codes.
-- Docker/compose and CI were written but not run on this machine.
+- The Docker image build and the real-Postgres CI job pass on GitHub Actions; `docker compose up` as a whole stack was not run.
 
 ## Licenses
 | Asset | Source | License |

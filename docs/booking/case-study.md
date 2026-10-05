@@ -51,8 +51,8 @@ Commands and raw output: `apps/booking/docs/verification.md`.
 - Google Lighthouse (mobile): **90 performance / 100 accessibility / 100 best practices / 100 SEO** on both the home
   page and a booking page.
 
-No real customers or bookings were involved. Running on a full PostgreSQL server (rather than the embedded one used
-here) is set up in the CI pipeline but hasn't been run yet.
+No real customers or bookings were involved. The double-booking and live-update tests also pass on a full PostgreSQL
+server in the CI pipeline, not just the embedded database used for development.
 
 ## Tech used
 Next.js and React, PostgreSQL (exclusion constraints, LISTEN/NOTIFY), Server-Sent Events, Drizzle, Better Auth,

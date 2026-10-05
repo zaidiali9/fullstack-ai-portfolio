@@ -177,7 +177,13 @@ Qwen2.5-1.5B during capture.
   ok 1 tests\e2e\screenshots.spec.ts:11:1 › capture README screenshots (real AI provider) (39.3s)
 ```
 
+## CI on GitHub (after publishing, commit 86bbfa9)
+All jobs passed on GitHub Actions (ubuntu-latest): lint, typecheck, unit tests with coverage, production build and the
+Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg17` service) — migrations, seed, production build and a health check;
+production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160293
+(The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
+
 ## 12. Not verified on this machine
-- `docker compose up` / `docker build` (Docker not installed) — covered by the `docker` and `postgres` CI jobs, which have not run yet because the repo has no remote.
+- `docker compose up` as a whole stack (the image build and real-Postgres jobs pass in CI).
 - GitHub OAuth sign-in and live Stripe Checkout (need credentials).
 - Hosted AI providers against live APIs (no keys).

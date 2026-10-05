@@ -106,6 +106,12 @@ found 0 vulnerabilities
 Dev-only: the `braces` advisory (GHSA-vfj7-8cjw-p6xm, no patched version exists) is reached through ESLint and the
 shadcn CLI (`ts-morph` → `fast-glob`); it never ships in the app.
 
+## CI on GitHub (after publishing, commit 86bbfa9)
+All jobs passed on GitHub Actions (ubuntu-latest): lint, typecheck, unit tests with coverage, production build and the
+Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg17` service) — migrations, seed, production build and a health check;
+production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160288
+(The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
+
 ## 10. Not verified on this machine
-- Docker / docker-compose (no Docker installed); CI workflow `.github/workflows/kb-chat.yml` not yet run (no remote).
+- `docker compose up` as a whole stack (image build and real-Postgres jobs pass in CI).
 - GitHub OAuth; hosted AI providers against live APIs; URL ingestion against the public internet (tested against a local server with private addresses explicitly allowed).

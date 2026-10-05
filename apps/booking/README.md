@@ -196,7 +196,7 @@ request on this CPU-only machine). It is a small hand-written set, so treat the 
 - **One business**: no multi-location or multi-tenant support; services, staff and hours are managed through the seed script, not an admin UI yet.
 - No email/SMS reminders; notifications are in-app only.
 - The 1.5B local model is slow on CPU (median 15 s per assistant request) and still misses some vague requests ("sports massage", "skin treatment"); a hosted model would likely do better, but that was not measured. The digest narrative can still include unsupported qualitative claims, which the number check doesn't catch.
-- Realtime with PGlite works within one process; across several server instances it relies on Postgres LISTEN/NOTIFY, which is covered by the CI job but **was not run on this machine** (no Docker/Postgres). Docker/compose were written but not run here either.
+- Realtime with PGlite works within one process; across several server instances it relies on Postgres LISTEN/NOTIFY. The concurrency, exclusion-constraint and LISTEN/NOTIFY tests pass against real Postgres in CI (GitHub Actions), but a multi-instance deployment was not tested. The Docker image builds in CI; `docker compose up` as a whole stack was not run.
 
 ## Licenses
 | Asset | Source | License |

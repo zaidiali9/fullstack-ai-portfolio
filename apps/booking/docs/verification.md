@@ -109,7 +109,11 @@ $ npm audit --omit=dev
 found 0 vulnerabilities
 ```
 
+## CI on GitHub (after publishing, commit 86bbfa9)
+All jobs passed on GitHub Actions (ubuntu-latest): lint, typecheck, unit tests with coverage, production build and the
+Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg17` service) — migrations, seed, the booking concurrency/exclusion-constraint/LISTEN-NOTIFY tests and a health check;
+production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160386
+(The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
+
 ## 11. Not verified on this machine
-- Real PostgreSQL (no Docker/Postgres here): the CI `postgres` job runs migrations, the booking concurrency/realtime
-  tests and the seed against `pgvector/pgvector:pg17`, but it has not run yet (no remote).
-- Docker image and compose stack; GitHub OAuth; hosted AI providers.
+- `docker compose up` as a whole stack (image build and the real-Postgres job — incl. the concurrency and realtime tests — pass in CI); SSE behaviour behind a production proxy; GitHub OAuth; hosted AI providers.

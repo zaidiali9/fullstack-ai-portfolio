@@ -46,7 +46,7 @@ Commands and raw output: `apps/nl-analytics/docs/verification.md`.
 - Google Lighthouse (mobile): **93 performance / 100 accessibility / 100 SEO** on the home page; shared dashboards
   score 82 for performance because of the chart code.
 
-No real company data was used. Running on a full PostgreSQL server is set up in the CI pipeline but hasn't been run yet.
+No real company data was used. The query-safety tests also pass on a full PostgreSQL server in the CI pipeline.
 
 ## Tech used
 Next.js and React, PostgreSQL (read-only transactions, a restricted database role, query-cost limits), the real

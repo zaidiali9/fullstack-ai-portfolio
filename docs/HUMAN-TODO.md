@@ -3,15 +3,11 @@
 Everything below needs an account, a credential, a payment method, a public identity or a decision that a
 build agent must not make on your behalf. Items are ordered by value: do the top block first.
 
-## 1. Publish the code (unblocks CI, which verifies the parts that couldn't run on the build machine)
-- [ ] Create a GitHub repository (public, for a portfolio) and push: `git remote add origin <url> && git push -u origin main`.
-- [ ] Open the **Actions** tab and check every workflow. These jobs have **never run** yet and cover what
-      wasn't verifiable locally (no Docker/Postgres on the build machine):
-  - `postgres` jobs: migrations + seed on real PostgreSQL (pgvector image) for every app; booking's exclusion
-    constraint + LISTEN/NOTIFY tests and Tally's SQL guard/executor tests on real Postgres.
-  - `docker` jobs: every Dockerfile builds.
-  - Fix anything red before linking the repo anywhere. Expect possible first-run issues in Docker builds.
-- [ ] Add a repo description and topics (nextjs, postgresql, ai, rag, portfolio).
+## 1. Publish the code — done 2026-10-05
+- [x] Public repo: https://github.com/zaidiali9/fullstack-ai-portfolio (pushed with `gh repo create`).
+- [x] All 5 CI workflows green (lint, typecheck, unit + E2E, Docker image builds, real-Postgres jobs incl. booking's
+      concurrency tests and Tally's SQL safety tests, production audit) on commit 86bbfa9.
+- [ ] Add repo topics (nextjs, postgresql, ai, rag, portfolio) and pin it on your GitHub profile.
 
 ## 2. Deploy demos (each app's README has a Quickstart and an env table)
 Suggested free/cheap combination (check current free tiers and terms yourself):

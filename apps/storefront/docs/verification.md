@@ -105,5 +105,11 @@ $ npm audit --omit=dev
 found 0 vulnerabilities
 ```
 
+## CI on GitHub (after publishing, commit 86bbfa9)
+All jobs passed on GitHub Actions (ubuntu-latest): lint, typecheck, unit tests with coverage, production build and the
+Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg17` service) — migrations, seed, production build and a health check;
+production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160273
+(The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
+
 ## 11. Not verified on this machine
-- Live Stripe Checkout / Customer flow against Stripe's API (no account/keys); Docker/compose; CI workflow (no remote yet); GitHub OAuth; hosted AI providers.
+- Live Stripe Checkout / Customer flow against Stripe's API (no account/keys); `docker compose up` as a whole stack (image build and real-Postgres jobs pass in CI); GitHub OAuth; hosted AI providers.

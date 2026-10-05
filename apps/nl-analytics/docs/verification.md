@@ -113,6 +113,11 @@ $ npm audit --omit=dev
 found 0 vulnerabilities
 ```
 
+## CI on GitHub (after publishing, commit 86bbfa9)
+All jobs passed on GitHub Actions (ubuntu-latest): lint, typecheck, unit tests with coverage, production build and the
+Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg17` service) — migrations, seed, the SQL guard + executor tests (reader role, READ ONLY, cost ceiling) and a health check;
+production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160587
+(The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
+
 ## 11. Not verified on this machine
-- Real PostgreSQL (statement_timeout, CREATE ROLE/SET ROLE grants on Postgres 17): covered by the CI `postgres` job,
-  which hasn't run yet (no remote). Docker image and compose stack. GitHub OAuth. Hosted AI providers.
+- A query actually hitting `statement_timeout` on Postgres (the setting is applied; the CI tests exercise the role, READ ONLY transaction and cost ceiling on Postgres 17, not a timeout firing). Managed hosts that disallow CREATE ROLE. `docker compose up` as a whole stack. GitHub OAuth. Hosted AI providers.
