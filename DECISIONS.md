@@ -56,3 +56,15 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Docker deps stage copies the whole (dockerignored) tree** — npm workspaces need every workspace manifest for `npm ci`; simplicity over layer caching.
 - **CI has a real-Postgres job** — the build machine has no Postgres, so migrations/seed/health are verified against `pgvector/pgvector:pg17` in GitHub Actions.
 - **Client/server boundary** — client components import only `@/lib/form-state` (types) and server actions; a bug where `@portfolio/kit` leaked into the client bundle was fixed and a scan confirmed no other leaks.
+
+## App B — Knowledge Base Chat (Cairn)
+- **Raw uploads stored in Postgres (bytea) and deleted after indexing** — no object storage needed for a $0 deploy; keeps the job queue transactional with the document row.
+- **Job queue in Postgres (`FOR UPDATE SKIP LOCKED`) driven by `after()` + a cron route** — serverless-friendly; no separate worker service needed.
+- **Hybrid retrieval with reciprocal rank fusion** — vector search misses exact terms (VAT numbers, product names); keyword search misses paraphrases.
+- **No-model refusal below cosine 0.3** — cheaper and removes the chance to hallucinate when nothing relevant exists.
+- **Labeled post-hoc citation matching** — the 1.5B model answered correctly but omitted [n] markers in about half of answers; a few-shot example raised citations but cut fact accuracy to 76.5%, so it was rejected in favor of sentence→passage matching stored as `method: "matched"` and disclosed in the UI.
+- **Temperature 0 for answers** — deterministic, reproducible answers; improved the eval to 100% fact accuracy with 0 false refusals.
+- **Stream trailer added to the shared stream protocol** — backward-compatible way to send final citations after streaming (App A unaffected).
+- **SSRF: IP-literal check added** — undici skips custom DNS lookup for IP hosts; caught by tests.
+- **Members added by existing email (no invitations)** — App A already demonstrates invitations; kept B smaller per scope rule.
+- **Widget allowlist via Referer** — headers can't vary per workspace statically; `/embed/*` is frameable and the page checks the embedding origin.

@@ -1,0 +1,99 @@
+name: kb-chat
+
+on:
+  push:
+    branches: [main]
+    paths: ["apps/kb-chat/**", "packages/**", "package-lock.json", ".github/workflows/kb-chat.yml"]
+  pull_request:
+    paths: ["apps/kb-chat/**", "packages/**", "package-lock.json", ".github/workflows/kb-chat.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kb-chat-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: apps/kb-chat
+
+jobs:
+  verify:
+    name: Lint, typecheck, test, build, e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+        working-directory: .
+      - name: Shared packages tests
+        run: npm test --workspace packages/ai --workspace packages/kit
+        working-directory: .
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env: { CI: "true" }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kb-chat-reports
+          path: |
+            apps/kb-chat/coverage/
+            apps/kb-chat/playwright-report/
+          retention-days: 7
+
+  postgres:
+    name: Migrate + seed + smoke test on real Postgres (pgvector)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      db:
+        image: pgvector/pgvector:pg17
+        env: { POSTGRES_PASSWORD: postgres, POSTGRES_DB: kb_chat }
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/kb_chat
+      BETTER_AUTH_SECRET: ci-only-secret-0123456789abcdefghijklmnop
+      APP_URL: http://localhost:3002
+      CRON_SECRET: ci-only-cron-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+        working-directory: .
+      - run: npm run db:migrate
+      - run: npm run db:seed
+      - run: npm run build
+      - name: Start and check health
+        run: |
+          npm run start &
+          for i in $(seq 1 30); do curl -sf http://localhost:3002/api/health && exit 0; sleep 2; done
+          exit 1
+
+  docker:
+    name: Docker image builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f apps/kb-chat/Dockerfile -t cairn:ci .
+        working-directory: .
+
+  audit:
+    name: Dependency audit (production deps)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm audit --omit=dev --audit-level=high
+        working-directory: .

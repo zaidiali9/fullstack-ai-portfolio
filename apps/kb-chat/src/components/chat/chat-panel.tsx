@@ -183,7 +183,12 @@ export function ChatPanel({ endpoint, chunkEndpoint, initialConversationId, init
                 <>
                   {m.content ? <CitedText text={m.content} sources={m.sources} onOpen={openSource} /> : <Spinner label="Thinking" />}
                   {m.status === "refused" ? <p className="mt-2 text-xs text-muted-foreground">No relevant passage was found, so nothing was made up.</p> : null}
-                  {m.sources.length && m.status !== "refused" && m.content ? (
+                  {m.status === "streaming" && m.sources.length ? (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Answering from {m.sources.length} passage{m.sources.length === 1 ? "" : "s"}…
+                    </p>
+                  ) : null}
+                  {m.sources.length && m.status !== "refused" && m.status !== "streaming" && m.content ? (
                     <div className="mt-3 border-t pt-2">
                       <p className="text-xs font-medium text-muted-foreground">
                         Sources

@@ -75,7 +75,7 @@ export function Uploader({ slug, maxMb }: { slug: string; maxMb: number }) {
         <Upload className="size-6 text-muted-foreground" aria-hidden />
         <p className="mt-2 font-medium">Drop files here</p>
         <p className="text-sm text-muted-foreground">PDF, Word (.docx), Markdown or text · up to {maxMb} MB each</p>
-        <input ref={inputRef} id="file-input" type="file" accept={ACCEPT} multiple className="sr-only" onChange={(e) => e.target.files && upload(e.target.files)} />
+        <input ref={inputRef} id="file-input" type="file" accept={ACCEPT} multiple className="sr-only" aria-label="Upload files" onChange={(e) => e.target.files && upload(e.target.files)} />
         <Button type="button" className="mt-4" onClick={() => inputRef.current?.click()} disabled={uploading}>
           {uploading ? <Spinner label="Uploading" /> : null}
           {uploading ? "Uploading…" : "Choose files"}

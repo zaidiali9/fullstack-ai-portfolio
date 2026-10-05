@@ -49,21 +49,20 @@ Environment flags (see DECISIONS.md):
 - [x] docs/helpdesk/case-study.md, docs/helpdesk/marketing.md
 - [x] docs/verification.md complete; commit "feat(helpdesk): complete app, tests, docs"
 
-## App B — Knowledge Base Chat "Cairn" (`apps/kb-chat`) — IN PROGRESS
+## App B — Knowledge Base Chat "Cairn" (`apps/kb-chat`) — DONE (see apps/kb-chat/docs/verification.md)
 - [x] Plan + scaffold (reused App A infra; port 3002)
 - [x] Schema: workspaces, members, documents, blobs, chunks (pgvector), ingestion jobs, conversations, messages + migration
-- [x] Auth + workspace isolation (owner/editor/viewer RBAC; verified in tests)
+- [x] Auth + workspace isolation (owner/editor/viewer RBAC; verified in tests and eval)
 - [x] Upload PDF/DOCX/MD/TXT (magic-byte validation) + URL (SSRF-safe, robots.txt); background ingestion + live job status
 - [x] Chunk + embed + hybrid search (pgvector + FTS, RRF); streamed answers with citations (+ labeled matched citations)
 - [x] Conversation history; monthly question / document limits; embeddable widget (/embed/[key], public/widget.js)
-- [x] Security: SSRF IP-literal hole found by tests and fixed; untrusted fencing; rate limits
-- [x] Seed (5 docs in 4 formats via real pipeline) + demo logins (owner/editor/viewer@cairn.demo)
-- [x] RAG eval (22 cases, real local model): hit@5 100%, fact 100%, citations correct 88.2%, refusals 5/5, 0 leaks -> docs/metrics/eval-rag.json
-- [x] Fixed job-isolation test (54/54 unit+integration tests pass)
-- [x] Action/route authz tests (viewer cannot upload, CSRF, widget origin/rate limit, cron auth); coverage 87.75% lines
-- [ ] UI verification in browser (dev server :3002), E2E (Playwright), Lighthouse x2, screenshots
-- [ ] .env.example, docker-compose, CI workflow (.github/workflows/kb-chat.yml), audit
-- [ ] README, docs/kb-chat/case-study.md + marketing.md, docs/verification.md; commit "feat(kb-chat): complete app, tests, docs"
+- [x] Security basics + AI safety; SSRF IP-literal hole found by tests and fixed
+- [x] Seed (5 docs in 4 formats via real pipeline) + demo logins
+- [x] UI quality bar (axe 0 violations light+dark, 360px verified, skeleton-free streaming states, toasts)
+- [x] Unit/integration 54 passed (87.75% lines); E2E 15 passed; Lighthouse landing 95/100/100/100, chat 92/100/100/100; RAG eval 22 cases
+- [~] Docker, compose, CI, env table — written; Docker/compose unverified locally (no Docker); CI not yet run (no remote)
+- [x] Dependency audit (prod 0 vulns)
+- [x] README, case study, marketing, verification; commit
 
 ## App C — E-commerce Storefront (`apps/storefront`)
 - [ ] Plan + scaffold
