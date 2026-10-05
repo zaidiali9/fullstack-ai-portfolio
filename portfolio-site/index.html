@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[YOUR NAME] — Full-stack developer: Next.js, PostgreSQL and measured AI features</title>
+<meta name="description" content="Five production-style full-stack apps with AI features: helpdesk, document chat, e-commerce, real-time booking and natural-language analytics. Every number links to the test or eval that produced it.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="[YOUR NAME] — Full-stack developer">
+<meta property="og:description" content="Five full-stack apps with AI features, each with tests, evals and an honest write-up.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233b4ccc'/%3E%3Cpath d='M9 22 16 9l7 13' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #fafafb; --fg: #16181d; --muted: #545a66; --card: #ffffff; --border: #e3e5ea;
+    --accent: #3b4ccc; --accent-soft: #eceefd; --tag: #f1f2f5; --ok: #1d6b45;
+    --radius: 14px; color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111318; --fg: #eef0f4; --muted: #a9afbb; --card: #181b22; --border: #2a2e38; --accent: #9aa6ff; --accent-soft: #232845; --tag: #232731; --ok: #7fd4a8; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  .skip { position: absolute; left: -999px; top: 8px; background: var(--accent); color: #fff; padding: 8px 12px; border-radius: 8px; }
+  .skip:focus { left: 8px; }
+  header.top { border-bottom: 1px solid var(--border); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; flex-wrap: wrap; }
+  .name { font-weight: 700; letter-spacing: -0.01em; }
+  nav ul { display: flex; gap: 16px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; }
+  nav a:hover { color: var(--fg); }
+  .hero { padding: 56px 0 40px; }
+  .eyebrow { color: var(--accent); font-weight: 600; font-size: 14px; letter-spacing: 0.02em; margin: 0; }
+  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.15; letter-spacing: -0.02em; margin: 10px 0 16px; max-width: 860px; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 720px; margin: 0; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 0; padding: 0; list-style: none; }
+  .pills li { background: var(--accent-soft); color: var(--fg); border-radius: 999px; padding: 4px 12px; font-size: 14px; }
+  section { padding: 32px 0; }
+  h2 { font-size: 26px; letter-spacing: -0.01em; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 24px; }
+  .grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .card img { display: block; width: 100%; height: auto; aspect-ratio: 8 / 5; object-fit: cover; object-position: top; border-bottom: 1px solid var(--border); background: var(--tag); }
+  .card .body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card h3 { margin: 0; font-size: 20px; letter-spacing: -0.01em; }
+  .card h3 small { display: block; font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .card p { margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+  .tags li { background: var(--tag); border-radius: 6px; padding: 2px 8px; font-size: 13px; color: var(--muted); }
+  .metric { border-left: 3px solid var(--ok); padding: 4px 0 4px 12px; font-size: 15px; }
+  .metric strong { color: var(--ok); }
+  .metric .src { display: block; color: var(--muted); font-size: 13px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; overflow-wrap: anywhere; }
+  .links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 15px; padding-top: 6px; }
+  .placeholder { color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 14px; }
+  .how { display: grid; gap: 16px; grid-template-columns: 1fr; list-style: none; padding: 0; margin: 0; }
+  @media (min-width: 760px) { .how { grid-template-columns: repeat(3, 1fr); } }
+  .how li { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
+  .how h3 { margin: 0 0 6px; font-size: 17px; }
+  .how p { margin: 0; color: var(--muted); font-size: 15px; }
+  .contact { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+  .contact ul { margin: 12px 0 0; padding-left: 18px; }
+  footer { border-top: 1px solid var(--border); margin-top: 32px; padding: 24px 0 40px; color: var(--muted); font-size: 14px; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <span class="name">[YOUR NAME]</span>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#how">How I work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <section class="hero" aria-labelledby="intro">
+      <p class="eyebrow">Full-stack developer · Next.js · PostgreSQL · AI features</p>
+      <h1 id="intro">I build web apps with AI features you can measure, and I show you the numbers, including the weak ones.</h1>
+      <p class="lead">Below are five complete, production-style apps: auth and roles, payments or real-time where it fits, tests in a real browser, accessibility checks, and an evaluation for every AI feature. Every number on this page comes from a test or eval in the code, and the source is named next to it.</p>
+      <ul class="pills" aria-label="Core stack">
+        <li>Next.js 16 · React 19 · TypeScript</li>
+        <li>PostgreSQL · pgvector · Drizzle</li>
+        <li>RAG · structured outputs · guardrails</li>
+        <li>Stripe · SSE · Auth</li>
+        <li>Vitest · Playwright · axe</li>
+      </ul>
+    </section>
+
+    <section id="work" aria-labelledby="work-title">
+      <h2 id="work-title">Work</h2>
+      <p class="sub">All data in these apps is fictional seed data. AI results come from real model calls (free local models on a laptop CPU unless stated).</p>
+      <div class="grid">
+
+        <article class="card" aria-labelledby="p-helpdesk">
+          <img src="img/helpdesk.webp" width="800" height="500" alt="Tidal Desk ticket view with an AI-drafted reply citing knowledge-base articles" loading="eager" fetchpriority="high" decoding="async">
+          <div class="body">
+            <h3 id="p-helpdesk">Tidal Desk <small>AI helpdesk for small support teams</small></h3>
+            <p>Multi-tenant support desk: AI triages every new ticket, drafts replies grounded in the team's knowledge base and summarises long threads, with roles, Stripe billing (test mode) and an audit log.</p>
+            <ul class="tags" aria-label="Technologies"><li>Next.js</li><li>Postgres + pgvector</li><li>RBAC</li><li>Stripe</li><li>Prompt-injection guard</li></ul>
+            <p class="metric"><strong>91.7%</strong> ticket category accuracy (22 of 24) on a labelled eval; 2 of 3 prompt-injection attempts resisted (the third is listed as a known gap).<span class="src">apps/helpdesk · npm run eval → docs/metrics/eval-triage.json</span></p>
+            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/helpdesk</span></p>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="p-kb">
+          <img src="img/kb-chat.webp" width="800" height="500" alt="Cairn chat answer with numbered citations to source passages" loading="lazy" decoding="async">
+          <div class="body">
+            <h3 id="p-kb">Cairn <small>Chat with your documents</small></h3>
+            <p>Upload PDFs, Word files, Markdown or web pages and get answers built only from them, with every claim linked to the exact passage and page, plus an embeddable website widget.</p>
+            <ul class="tags" aria-label="Technologies"><li>RAG</li><li>Hybrid search</li><li>pgvector</li><li>SSRF-safe ingestion</li><li>Widget</li></ul>
+            <p class="metric"><strong>17 of 17</strong> answers contained the key fact, <strong>0</strong> citations to a wrong document, and <strong>5 of 5</strong> out-of-scope questions refused.<span class="src">apps/kb-chat · npm run eval → docs/metrics/eval-rag.json</span></p>
+            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/kb-chat</span></p>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="p-store">
+          <img src="img/storefront.webp" width="800" height="500" alt="Fernwood Supply search results for the query “something to keep coffee hot on a hike”" loading="lazy" decoding="async">
+          <div class="body">
+            <h3 id="p-store">Fernwood Supply <small>E-commerce with search that understands shoppers</small></h3>
+            <p>Catalog, cart, Stripe Checkout with signed webhooks and race-safe stock, order history and an admin panel, plus meaning-based search, similar items and AI-drafted product descriptions.</p>
+            <ul class="tags" aria-label="Technologies"><li>Stripe Checkout</li><li>Semantic search</li><li>SEO + JSON-LD</li><li>Admin</li></ul>
+            <p class="metric">Right product in the top 3 for <strong>18 of 18</strong> shopper-style searches, versus 16 of 18 for keyword search alone.<span class="src">apps/storefront · npm run eval → docs/metrics/eval-search.json</span></p>
+            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/storefront</span></p>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="p-booking">
+          <img src="img/booking.webp" width="800" height="500" alt="Bookwell slot picker showing live available times for a massage" loading="lazy" decoding="async">
+          <div class="body">
+            <h3 id="p-booking">Bookwell <small>Real-time booking &amp; scheduling</small></h3>
+            <p>Live availability over Server-Sent Events, slot holds while the customer confirms, a database constraint that makes double booking impossible, a live team calendar, and an assistant that turns "deep tissue with Sam next Tuesday after 4pm" into real open times.</p>
+            <ul class="tags" aria-label="Technologies"><li>Postgres exclusion constraint</li><li>LISTEN/NOTIFY + SSE</li><li>Time zones</li><li>NL search</li></ul>
+            <p class="metric">With <strong>4 customers racing</strong> for one slot, exactly 1 wins and 3 get the nearest alternatives. The assistant fully understood <strong>17 of 19</strong> test requests.<span class="src">apps/booking · npm test (bookings.test.ts) · npm run eval → docs/metrics/eval-nl-booking.json</span></p>
+            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/booking</span></p>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="p-tally">
+          <img src="img/nl-analytics.webp" width="800" height="500" alt="Tally refusing a model-written DELETE statement, with the SQL shown" loading="lazy" decoding="async">
+          <div class="body">
+            <h3 id="p-tally">Tally <small>Ask your data in plain English</small></h3>
+            <p>Questions become read-only SQL, checked by the real PostgreSQL parser before they run, with charts, an always-visible SQL panel, saved queries, shareable dashboards and CSV export.</p>
+            <ul class="tags" aria-label="Technologies"><li>NL → SQL</li><li>SQL allowlist guard</li><li>Read-only role</li><li>Charts</li></ul>
+            <p class="metric">Prompts to delete data, read password hashes or drop tables: <strong>4 of 4 executed nothing</strong>. Answer accuracy with a free local model: <strong>50%</strong> of 22 questions (first version: 4.5%), which is why the SQL is always shown.<span class="src">apps/nl-analytics · npm run eval → docs/metrics/eval-nl-sql.json</span></p>
+            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/nl-analytics</span></p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How I work</h2>
+      <p class="sub">What you can expect on a project.</p>
+      <ul class="how">
+        <li><h3>Measure, then claim</h3><p>AI features ship with an evaluation set and a before/after number. If something is weak, the write-up says so and names the next step.</p></li>
+        <li><h3>Guardrails in the right layer</h3><p>The database prevents double bookings; a parser checks model SQL; model output never triggers privileged actions without validation.</p></li>
+        <li><h3>Tested like users use it</h3><p>Integration tests on a real Postgres engine, end-to-end tests in a real browser, accessibility scans in light and dark mode, 360&nbsp;px layouts.</p></li>
+        <li><h3>No lock-in to one AI vendor</h3><p>A provider-agnostic AI layer runs free local models, Ollama, Groq, Gemini or a paid API, and degrades to a clear "AI unavailable" state.</p></li>
+        <li><h3>Secure by default</h3><p>Input validation, rate limits on auth and AI, CSRF-safe forms, secure headers, authorisation on every route, no secrets in code.</p></li>
+        <li><h3>Handover-ready</h3><p>Docker and CI, an environment table, a verification log of every claim, and a README a new developer can follow.</p></li>
+      </ul>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <div class="contact">
+        <h2 id="contact-title">Contact</h2>
+        <p>Have a project that needs a reliable web app or an AI feature that has to hold up? Tell me what you're building.</p>
+        <ul>
+          <li>Email: <span class="placeholder">[YOUR EMAIL]</span></li>
+          <li>Upwork: <span class="placeholder">[UPWORK PROFILE LINK]</span></li>
+          <li>GitHub: <span class="placeholder">[REPO LINK]</span></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Screenshots are from the apps themselves, running on fictional seed data. Metrics are from runs on the build machine (CPU only); hosted-model results were not measured.</p>
+  </div>
+</footer>
+</body>
+</html>

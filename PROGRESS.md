@@ -103,8 +103,8 @@ Environment flags (see DECISIONS.md):
 - [x] README, case study, marketing, verification; commit
 
 ## Step 3 — Portfolio site
-- [ ] /portfolio-site static page: intro, app cards (pitch, tags, real metric, screenshot, Demo/Repo placeholders), how I work, contact placeholders
-- [ ] Lighthouse run recorded
+- [x] /portfolio-site static page: intro, app cards (pitch, tags, real metric, screenshot, Demo/Repo placeholders), how I work, contact placeholders
+- [x] Lighthouse run recorded (100/100/100/100 mobile; axe 0 light/dark) — portfolio-site/README.md
 
 ## Step 4 — Profile and outreach docs
 - [ ] docs/upwork-profile.md
