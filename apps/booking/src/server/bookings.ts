@@ -113,6 +113,15 @@ export async function holdSlot(user: AppUser, raw: unknown) {
   const b = await getBusiness();
   const start = new Date(input.start);
   const date = dateInTz(start, b.timezone);
+
+  // One active hold per customer: picking a new time releases the previous one first, so a
+  // customer's own earlier hold never blocks the time they now want.
+  const released = await db
+    .delete(schema.bookings)
+    .where(and(eq(schema.bookings.customerId, user.id), eq(schema.bookings.status, "held")))
+    .returning({ id: schema.bookings.id, reference: schema.bookings.reference, staffId: schema.bookings.staffId, startsAt: schema.bookings.startsAt });
+  for (const r of released) await publish(db, { action: "released", bookingId: r.id, reference: r.reference, staffId: r.staffId, dates: [dateInTz(r.startsAt, b.timezone)] });
+
   const openings = await findOpenings({ service, staffId: preferred, fromDate: date, toDate: date });
   const candidates = openings.filter((o) => o.start.getTime() === start.getTime()).map((o) => o.staffId);
   if (candidates.length === 0) throw await slotTaken(service, start, preferred);
@@ -120,13 +129,6 @@ export async function holdSlot(user: AppUser, raw: unknown) {
   const end = new Date(start.getTime() + service.durationMin * 60_000);
   const blockedUntil = new Date(end.getTime() + service.bufferMin * 60_000);
   const holdExpiresAt = new Date(Date.now() + env().HOLD_MINUTES * 60_000);
-
-  // One active hold per customer: picking a new time releases the previous one.
-  const released = await db
-    .delete(schema.bookings)
-    .where(and(eq(schema.bookings.customerId, user.id), eq(schema.bookings.status, "held")))
-    .returning({ id: schema.bookings.id, reference: schema.bookings.reference, staffId: schema.bookings.staffId, startsAt: schema.bookings.startsAt });
-  for (const r of released) await publish(db, { action: "released", bookingId: r.id, reference: r.reference, staffId: r.staffId, dates: [dateInTz(r.startsAt, b.timezone)] });
 
   for (const staffId of candidates) {
     try {

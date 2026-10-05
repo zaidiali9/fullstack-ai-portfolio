@@ -60,7 +60,7 @@ export default async function MyBookingsPage() {
           <EmptyState
             icon={CalendarPlus}
             title="No upcoming appointments"
-            description="When you book, it shows up here — you can reschedule or cancel up to an hour before."
+            description={`When you book, it shows up here — you can reschedule or cancel up to ${b.minNoticeMin} minutes before.`}
             action={
               <Link href="/#services" className={buttonVariants()}>
                 Browse services

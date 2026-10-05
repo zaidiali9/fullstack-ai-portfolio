@@ -48,7 +48,8 @@ export default async function HomePage() {
               </p>
               <p className="mt-3 flex-1 text-sm text-muted-foreground">{s.description}</p>
               <div className="mt-4 flex items-center justify-between gap-2">
-                <div className="flex -space-x-1.5" aria-label={`With ${s.staffIds.map((id) => staffById.get(id)?.name).join(", ")}`}>
+                <div className="flex -space-x-1.5">
+                  <span className="sr-only">With {s.staffIds.map((id) => staffById.get(id)?.name).join(", ")}</span>
                   {s.staffIds.map((id) => {
                     const p = staffById.get(id);
                     return p ? (

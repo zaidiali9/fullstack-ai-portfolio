@@ -18,7 +18,7 @@ import {
   rescheduleBooking,
   setOutcome,
 } from "@/server/bookings";
-import { subscribe, type BookingEvent } from "@/server/realtime";
+import { listenerCount, sseResponse, subscribe, type BookingEvent } from "@/server/realtime";
 import { zonedToUtc } from "@/server/scheduling/time";
 import { BUSINESS } from "@db/seed-data";
 import { makeUser, nextDate, studio } from "./factories";
@@ -112,6 +112,9 @@ describe("hold and confirm", () => {
     const [gone] = await db.select().from(schema.bookings).where(eq(schema.bookings.id, a.id));
     expect(gone).toBeUndefined();
     expect(b.status).toBe("held");
+    // Regression: a customer's own earlier hold must not block their new pick at an overlapping time.
+    const facialAt11 = await holdSlot(s.other, { serviceId: service.id, staffId: b.staffId, start: at("11:00", tuesday) });
+    expect(facialAt11.staffId).toBe(b.staffId);
   });
 
   it("rejects an expired hold at confirm time and frees the slot", async () => {
@@ -239,6 +242,24 @@ describe("realtime", () => {
     const mine = events.filter((e) => e.bookingId === bk.id).map((e) => e.action);
     expect(mine).toEqual(["held", "confirmed"]);
     expect(events.find((e) => e.bookingId === bk.id)!.dates).toEqual([friday]);
+  });
+
+  it("streams filtered events as Server-Sent Events and cleans up on disconnect", async () => {
+    const ctrl = new AbortController();
+    const res = sseResponse(new Request("http://localhost/api/stream", { signal: ctrl.signal }), (ev) => (ev.action === "held" ? null : { dates: ev.dates }));
+    expect(res.headers.get("content-type")).toContain("text/event-stream");
+    const reader = res.body!.getReader();
+    const decoder = new TextDecoder();
+    const read = async () => decoder.decode((await reader.read()).value);
+    expect(await read()).toContain("event: ready");
+    const before = listenerCount();
+    const friday = nextDate((wd) => wd === 5, 10);
+    await book(await makeUser(), at("10:00", friday)); // "held" is filtered out, "confirmed" is sent
+    const chunk = await read();
+    expect(chunk).toBe(`event: booking\ndata: ${JSON.stringify({ dates: [friday] })}\n\n`);
+    ctrl.abort();
+    await new Promise((r) => setTimeout(r, 10));
+    expect(listenerCount()).toBe(before - 1);
   });
 
   it("builds the team day agenda with staff columns", async () => {

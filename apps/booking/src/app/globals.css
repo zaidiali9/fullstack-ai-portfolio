@@ -144,3 +144,11 @@
     }
   }
 }
+/* Sonner's default rich-color text is slightly below WCAG AA (4.25:1 on its success background);
+   darker text colors keep toasts at >= 4.5:1 in light mode. */
+html [data-sonner-toaster][data-sonner-theme="light"] {
+  --success-text: hsl(140, 100%, 21%);
+  --error-text: hsl(360, 100%, 38%);
+  --warning-text: hsl(31, 92%, 28%);
+  --info-text: hsl(210, 92%, 35%);
+}

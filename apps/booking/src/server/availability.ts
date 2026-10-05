@@ -104,7 +104,7 @@ export async function findOpenings(opts: {
 }
 
 /** Slots for one day, merged across staff: each time lists who is free. */
-export async function daySlots(opts: { service: ServiceWithStaff; staffId?: string | null; date: DateStr }) {
+export async function daySlots(opts: { service: ServiceWithStaff; staffId?: string | null; date: DateStr; ignoreBookingId?: string }) {
   const openings = await findOpenings({ ...opts, fromDate: opts.date, toDate: opts.date });
   const byTime = new Map<number, string[]>();
   for (const o of openings) byTime.set(o.start.getTime(), [...(byTime.get(o.start.getTime()) ?? []), o.staffId]);
@@ -112,7 +112,7 @@ export async function daySlots(opts: { service: ServiceWithStaff; staffId?: stri
 }
 
 /** Days in the window that have at least one opening (for the date strip). */
-export async function daysWithOpenings(opts: { service: ServiceWithStaff; staffId?: string | null; fromDate: DateStr; days: number }) {
+export async function daysWithOpenings(opts: { service: ServiceWithStaff; staffId?: string | null; fromDate: DateStr; days: number; ignoreBookingId?: string }) {
   const b = await getBusiness();
   const openings = await findOpenings({ ...opts, toDate: addDays(opts.fromDate, opts.days - 1) });
   const counts = new Map<DateStr, number>();

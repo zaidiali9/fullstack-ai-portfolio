@@ -64,7 +64,7 @@ export function SlotPicker({ service, staff, timezone, initial, signedIn, mode }
 
   useEffect(() => {
     const ctrl = new AbortController();
-    const params = new URLSearchParams({ service: service.id, staff: staffId, ...(date ? { date } : {}) });
+    const params = new URLSearchParams({ service: service.id, staff: staffId, ...(date ? { date } : {}), ...(mode.kind === "reschedule" ? { exclude: mode.bookingId } : {}) });
     fetch(`/api/availability?${params}`, { signal: ctrl.signal, cache: "no-store" })
       .then(async (res) => {
         if (!res.ok) throw new Error(((await res.json().catch(() => null)) as { error?: { message?: string } } | null)?.error?.message ?? "Couldn't load availability.");
@@ -85,7 +85,7 @@ export function SlotPicker({ service, staff, timezone, initial, signedIn, mode }
         if ((err as Error).name !== "AbortError") setFailed((err as Error).message);
       });
     return () => ctrl.abort();
-  }, [service.id, staffId, date, key]);
+  }, [service.id, staffId, date, key, mode]);
 
   const live = useLiveEvents<{ dates: string[]; staffId: string }>("/api/stream", (ev) => {
     if (staffId !== "any" && ev.staffId !== staffId) return;
