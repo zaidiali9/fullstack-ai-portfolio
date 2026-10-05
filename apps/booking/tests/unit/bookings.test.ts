@@ -237,7 +237,8 @@ describe("realtime", () => {
     const unsubscribe = await subscribe((e) => events.push(e));
     const friday = nextDate((wd) => wd === 5, 3);
     const bk = await book(await makeUser(), at("09:00", friday));
-    await new Promise((r) => setTimeout(r, 50));
+    // Real Postgres delivers NOTIFY over a separate connection; allow a little time.
+    await new Promise((r) => setTimeout(r, 300));
     unsubscribe();
     const mine = events.filter((e) => e.bookingId === bk.id).map((e) => e.action);
     expect(mine).toEqual(["held", "confirmed"]);

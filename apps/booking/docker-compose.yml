@@ -1,6 +1,6 @@
-# Local stack: Postgres + pgvector, one-off migrate/seed, the app, and optional Mailpit / Ollama.
+# Local stack: Postgres (pgvector image, includes btree_gist), one-off migrate/seed, the app, optional Ollama.
 #   docker compose -f apps/booking/docker-compose.yml up --build
-#   docker compose -f apps/booking/docker-compose.yml --profile mail --profile ollama up --build
+#   docker compose -f apps/booking/docker-compose.yml --profile ollama up --build
 # The build context is the repository root (monorepo).
 name: bookwell
 
@@ -39,14 +39,8 @@ services:
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-}
       GROQ_API_KEY: ${GROQ_API_KEY:-}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
-      SMTP_URL: ${SMTP_URL:-}
     depends_on:
       migrate: { condition: service_completed_successfully }
-
-  mailpit:
-    image: axllent/mailpit:latest
-    profiles: [mail]
-    ports: ["8025:8025", "1025:1025"]
 
   ollama:
     image: ollama/ollama:latest

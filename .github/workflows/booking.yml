@@ -49,7 +49,7 @@ jobs:
           retention-days: 7
 
   postgres:
-    name: Migrate + seed + smoke test on real Postgres (pgvector)
+    name: Migrate, concurrency tests, seed + smoke test on real Postgres
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:
@@ -70,6 +70,10 @@ jobs:
       - run: npm ci
         working-directory: .
       - run: npm run db:migrate
+      # Booking service tests against real Postgres: exclusion constraint (23P01), concurrent holds,
+      # LISTEN/NOTIFY and SSE. Runs before the seed (the tests create their own studio).
+      - name: Concurrency + realtime tests on Postgres
+        run: npx vitest run tests/unit/bookings.test.ts
       - run: npm run db:seed
       - run: npm run build
       - name: Start and check health
