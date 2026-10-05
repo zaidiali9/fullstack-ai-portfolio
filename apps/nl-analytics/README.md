@@ -138,7 +138,28 @@ subqueries reaching app tables, `pg_sleep`/`pg_read_file`/`set_config`/`dblink`,
   provider; tests that rely on it say "(stub AI)".
 
 ## Quality metrics
-<!-- filled in from docs/verification.md -->
+Every number comes from a command that was run; raw output in [docs/verification.md](docs/verification.md).
+
+| Metric | Result | Source |
+|---|---|---|
+| Unit + integration tests | 96 passed (65 of them for the SQL guard) | `npm run test:coverage` (Vitest, in-memory PGlite) |
+| Line coverage (server + lib) | 81.17% | [`docs/metrics/coverage-summary.json`](docs/metrics/coverage-summary.json) |
+| End-to-end tests | 20 passed (public shared dashboard + CSV, ask → save → pin, unsafe SQL rejected, edited SQL + CSV, summary, share/revoke, admin audit, API guards, a11y, 360 px) | `npm run test:e2e` |
+| Accessibility (axe-core, WCAG 2 A/AA) | 0 violations on 6 pages, light + dark | `tests/e2e/journey.spec.ts` |
+| Lighthouse — landing (mobile) | Performance 93 · Accessibility 100 · Best practices 100 · SEO 100 | [`docs/metrics/lighthouse-landing.json`](docs/metrics/lighthouse-landing.json) |
+| Lighthouse — shared dashboard (mobile) | Performance 82 · Accessibility 100 · Best practices 100 · SEO 63 (deliberate `noindex` on private share links) | [`docs/metrics/lighthouse-shared.json`](docs/metrics/lighthouse-shared.json) |
+| NL→SQL eval: answers matching the reference result (22 questions) | **50%** (11 of 22) | `npm run eval` → [`docs/metrics/eval-nl-sql.json`](docs/metrics/eval-nl-sql.json) |
+| NL→SQL eval: questions that produced runnable SQL | 81.8% (59.1% on the first attempt; 5 ran only after a repair turn) | same |
+| NL→SQL eval: baseline (general Qwen2.5-1.5B, first prompt) | 4.5% correct, 22.7% runnable | [`eval-nl-sql.baseline-qwen2.5-1.5b.json`](docs/metrics/eval-nl-sql.baseline-qwen2.5-1.5b.json) |
+| Safety prompts (delete data, read password hashes, DROP via injection, list system tables) | 4 of 4: nothing unsafe executed; dataset row counts unchanged | same eval |
+| Median time per question (local model, CPU only) | 36.9 s | same eval |
+| Production dependency audit | 0 vulnerabilities | `npm audit --omit=dev` |
+
+How the 50% was reached: switching to the code-tuned model and adding join paths, stricter rules and two generic
+examples took the score from 4.5% to 45.5% ([`v2`](docs/metrics/eval-nl-sql.v2-coder-prompt.json)); column lists in repair
+turns plus rules against unrequested filters did not change it ([`v3`](docs/metrics/eval-nl-sql.v3-repair-hints.json), 45.5%); evaluating dates in UTC fixed one
+"this year" answer (final 50%). Runs vary by a case or two; the set is small and hand-written, so treat it as indicative.
+The scorer compares result sets (any row order, numbers within 0.5%), not SQL text.
 
 ## Security notes
 - Owner checks on every saved query, dashboard and tile route/action (404 for anyone else); the admin log is admin-only.
@@ -171,7 +192,18 @@ subqueries reaching app tables, `pg_sleep`/`pg_read_file`/`set_config`/`dblink`,
 | `AUTH_SIGNIN_PER_MINUTE` | no | `5` | sign-in attempts per IP per minute |
 
 ## Limitations
-<!-- filled in after the eval -->
+- **Accuracy with the free local model is about half.** On the eval, 11 of 22 answers matched the reference; the misses are
+  mostly plausible-looking SQL with the wrong aggregate, a missing join or an unrequested filter. Example while taking
+  screenshots: "Monthly revenue from completed orders" returned only the current month's total. That is why the SQL is
+  always shown and editable. A hosted model or a semantic layer of named metrics should do much better; neither was measured.
+- **Slow on CPU**: median 37 s per question with the local 1.5B model (first load adds model start-up time).
+- **PGlite ignores `statement_timeout`** (measured); there, the EXPLAIN cost ceiling and row cap are what bound a query.
+  On real Postgres the timeout also applies, but that path was **not run on this machine** (no Docker/Postgres) — the CI
+  `postgres` job runs the guard and executor tests against Postgres once the repo is pushed.
+- Managed Postgres hosts that don't allow `CREATE ROLE` run without the reader role (the guard, read-only transaction,
+  `search_path` and limits still apply) and log a warning.
+- The shared dashboard page scores Performance 82 on mobile Lighthouse because of chart JavaScript; charts could be lazy-loaded.
+- One built-in dataset; connecting your own database is a client extension (see below). Docker/compose not run here.
 
 ## Licenses
 | Asset | Source | License |

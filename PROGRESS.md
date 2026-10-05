@@ -91,16 +91,16 @@ Environment flags (see DECISIONS.md):
 - [~] Docker, compose, CI, env table, audit — written; audit 0 vulnerabilities; Docker/compose/CI not run (no Docker, no remote)
 - [x] README, case study, marketing, verification; commit
 
-## App E — NL Analytics Dashboard (`apps/nl-analytics`)
-- [ ] Plan + scaffold
-- [ ] Seeded demo dataset (synthetic, labeled)
-- [ ] NL -> SQL generation; read-only allowlist guard (parser-based); statement timeout; read-only tx
-- [ ] Charts + tables + explanation; visible generated-SQL panel
-- [ ] Saved queries, shareable dashboards, CSV export
-- [ ] Seed + demo login; UI quality bar
-- [ ] Unit tests incl. SQL guard; E2E; coverage; Lighthouse x2; eval (>=15, SQL validity + safety rejection)
-- [ ] Docker, compose, CI, env table, audit
-- [ ] README, case study, marketing, verification; commit
+## App E — NL Analytics Dashboard (`apps/nl-analytics`, "Tally")
+- [x] Plan + scaffold
+- [x] Seeded demo dataset (synthetic, labeled): fictional retailer in schema `demo`, no personal data
+- [x] NL -> SQL generation (JSON plan, repair turns); read-only allowlist guard (libpg-query, real PG 18 parser); statement timeout + EXPLAIN cost ceiling (PGlite ignores timeouts); READ ONLY tx; analytics_reader role
+- [x] Charts + tables + explanation; visible, editable generated-SQL panel; number-checked summaries
+- [x] Saved queries, shareable dashboards (revocable read-only links), CSV export (formula-injection safe)
+- [x] Seed + demo logins; UI quality bar (axe 0 on 6 pages light/dark, 360 px, dark mode, empty/error states, toasts)
+- [x] Unit (96, 81.17% lines, 65 guard tests); E2E (20); Lighthouse x2 (landing 93/100/100/100, shared 82/100/100/63 noindex); eval 26 cases (50% exec accuracy, 4/4 safety, dataset unchanged)
+- [~] Docker, compose, CI, env table, audit — written; audit 0 vulnerabilities; Docker/compose/CI not run (no Docker, no remote)
+- [x] README, case study, marketing, verification; commit
 
 ## Step 3 — Portfolio site
 - [ ] /portfolio-site static page: intro, app cards (pitch, tags, real metric, screenshot, Demo/Repo placeholders), how I work, contact placeholders

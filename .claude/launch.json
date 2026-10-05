@@ -44,6 +44,17 @@
         "apps/booking"
       ],
       "port": 3004
+    },
+    {
+      "name": "nl-analytics",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "apps/nl-analytics"
+      ],
+      "port": 3005
     }
   ]
 }

@@ -120,3 +120,8 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **CSV export neutralises formula injection (leading = + - @ tab CR → apostrophe) and adds a UTF-8 BOM** — OWASP CSV injection guidance; BOM for Excel.
 - **Example dashboard uses hand-written SQL labelled "Hand-written"** — seed content must not pass as AI output (rule 3).
 - **Model: Qwen2.5-Coder-1.5B-Instruct (Apache-2.0) for SQL** — the general Qwen2.5-1.5B baseline got 1 of 22 eval questions right (4.5%). Qwen2.5-Coder-3B was ruled out: its upstream licence is "other" (Qwen Research License), not permissive (rule 7). 7B (Apache-2.0) is too slow for CPU-only demos.
+- **Queries are evaluated in UTC (`SET LOCAL TIME ZONE 'UTC'`)** — the eval exposed that PGlite used the machine's zone (+05), so "this year"/date_trunc answers depended on the server. Midnight UTC timestamps are returned as plain dates.
+- **Only genuine parse errors become user-facing "syntax" messages** — a WASM load failure was reported as a syntax error including a server path on a public page; other errors now rethrow to the generic 500 path.
+- **The app states outcomes itself; model text is quoted** — in the eval the model claimed a table "was successfully dropped" when nothing ran.
+- **README hero screenshot uses a question the model answered correctly in all eval runs** — the first capture ("monthly revenue") was a real miss and is cited in Limitations; the accuracy figure (50%) sits next to the image.
+- **Lighthouse SEO 63 on shared dashboards accepted** — share links are deliberately `noindex`.
