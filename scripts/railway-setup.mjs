@@ -1,6 +1,7 @@
 /**
- * One-off database setup for the Railway deployment (see deploy/README.md). Runs INSIDE Railway as the
- * `setup` service, so database credentials stay on Railway's private network and are never printed:
+ * One-off database setup for the Railway deployment (see deploy/README.md). Runs INSIDE Railway (as its own
+ * `setup` service, or temporarily in an app's service on the free plan), so database credentials stay on Railway's
+ * private network and are never printed:
  *   1. create one database per app on the shared Postgres (if missing)
  *   2. run each app's `npm run setup` (migrations + seed data) against its own database
  * Env: ADMIN_DATABASE_URL, <APP>_DATABASE_URL per app; optional SETUP_APPS="booking,nl-analytics" to limit.
@@ -48,11 +49,14 @@ try {
 for (const { app, env } of selected) {
   console.log(`\n[setup] ===== ${app}: migrate + seed =====`);
   const started = Date.now();
+  // The setup service's own APP_URL belongs to whichever service hosts this job; seeds don't need it, and an unresolved
+  // value ("https://") fails each app's env validation, so let the app fall back to its default.
+  const { APP_URL: _ignored, ...base } = process.env;
   const r = spawnSync("npm", ["run", "setup"], {
     cwd: `apps/${app}`,
     stdio: "inherit",
     // NODE_ENV is left unset: seed scripts don't sign sessions, so they don't need BETTER_AUTH_SECRET.
-    env: { ...process.env, DATABASE_URL: need(env) },
+    env: { ...base, DATABASE_URL: need(env) },
   });
   if (r.status !== 0) {
     console.error(`[setup] ${app} failed (exit ${r.status})`);

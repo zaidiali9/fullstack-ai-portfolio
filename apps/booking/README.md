@@ -9,6 +9,9 @@ next Tuesday after 4pm" into real open times.**
 > Portfolio project. "Lumen Wellness Studio", its staff, customers and bookings are fictional **seed data**. The AI
 > output in the screenshots came from real calls to a local open model (`Qwen2.5-1.5B-Instruct`).
 
+**Live demo:** https://booking-production-d564.up.railway.app (seed data; demo logins below). AI features are off on this deployment until a provider
+key is added, so they show "AI unavailable". Hosting notes: [deploy/README.md](../../deploy/README.md).
+
 ## Contents
 [Features](#features) · [Screenshots](#screenshots) · [Quickstart](#quickstart) · [Demo logins](#demo-logins) ·
 [Architecture](#architecture) · [Data model](#data-model) · [How double booking is prevented](#how-double-booking-is-prevented) ·

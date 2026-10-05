@@ -2,7 +2,7 @@
 
 Chosen from the top demand categories in `docs/market-research.md`. Packages are defined by **scope**; set prices
 and delivery times yourself (`[PRICE]`, `[DAYS]`). Don't add reviews, client logos or sales counts you don't have.
-Gig images: use the README screenshots (original, from the apps); replace `[DEMO LINK]` after deploying.
+Gig images: use the README screenshots (original, from the apps); replace the remaining `[DEMO LINK]`s once helpdesk and storefront are deployed.
 
 ---
 
@@ -22,7 +22,7 @@ Your customers and team ask the same questions your documents already answer. I'
 - Tested on a question set before handover, so you know how well it performs
 
 From my demo's test set: 17 of 17 answers contained the key fact, 0 cited the wrong document, and 5 of 5 out-of-scope
-questions were refused. Demo: [DEMO LINK]
+questions were refused. Demo: https://kb-chat-production-15ef.up.railway.app
 
 **Packages**
 | | Basic | Standard | Premium |
@@ -91,7 +91,7 @@ Booking:
   (in my demo, 4 simultaneous attempts on one slot: exactly 1 succeeded, the others were offered alternatives)
 - Customer self-service reschedule/cancel, live staff calendar, time zones handled
 
-Demos: [DEMO LINK] · [DEMO LINK]
+Demos: [DEMO LINK] (store, not deployed yet) · https://booking-production-d564.up.railway.app (booking)
 
 **Packages**
 | | Basic | Standard | Premium |

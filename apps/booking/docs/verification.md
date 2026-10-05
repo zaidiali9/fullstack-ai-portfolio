@@ -115,5 +115,21 @@ Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg
 production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160386
 (The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
 
+## Deployed on Railway (2026-10-05)
+Live at https://booking-production-d564.up.railway.app, on a Railway Postgres 18.6 database of its own, with no AI provider configured (see `deploy/README.md`). Migrations and seed ran in Railway's setup job (`railway logs`):
+```
+[setup] Postgres 18.6 (Debian 18.6-1.pgdg13+2); extensions available: btree_gist, vector
+Seeded 10 users, 5 services, 3 staff, 47 bookings {"completed":12,"no_show":5,"confirmed":28,"cancelled":2} in 411ms
+```
+Checked from this machine after `railway up --service booking --ci` ("Deploy complete"):
+```
+GET /api/health -> 200 {"status":"ok","database":"ok","ai":{"chat":"unavailable"}}
+GET /         -> 200 <title>Lumen Wellness Studio — book online</title>
+GET /sign-in  -> 200 <title>Sign in · Lumen Wellness Studio</title>
+```
+Security headers present on `/`: Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy.
+In the browser, the home page listed the 5 seeded services and showed "AI unavailable" on the assistant; `/book/swedish-massage` showed open times per day (e.g. Tue 6: 38 open) and the realtime indicator switched from "Connecting…" to "Live", so the SSE stream works behind Railway's proxy.
+Not checked on the deployment: signing in with the demo logins (left for a human; a build agent doesn't enter passwords on hosted sites) and AI features (off).
+
 ## 11. Not verified on this machine
-- `docker compose up` as a whole stack (image build and the real-Postgres job — incl. the concurrency and realtime tests — pass in CI); SSE behaviour behind a production proxy; GitHub OAuth; hosted AI providers.
+- `docker compose up` as a whole stack (image build and the real-Postgres job — incl. the concurrency and realtime tests — pass in CI); SSE through many concurrent clients behind a proxy (one client verified on Railway); GitHub OAuth; hosted AI providers.

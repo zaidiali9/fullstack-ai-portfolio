@@ -119,5 +119,20 @@ Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg
 production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160587
 (The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
 
+## Deployed on Railway (2026-10-05)
+Live at https://nl-analytics-production.up.railway.app, on a Railway Postgres 18.6 database of its own, with no AI provider configured (see `deploy/README.md`). Migrations and seed ran in Railway's setup job (`railway logs`):
+```
+[setup] Postgres 18.6 (Debian 18.6-1.pgdg13+2); extensions available: btree_gist, vector
+Seeded 2 users, dataset {"regions":4,"products":40,"customers":2500,"orders":8744,"orderItems":13440,"marketingSpend":125,"supportTickets":1036}, 5 example queries, 1 dashboard in 1722ms
+```
+Checked from this machine after `railway up --service nl-analytics --ci` ("Deploy complete"):
+```
+GET /api/health -> 200 {"status":"ok","database":"ok","ai":{"chat":"unavailable"}}
+GET /         -> 200 <title>Tally — ask your data in plain English</title>
+GET /sign-in  -> 200 <title>Sign in · Tally</title>
+```
+Security headers present on `/`: Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy.
+Not checked on the deployment: signing in with the demo logins (left for a human; a build agent doesn't enter passwords on hosted sites) and AI features (off).
+
 ## 11. Not verified on this machine
 - A query actually hitting `statement_timeout` on Postgres (the setting is applied; the CI tests exercise the role, READ ONLY transaction and cost ceiling on Postgres 17, not a timeout firing). Managed hosts that disallow CREATE ROLE. `docker compose up` as a whole stack. GitHub OAuth. Hosted AI providers.

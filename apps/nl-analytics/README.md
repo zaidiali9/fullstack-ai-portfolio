@@ -8,6 +8,9 @@ run, with charts, tables, an always-visible (and editable) SQL panel, saved quer
 > Portfolio project. "Lanternfish Supply Co." is a fictional online retailer; every customer, order and ticket is
 > generated **seed data** with no personal details. AI output in the screenshots came from real calls to a local open model.
 
+**Live demo:** https://nl-analytics-production.up.railway.app (seed data; demo logins below). AI features are off on this deployment until a provider
+key is added, so they show "AI unavailable". Hosting notes: [deploy/README.md](../../deploy/README.md).
+
 ## Contents
 [Features](#features) · [Screenshots](#screenshots) · [Quickstart](#quickstart) · [Demo logins](#demo-logins) ·
 [Architecture](#architecture) · [Data model](#data-model) · [How model SQL is kept safe](#how-model-sql-is-kept-safe) ·

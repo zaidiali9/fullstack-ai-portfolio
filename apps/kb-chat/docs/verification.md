@@ -112,6 +112,21 @@ Playwright E2E suite; Docker image build; real PostgreSQL (`pgvector/pgvector:pg
 production dependency audit. Run: https://github.com/zaidiali9/fullstack-ai-portfolio/actions/runs/37341160288
 (The first runs failed on a Windows-only lockfile and once on a Google Fonts download; both fixed — see DECISIONS.md.)
 
+## Deployed on Railway (2026-10-05)
+Live at https://kb-chat-production-15ef.up.railway.app, on a Railway Postgres 18.6 database of its own, with no AI provider configured (see `deploy/README.md`). Migrations and seed ran in Railway's setup job (`railway logs`):
+```
+[setup] Postgres 18.6 (Debian 18.6-1.pgdg13+2); extensions available: btree_gist, vector
+Seeded 3 users, 2 workspaces, 6 documents -> 6 indexed (0 failed), 22 passages, embeddings: unavailable (keyword search only) in 619ms
+```
+Checked from this machine after `railway up --service kb-chat --ci` ("Deploy complete"):
+```
+GET /api/health -> 200 {"status":"ok","database":"ok","ai":{"chat":"unavailable","embeddings":"unavailable"}}
+GET /         -> 200 <title>Cairn — chat with your documents</title>
+GET /sign-in  -> 200 <title>Sign in · Cairn</title>
+```
+Security headers present on `/`: Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options: nosniff, X-Frame-Options: DENY, Referrer-Policy.
+Not checked on the deployment: signing in with the demo logins (left for a human; a build agent doesn't enter passwords on hosted sites) and AI features (off).
+
 ## 10. Not verified on this machine
 - `docker compose up` as a whole stack (image build and real-Postgres jobs pass in CI).
 - GitHub OAuth; hosted AI providers against live APIs; URL ingestion against the public internet (tested against a local server with private addresses explicitly allowed).

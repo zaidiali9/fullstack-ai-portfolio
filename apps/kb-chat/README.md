@@ -7,6 +7,9 @@
 > Portfolio project. The "Brightline Studio" documents are fictional **seed data** written for this demo.
 > AI answers in the screenshots came from real calls to a local open model (`Qwen2.5-1.5B-Instruct`), not mock-ups.
 
+**Live demo:** https://kb-chat-production-15ef.up.railway.app (seed data; demo logins below). AI features are off on this deployment until a provider
+key is added, so they show "AI unavailable". Hosting notes: [deploy/README.md](../../deploy/README.md).
+
 ## Contents
 [Features](#features) · [Screenshots](#screenshots) · [Quickstart](#quickstart) · [Demo logins](#demo-logins) ·
 [Architecture](#architecture) · [Data model](#data-model) · [AI design](#ai-design) · [Quality metrics](#quality-metrics) ·

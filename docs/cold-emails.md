@@ -2,7 +2,7 @@
 
 Before sending: look at the recipient's site yourself and make the first line true and specific; include your real
 name, a way to opt out, and your postal address where the law requires it (CAN-SPAM, GDPR/PECR). Send in small
-batches. Numbers come from the portfolio apps' `docs/verification.md`. Replace `[DEMO LINK]` after deploying.
+batches. Numbers come from the portfolio apps' `docs/verification.md`. Demo links point to the Railway deployment (`deploy/README.md`).
 
 ## 1. SaaS / software company: "chat with your docs" for support (RAG)
 **Subject:** Answers from your docs, with the source attached
@@ -17,7 +17,7 @@ key fact, and all 5 out-of-scope questions were refused.
 
 It can sit in your app or as a small widget on your site, using free or paid AI providers.
 
-Two-minute demo: [DEMO LINK]
+Two-minute demo: https://kb-chat-production-15ef.up.railway.app
 Worth a 15-minute call next week?
 
 [YOUR NAME]
@@ -37,7 +37,7 @@ once, exactly one got it and the others were offered the nearest free times.
 
 Customers can reschedule or cancel themselves, and your team gets a live calendar.
 
-Demo: [DEMO LINK]
+Demo: https://booking-production-d564.up.railway.app
 Open to a quick look?
 
 [YOUR NAME]
@@ -58,7 +58,7 @@ demo, 4 of 4 attempts to delete data or read passwords executed nothing.
 I'll be upfront: with a small free AI model, half of my test questions came back fully right. That's why the query is
 always visible, and a stronger hosted model can be measured on your own questions first.
 
-Demo: [DEMO LINK]
+Demo: https://nl-analytics-production.up.railway.app
 
 [YOUR NAME]
 [Opt-out line]

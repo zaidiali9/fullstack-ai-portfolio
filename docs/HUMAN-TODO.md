@@ -10,23 +10,23 @@ build agent must not make on your behalf. Items are ordered by value: do the top
 - [x] Repo topics: ai, full-stack, llm, nextjs, pgvector, playwright, portfolio, postgresql, rag, stripe, text-to-sql, typescript.
 - [ ] Pin the repo on your profile (web only — GitHub's API has no pin mutation): github.com/zaidiali9 → "Customize your pins".
 
-## 2. Deploy demos (each app's README has a Quickstart and an env table)
-Suggested free/cheap combination (check current free tiers and terms yourself):
-- [ ] **Database**: one Postgres per app (Neon or Supabase free tier). helpdesk, kb-chat and storefront need the
-      `vector` extension; booking needs `btree_gist`; Tally creates a role (`analytics_reader`) — confirm your
-      provider allows `CREATE ROLE`, otherwise the app still runs with the guard + read-only transaction and logs a warning.
-- [ ] **Hosting**: Vercel (or Render/Fly) per app, root directory `apps/<slug>`; set `APP_URL`, `DATABASE_URL`,
-      `BETTER_AUTH_SECRET` (`openssl rand -base64 32`). Run `npm run db:migrate` and `npm run db:seed` once
-      against each database (from your machine with `DATABASE_URL` set).
-- [ ] **AI provider for demos**: the local Transformers.js models are too heavy for serverless. Create a free
-      **Groq** or **Gemini** API key and set `GROQ_API_KEY` / `GEMINI_API_KEY` (no app requires a paid key).
-      Then re-run each app's eval against that provider and update the README numbers if you want hosted-model figures
+## 2. Deploy demos — 3 of 5 live on Railway (2026-10-05)
+Railway free plan (Postgres + 3 services); setup and commands in `deploy/README.md`.
+- [x] Cairn: https://kb-chat-production-15ef.up.railway.app
+- [x] Bookwell: https://booking-production-d564.up.railway.app
+- [x] Tally: https://nl-analytics-production.up.railway.app
+- [x] `[DEMO LINK]`s for these three filled in (marketing docs, cold emails, Fiverr gigs, portfolio page, app READMEs).
+- [ ] **Sign in once on each demo** with the demo logins from its README (the build agent checked health, pages and
+      headers but doesn't type passwords into hosted sites).
+- [ ] **Turn AI on (optional)**: create a free **Groq** or **Gemini** API key and add `GROQ_API_KEY` /
+      `GEMINI_API_KEY` to each service's Variables in the Railway dashboard (it redeploys itself). For Cairn's
+      semantic search also add `HF_TOKEN` (embeddings), then re-run the setup job so seed passages get vectors.
+      If you want hosted-model figures, re-run each app's eval against that provider and update the README numbers
       (the committed numbers are for the local 1.5B models and must stay labelled as such).
-- [ ] kb-chat: set `CRON_SECRET` and keep `vercel.json` (ingestion queue cron).
-- [ ] booking: SSE needs a long-lived server; on Vercel use the Node runtime and expect reconnects (the client
-      reconnects automatically). Render/Fly keep connections open better.
-- [ ] Replace every `[DEMO LINK]` in `docs/*/marketing.md`, `docs/cold-emails.md`, `docs/fiverr-gigs.md`,
-      `docs/upwork-profile.md` and `portfolio-site/` with the real URLs.
+- [ ] **Helpdesk and storefront**: need a paid Railway plan (or another host). Same recipe as `deploy/README.md`; both
+      need the `vector` extension. Then fill the remaining `[DEMO LINK]`s (helpdesk/storefront marketing, Fiverr
+      gig 2/3, portfolio page).
+- [ ] Watch the free plan's usage in the Railway dashboard; the demos stop if its credit runs out.
 
 ## 3. Credentials for optional features (never commit them; use `.env` / host env vars)
 - [ ] **Stripe (test mode only)** for helpdesk billing and storefront checkout: create a Stripe account, copy the

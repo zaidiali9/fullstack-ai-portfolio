@@ -36,7 +36,13 @@ light and dark; each README lists its Lighthouse scores.
 - Published to https://github.com/zaidiali9/fullstack-ai-portfolio; all 5 CI workflows pass there (unit + E2E,
   Docker image builds, real-Postgres jobs incl. booking's concurrency tests and Tally's SQL safety tests). First runs
   failed on a Windows-only lockfile and a Google Fonts download — fixed (lockfile regenerated, fonts self-hosted).
-- Still not verified: `docker compose up` as a whole stack, GitHub OAuth, live Stripe, hosted AI providers.
+- Deployed 2026-10-05 on Railway's free plan (Postgres + 3 services, AI off): Cairn
+  https://kb-chat-production-15ef.up.railway.app, Bookwell https://booking-production-d564.up.railway.app, Tally
+  https://nl-analytics-production.up.railway.app. Health (database ok), `/` and `/sign-in` returned 200 on all three;
+  Bookwell's live availability connected over SSE. Records in each `docs/verification.md`; recipe in `deploy/README.md`.
+  Helpdesk and storefront are not deployed (free-plan limit).
+- Still not verified: `docker compose up` as a whole stack, GitHub OAuth, live Stripe, hosted AI providers, signing in
+  on the deployed demos.
 - Stripe deposit for booking was dropped under the scope rule; Tally's accuracy is about half, so its SQL is always
   shown and editable.
 

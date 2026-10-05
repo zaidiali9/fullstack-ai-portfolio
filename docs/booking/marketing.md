@@ -1,6 +1,6 @@
 # Marketing copy — Bookwell (real-time booking & scheduling)
 
-Numbers come from `apps/booking/docs/verification.md`. Replace `[DEMO LINK]` after deploying.
+Numbers come from `apps/booking/docs/verification.md`. Live demo (seed data; AI off until a provider key is set): https://booking-production-d564.up.railway.app
 
 ## Upwork portfolio blurb (≤150 words)
 **Real-time booking system (Next.js + Postgres) with AI booking assistant**
@@ -12,7 +12,7 @@ reschedule/cancel with optimistic concurrency, a live staff calendar, activity f
 assistant turns "deep tissue with Sam next Tuesday after 4pm" into real open slots: the model extracts intent, code
 resolves dates and times, and nothing invented reaches the app (89.5% of 19 test requests fully correct). The
 owner's weekly digest flags any AI-written number that isn't in the data. 91 integration + 18 browser tests;
-Lighthouse mobile 90/100/100/100. Demo: [DEMO LINK]
+Lighthouse mobile 90/100/100/100. Demo: https://booking-production-d564.up.railway.app
 
 ## Fiverr gig description
 **I will build a custom online booking system with live availability for your business**
@@ -32,11 +32,11 @@ Packages (scope, not price):
 - **Standard** — Basic + team calendar, reschedule/cancel rules, notifications, activity feed, admin for hours and time off.
 - **Premium** — Standard + AI booking assistant, weekly owner digest, deposits via Stripe, email/SMS reminders and calendar sync.
 
-See the working demo: [DEMO LINK]
+See the working demo: https://booking-production-d564.up.railway.app
 
 ## Cold-email snippet (5 lines)
 Hi [NAME] — I noticed [BUSINESS] takes bookings by [phone / a form / a third-party page].
 I build booking systems with live availability where the database itself makes double bookings impossible.
 In my demo, when 4 people try to book the same slot at once, exactly 1 gets it and the others are offered the nearest free times.
 Customers can also just type "a massage with Sam next Tuesday after work" and pick from real open times.
-Here's the demo: [DEMO LINK]. Worth a 15-minute call?
+Here's the demo: https://booking-production-d564.up.railway.app. Worth a 15-minute call?

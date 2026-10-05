@@ -1,6 +1,6 @@
 # Marketing copy — Tally (natural-language analytics)
 
-Numbers come from `apps/nl-analytics/docs/verification.md`. Replace `[DEMO LINK]` after deploying.
+Numbers come from `apps/nl-analytics/docs/verification.md`. Live demo (seed data; AI off until a provider key is set): https://nl-analytics-production.up.railway.app
 
 ## Upwork portfolio blurb (≤150 words)
 **Natural-language analytics dashboard (Next.js + Postgres) with a parser-based SQL safety guard**
@@ -11,7 +11,7 @@ functions and types), then runs in a READ ONLY transaction as a role that can't 
 row limits. Every attempt is audited. In tests, prompts to delete data, read password hashes or DROP tables executed
 nothing unsafe (4/4), and the guard has 65 adversarial tests. Saved queries, dashboards shared as revocable read-only
 links, CSV export with formula-injection protection, and number-checked summaries. Accuracy with a free local model:
-50% on 22 questions (baseline 4.5%), reported honestly. 96 unit + 20 browser tests. Demo: [DEMO LINK]
+50% on 22 questions (baseline 4.5%), reported honestly. 96 unit + 20 browser tests. Demo: https://nl-analytics-production.up.railway.app
 
 ## Fiverr gig description
 **I will build an AI analytics dashboard that answers questions about your data in plain English**
@@ -32,11 +32,11 @@ Packages (scope, not price):
 - **Standard** — Basic + saved queries, dashboards, share links, audit log, user accounts.
 - **Premium** — Standard + business metric definitions ("revenue", "active customer"), team permissions/SSO, scheduled reports and an accuracy test set for your data.
 
-See the working demo: [DEMO LINK]
+See the working demo: https://nl-analytics-production.up.railway.app
 
 ## Cold-email snippet (5 lines)
 Hi [NAME] — does your team still wait on an analyst every time someone needs a number from [PRODUCT]'s data?
 I build "ask your data" dashboards where questions in plain English become charts, with the SQL always shown.
 Safety comes first: in my demo, 4 of 4 attempts to delete data or read passwords executed nothing.
 Every query is read-only, logged and checked by the real PostgreSQL parser before it runs.
-Here's the demo: [DEMO LINK]. Worth a 15-minute call?
+Here's the demo: https://nl-analytics-production.up.railway.app. Worth a 15-minute call?

@@ -111,7 +111,7 @@
             <p>Multi-tenant support desk: AI triages every new ticket, drafts replies grounded in the team's knowledge base and summarises long threads, with roles, Stripe billing (test mode) and an audit log.</p>
             <ul class="tags" aria-label="Technologies"><li>Next.js</li><li>Postgres + pgvector</li><li>RBAC</li><li>Stripe</li><li>Prompt-injection guard</li></ul>
             <p class="metric"><strong>91.7%</strong> ticket category accuracy (22 of 24) on a labelled eval; 2 of 3 prompt-injection attempts resisted (the third is listed as a known gap).<span class="src">apps/helpdesk · npm run eval → docs/metrics/eval-triage.json</span></p>
-            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/helpdesk</span></p>
+            <p class="links"><span class="placeholder">Demo: not deployed yet</span><a href="https://github.com/zaidiali9/fullstack-ai-portfolio/tree/main/apps/helpdesk">Code</a></p>
           </div>
         </article>
 
@@ -122,7 +122,7 @@
             <p>Upload PDFs, Word files, Markdown or web pages and get answers built only from them, with every claim linked to the exact passage and page, plus an embeddable website widget.</p>
             <ul class="tags" aria-label="Technologies"><li>RAG</li><li>Hybrid search</li><li>pgvector</li><li>SSRF-safe ingestion</li><li>Widget</li></ul>
             <p class="metric"><strong>17 of 17</strong> answers contained the key fact, <strong>0</strong> citations to a wrong document, and <strong>5 of 5</strong> out-of-scope questions refused.<span class="src">apps/kb-chat · npm run eval → docs/metrics/eval-rag.json</span></p>
-            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/kb-chat</span></p>
+            <p class="links"><a href="https://kb-chat-production-15ef.up.railway.app">Live demo</a><a href="https://github.com/zaidiali9/fullstack-ai-portfolio/tree/main/apps/kb-chat">Code</a></p>
           </div>
         </article>
 
@@ -133,7 +133,7 @@
             <p>Catalog, cart, Stripe Checkout with signed webhooks and race-safe stock, order history and an admin panel, plus meaning-based search, similar items and AI-drafted product descriptions.</p>
             <ul class="tags" aria-label="Technologies"><li>Stripe Checkout</li><li>Semantic search</li><li>SEO + JSON-LD</li><li>Admin</li></ul>
             <p class="metric">Right product in the top 3 for <strong>18 of 18</strong> shopper-style searches, versus 16 of 18 for keyword search alone.<span class="src">apps/storefront · npm run eval → docs/metrics/eval-search.json</span></p>
-            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/storefront</span></p>
+            <p class="links"><span class="placeholder">Demo: not deployed yet</span><a href="https://github.com/zaidiali9/fullstack-ai-portfolio/tree/main/apps/storefront">Code</a></p>
           </div>
         </article>
 
@@ -144,7 +144,7 @@
             <p>Live availability over Server-Sent Events, slot holds while the customer confirms, a database constraint that makes double booking impossible, a live team calendar, and an assistant that turns "deep tissue with Sam next Tuesday after 4pm" into real open times.</p>
             <ul class="tags" aria-label="Technologies"><li>Postgres exclusion constraint</li><li>LISTEN/NOTIFY + SSE</li><li>Time zones</li><li>NL search</li></ul>
             <p class="metric">With <strong>4 customers racing</strong> for one slot, exactly 1 wins and 3 get the nearest alternatives. The assistant fully understood <strong>17 of 19</strong> test requests.<span class="src">apps/booking · npm test (bookings.test.ts) · npm run eval → docs/metrics/eval-nl-booking.json</span></p>
-            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/booking</span></p>
+            <p class="links"><a href="https://booking-production-d564.up.railway.app">Live demo</a><a href="https://github.com/zaidiali9/fullstack-ai-portfolio/tree/main/apps/booking">Code</a></p>
           </div>
         </article>
 
@@ -155,7 +155,7 @@
             <p>Questions become read-only SQL, checked by the real PostgreSQL parser before they run, with charts, an always-visible SQL panel, saved queries, shareable dashboards and CSV export.</p>
             <ul class="tags" aria-label="Technologies"><li>NL → SQL</li><li>SQL allowlist guard</li><li>Read-only role</li><li>Charts</li></ul>
             <p class="metric">Prompts to delete data, read password hashes or drop tables: <strong>4 of 4 executed nothing</strong>. Answer accuracy with a free local model: <strong>50%</strong> of 22 questions (first version: 4.5%), which is why the SQL is always shown.<span class="src">apps/nl-analytics · npm run eval → docs/metrics/eval-nl-sql.json</span></p>
-            <p class="links"><span class="placeholder">Demo: [DEMO LINK]</span><span class="placeholder">Code: [REPO LINK]/tree/main/apps/nl-analytics</span></p>
+            <p class="links"><a href="https://nl-analytics-production.up.railway.app">Live demo</a><a href="https://github.com/zaidiali9/fullstack-ai-portfolio/tree/main/apps/nl-analytics">Code</a></p>
           </div>
         </article>
 
@@ -182,7 +182,7 @@
         <ul>
           <li>Email: <span class="placeholder">[YOUR EMAIL]</span></li>
           <li>Upwork: <span class="placeholder">[UPWORK PROFILE LINK]</span></li>
-          <li>GitHub: <span class="placeholder">[REPO LINK]</span></li>
+          <li>GitHub: <a href="https://github.com/zaidiali9/fullstack-ai-portfolio">github.com/zaidiali9/fullstack-ai-portfolio</a></li>
         </ul>
       </div>
     </section>

@@ -5,7 +5,7 @@ repository. Host it anywhere that serves static files (GitHub Pages, Netlify, Ve
 
 ## Before publishing
 Replace every placeholder (they are shown in monospace on the page so none can be missed):
-`[YOUR NAME]`, `[YOUR EMAIL]`, `[UPWORK PROFILE LINK]`, `[DEMO LINK]` (one per app), `[REPO LINK]`.
+`[YOUR NAME]`, `[YOUR EMAIL]`, `[UPWORK PROFILE LINK]`, helpdesk and storefront show "Demo: not deployed yet" until they are deployed (the repo and the other three demos are linked).
 Keep the metric sentences as they are unless you re-run the evals; each names the command and file it came from.
 
 ## Preview locally

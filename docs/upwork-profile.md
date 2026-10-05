@@ -57,4 +57,4 @@ first reviews.
 Hi [NAME] — I read your post about [THEIR PROBLEM IN THEIR WORDS].
 I built something close to this: [ONE RELEVANT PORTFOLIO APP + ONE MEASURED RESULT].
 For your project I'd start with [FIRST MILESTONE], then [SECOND], and I'd confirm [ONE QUESTION] before starting.
-Demo: [DEMO LINK] · Code: [REPO LINK]
+Demo: [DEMO LINK] · Code: https://github.com/zaidiali9/fullstack-ai-portfolio
