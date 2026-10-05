@@ -50,7 +50,7 @@ jobs:
           retention-days: 7
 
   postgres:
-    name: Migrate, concurrency tests, seed + smoke test on real Postgres
+    name: Migrate, SQL safety tests, seed + smoke test on real Postgres
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:
