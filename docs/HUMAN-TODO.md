@@ -7,7 +7,8 @@ build agent must not make on your behalf. Items are ordered by value: do the top
 - [x] Public repo: https://github.com/zaidiali9/fullstack-ai-portfolio (pushed with `gh repo create`).
 - [x] All 5 CI workflows green (lint, typecheck, unit + E2E, Docker image builds, real-Postgres jobs incl. booking's
       concurrency tests and Tally's SQL safety tests, production audit) on commit 86bbfa9.
-- [ ] Add repo topics (nextjs, postgresql, ai, rag, portfolio) and pin it on your GitHub profile.
+- [x] Repo topics: ai, full-stack, llm, nextjs, pgvector, playwright, portfolio, postgresql, rag, stripe, text-to-sql, typescript.
+- [ ] Pin the repo on your profile (web only — GitHub's API has no pin mutation): github.com/zaidiali9 → "Customize your pins".
 
 ## 2. Deploy demos (each app's README has a Quickstart and an env table)
 Suggested free/cheap combination (check current free tiers and terms yourself):
