@@ -125,3 +125,6 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **The app states outcomes itself; model text is quoted** — in the eval the model claimed a table "was successfully dropped" when nothing ran.
 - **README hero screenshot uses a question the model answered correctly in all eval runs** — the first capture ("monthly revenue") was a real miss and is cited in Limitations; the accuracy figure (50%) sits next to the image.
 - **Lighthouse SEO 63 on shared dashboards accepted** — share links are deliberately `noindex`.
+
+## Final QA
+- **Accepted dev-only advisory: `braces` GHSA-vfj7-8cjw-p6xm (high, ReDoS-style stack exhaustion), range <= 3.0.3** — 3.0.3 is the newest published version, so there is no patched release to override to. It is reached only through dev CLIs (`shadcn` via fast-glob/micromatch, `eslint-config-next`) on globs written by us, never user input. `npm audit --omit=dev`: 0 vulnerabilities. npm's suggested "fix" downgrades to years-old majors and was rejected. `shadcn` stays because `packages/ui` CSS imports `shadcn/tailwind.css`.

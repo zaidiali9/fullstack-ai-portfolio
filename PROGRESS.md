@@ -1,6 +1,45 @@
 # PROGRESS
 
-<!-- FINAL SUMMARY goes here in Step 5 -->
+## Final summary (2026-10-05)
+
+**Status: all steps complete.** Five apps, the shared AI and server packages, a portfolio page and the outreach docs are
+built, tested and committed. Nothing is in "Blocked". What could not be verified on this machine (no Docker, no
+Postgres server, no remote, no API keys) is listed below and in `docs/HUMAN-TODO.md`.
+
+| App | What it is | Tests | Headline measured result (source) |
+|---|---|---|---|
+| A · Tidal Desk (`apps/helpdesk`, :3001) | Multi-tenant AI helpdesk: triage, KB-grounded drafts, summaries, RBAC, Stripe billing | 57 unit (81.67% lines) · 14 E2E | Category accuracy 91.7% (22/24); 2 of 3 injection attempts resisted (`docs/metrics/eval-triage.json`) |
+| B · Cairn (`apps/kb-chat`, :3002) | RAG over PDFs/DOCX/MD/URLs with passage citations + embeddable widget | 54 unit (87.75%) · 15 E2E | Key fact in 17/17 answers, 0 wrong-document citations, 5/5 out-of-scope refused (`eval-rag.json`) |
+| C · Fernwood Supply (`apps/storefront`, :3003) | Store with Stripe Checkout/webhooks, admin, semantic search, AI descriptions | 22 unit (79.12%) · 14 E2E | Top-3 hit 18/18 hybrid vs 16/18 keyword (`eval-search.json`) |
+| D · Bookwell (`apps/booking`, :3004) | Real-time booking: SSE availability, holds, exclusion constraint, live calendar, NL assistant, digest | 91 unit (90.15%) · 18 E2E | 4-way race → exactly 1 winner; assistant 17/19 fully correct (`eval-nl-booking.json`) |
+| E · Tally (`apps/nl-analytics`, :3005) | NL→SQL analytics with parser-based guard, read-only role, charts, dashboards, CSV | 96 unit (81.17%, 65 guard tests) · 20 E2E | 4/4 unsafe prompts executed nothing; accuracy 50% (11/22) with a local 1.5B model, baseline 4.5% (`eval-nl-sql.json`) |
+
+Shared: `packages/ai` (provider-agnostic AI layer, 44 tests) and `packages/kit` (DB driver switch, rate limits,
+headers, errors, 15 tests). Portfolio page: Lighthouse 100/100/100/100 (mobile), axe 0 violations in light and dark.
+Every app scores 100 on Lighthouse accessibility for its measured pages and has 0 axe violations (WCAG 2 A/AA) in
+light and dark; each README lists its Lighthouse scores.
+
+**Final QA (Step 5)**
+- Fresh clone → `npm ci` → each README quickstart (`npm run setup`) with no `.env` and no AI configured: all 5 apps
+  migrated and seeded, all unit suites passed (59 + 57 + 54 + 22 + 91 + 96), all 5 production builds succeeded, and
+  `/api/health`, `/` and `/sign-in` returned 200 with AI reported as unavailable. The "AI unavailable" / keyword-search
+  states were visible on the public pages.
+- `npm audit --omit=dev`: 0 vulnerabilities. Full audit: 9 "high" entries, all from one dev-only advisory (`braces`,
+  no patched version exists); accepted and recorded in DECISIONS.md.
+- Numbers trace: every number in READMEs, case studies, marketing, portfolio and profile docs was matched to
+  `docs/verification.md` / `docs/metrics/*.json`; the 11 unmatched were config values, Stripe's test card, the demo
+  password or CSS colours, and the config values were checked against the code.
+- Sweep: no tracked `.env` files ever; no key-like strings; no TODO/FIXME/lorem (only references to HUMAN-TODO.md).
+
+**Honest limits (details in each README and `docs/improvements.md`)**
+- All AI numbers come from free local models on a CPU (13–37 s per call). Hosted models were not measured.
+- Not run here: Docker images/compose, the CI workflows (incl. the real-Postgres jobs for booking and Tally), GitHub
+  OAuth, live Stripe, hosted AI providers. These are the first items in `docs/HUMAN-TODO.md`.
+- Stripe deposit for booking was dropped under the scope rule; Tally's accuracy is about half, so its SQL is always
+  shown and editable.
+
+**Next for you:** `docs/HUMAN-TODO.md` (push to GitHub so CI runs → deploy with a free Groq/Gemini key → replace
+`[DEMO LINK]`/`[YOUR NAME]` placeholders → profiles and outreach).
 
 Legend: `[x]` done and verified (evidence in the app's `docs/verification.md`), `[ ]` open,
 `[~]` partially done / unverified (reason noted inline). Blocked items are listed at the bottom.
@@ -114,11 +153,11 @@ Environment flags (see DECISIONS.md):
 - [x] docs/HUMAN-TODO.md
 
 ## Step 5 — Final QA
-- [ ] Fresh-clone test following each README quickstart
-- [ ] Dependency audits recorded; high-severity fixed where possible
-- [ ] Numbers-in-docs trace check
-- [ ] Grep for secrets, TODOs, lorem ipsum
-- [ ] Final summary at top of PROGRESS.md
+- [x] Fresh-clone test following each README quickstart (setup, unit tests, build, start, health — all 5 apps)
+- [x] Dependency audits recorded; high-severity fixed where possible (prod 0; dev-only braces advisory has no patched release — DECISIONS.md)
+- [x] Numbers-in-docs trace check
+- [x] Grep for secrets, TODOs, lorem ipsum
+- [x] Final summary at top of PROGRESS.md
 
 ## Blocked
-_(none yet)_
+_(none — nothing failed three different ways. Items that need credentials or infrastructure are marked `[~]` above and listed in docs/HUMAN-TODO.md.)_
