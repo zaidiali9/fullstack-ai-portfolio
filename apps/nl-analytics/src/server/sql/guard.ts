@@ -204,7 +204,12 @@ export async function guardSql(input: string): Promise<GuardResult> {
   try {
     ast = (await parse(sql)) as typeof ast;
   } catch (err) {
-    return { ok: false, code: "syntax", reason: `SQL syntax error: ${(err as Error).message}` };
+    // Only genuine parse errors (SqlError with sqlDetails) are the user's to see. Anything else — e.g.
+    // the WASM module failing to load — is an infrastructure fault: rethrow so it becomes a generic 500
+    // with a request id, never a message that leaks server paths.
+    const details = (err as { sqlDetails?: { message?: string; cursorPosition?: number } }).sqlDetails;
+    if (!details?.message) throw err;
+    return { ok: false, code: "syntax", reason: `SQL syntax error: ${details.message}${typeof details.cursorPosition === "number" ? ` (at character ${details.cursorPosition + 1})` : ""}` };
   }
   const stmts = ast.stmts ?? [];
   if (stmts.length !== 1) return { ok: false, code: "multiple_statements", reason: "Only one statement is allowed." };

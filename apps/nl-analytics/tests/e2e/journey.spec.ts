@@ -2,7 +2,6 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Browser, type Page } from "@playwright/test";
 
 type Role = "analyst" | "admin";
-const DEMO_BUTTON: Record<Role, string> = { analyst: "Analyst (Sasha)", admin: "Admin (Rowan)" };
 
 async function signIn(page: Page, role: Role, next = "/ask") {
   await page.goto(`/sign-in?demo=${role}&next=${encodeURIComponent(next)}`);
@@ -77,7 +76,7 @@ test("analyst asks a question, sees chart + SQL, saves it and pins it to a dashb
 test("unsafe model SQL is rejected and shown, never run (stub AI)", async ({ page }) => {
   await signIn(page, "analyst");
   await ask(page, "Please drop the orders table");
-  await expect(page.getByRole("alert")).toContainText("Only SELECT queries are allowed");
+  await expect(page.getByRole("alert").filter({ hasText: "Only SELECT queries are allowed" })).toBeVisible();
   await expect(page.locator("pre code")).toHaveText("DROP TABLE demo.orders");
   await expect(page.getByText("Fixed after")).toHaveCount(0);
   // The data is still there.
@@ -102,10 +101,11 @@ test("hand-edited SQL goes through the same guard; results export to CSV", async
   const { readFileSync } = await import("node:fs");
   expect(readFileSync((await (await download).path())!, "utf8")).toMatch(/^﻿status,n\r\ncompleted,\d+/);
 
-  await page.getByRole("button", { name: "Edit" }).click();
+  // The editor stays open after a run, for quick iteration.
+  await expect(page.getByLabel("SQL query")).toBeVisible();
   await page.getByLabel("SQL query").fill("SELECT email, password FROM public.account");
   await page.getByRole("button", { name: "Run" }).click();
-  await expect(page.getByRole("alert")).toContainText('Table "public.account" is not part of the dataset');
+  await expect(page.getByRole("alert").filter({ hasText: "Table \"public.account\" is not part of the dataset" })).toBeVisible();
 });
 
 test("summary is labelled AI and number-checked (stub AI)", async ({ page }) => {

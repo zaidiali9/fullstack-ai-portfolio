@@ -215,6 +215,7 @@ export async function runTiles(tiles: Awaited<ReturnType<typeof tilesOf>>, ctx: 
     try {
       out.push({ queryId: t.queryId, title: t.title, width: t.width, chart: t.chart, result: await runReadOnly(t.sql, { ...ctx, question: t.question }), error: null });
     } catch (err) {
+      if (!(err instanceof HttpError)) console.error(`[tiles] query ${t.queryId} failed`, err);
       out.push({ queryId: t.queryId, title: t.title, width: t.width, chart: t.chart, result: null, error: err instanceof HttpError ? err.message : "This tile couldn't be loaded." });
     }
   }

@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   transpilePackages: ["@portfolio/ai", "@portfolio/kit", "@portfolio/ui"],
   // Native / WASM packages must not be bundled.
-  serverExternalPackages: ["@electric-sql/pglite", "@electric-sql/pglite-pgvector", "@huggingface/transformers", "onnxruntime-node", "postgres"],
+  serverExternalPackages: ["@electric-sql/pglite", "@electric-sql/pglite-pgvector", "@huggingface/transformers", "onnxruntime-node", "postgres", "libpg-query"],
   // Monorepo root, so the standalone output includes the shared workspace packages.
   outputFileTracingRoot: path.resolve(process.cwd(), "../.."),
   async headers() {
