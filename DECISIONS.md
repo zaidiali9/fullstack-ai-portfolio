@@ -103,3 +103,20 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Canonical URLs per page, not in the root layout** — a layout canonical made every page claim to be "/" (Lighthouse SEO 91 on the booking page).
 - **robots.txt and sitemap.xml are dynamic** — they read APP_URL at runtime so a deployment never advertises the build-time URL.
 - **Toast colors darkened in this app only** — sonner's rich success text is 4.25:1; earlier apps are left as they are (rule 11; their axe runs didn't hit a visible toast). Listed in docs/improvements.
+
+## App E — Tally (NL analytics)
+- **Guard uses libpg-query (the real PostgreSQL 18 parser, WASM)** — same grammar as the database (PGlite is PG 18), so the guard can't be fooled by parser differences. Allowlists: statement type (one SELECT), AST node types, tables (demo.*), functions, cast types, special values.
+- **Bare typed fields are checked too** — the parser emits `TypeCast.typeName` without a node wrapper; a test caught `::regclass` passing before this was handled. An AST key audit found no other unwrapped field that can carry a relation, function or type.
+- **CTE names may not start with `pg_`** — otherwise an out-of-scope reference to a catalog view could pass the "table is a CTE" rule.
+- **Defense in depth at execution** — READ ONLY transaction, `SET LOCAL ROLE analytics_reader` (can read only the demo schema; verified to get "permission denied" on account/user), `search_path = demo`, `statement_timeout`, EXPLAIN cost ceiling, row cap, app timeout, audit row for every attempt.
+- **EXPLAIN cost ceiling 250,000** — PGlite ignores statement_timeout (measured: pg_sleep(1.5) ran 1503 ms under a 300 ms timeout). After ANALYZE, legitimate test queries cost ≤ 21k and an orders×order_items cross join 1.77M.
+- **Seed runs ANALYZE** — without statistics the planner estimated the same cross join at 826k, under the first (1M) ceiling.
+- **Dataset in its own `demo` schema, app tables in `public`** — the allowlist and the role can both draw a hard line between data users may query and the app's own tables.
+- **Separate synthetic dataset (fictional retailer, no names/contact details)** — rule 8; queries over it are realistic (joins, time series, cohorts) without any personal data.
+- **Model output is a JSON plan (sql, title, chart, explanation); the chart is re-validated against the actual result columns** — invalid charts fall back to type-based inference.
+- **Up to 2 repair turns with the guard/database error** — the SQL from the last attempt and the reason are always shown, with an editor, so a failed answer still helps.
+- **Hand-written SQL uses exactly the same path** — the non-AI fallback when no provider is configured.
+- **Shared dashboards are public read-only links with 24-byte random tokens; revoking deletes the token** — no accounts needed for viewers; tiles re-run through the guard on every view and are rate limited per IP.
+- **CSV export neutralises formula injection (leading = + - @ tab CR → apostrophe) and adds a UTF-8 BOM** — OWASP CSV injection guidance; BOM for Excel.
+- **Example dashboard uses hand-written SQL labelled "Hand-written"** — seed content must not pass as AI output (rule 3).
+- **Model: Qwen2.5-Coder-1.5B-Instruct (Apache-2.0) for SQL** — the general Qwen2.5-1.5B baseline got 1 of 22 eval questions right (4.5%). Qwen2.5-Coder-3B was ruled out: its upstream licence is "other" (Qwen Research License), not permissive (rule 7). 7B (Apache-2.0) is too slow for CPU-only demos.

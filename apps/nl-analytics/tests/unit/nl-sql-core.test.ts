@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSqlMessages, buildSummaryMessages, chooseChart, inferChart, normalizeAnswer, repairMessages, sqlAnswerSchema, stripFences, unverifiedNumbers } from "@/server/ai/nl-sql-core";
+import { buildSqlMessages, buildSummaryMessages, chooseChart, columnsHint, inferChart, normalizeAnswer, repairMessages, sqlAnswerSchema, stripFences, unverifiedNumbers } from "@/server/ai/nl-sql-core";
 import { toCsv } from "@/server/csv";
 import { schemaPrompt, TABLES } from "@/server/sql/dataset";
 
@@ -27,6 +27,16 @@ describe("model output handling", () => {
     expect(msgs).toHaveLength(4);
     expect(msgs[2]!.role).toBe("assistant");
     expect(msgs[3]!.content).toContain('column "x" does not exist');
+    expect(msgs[3]!.content).toContain("demo.orders: id, customer_id, order_date, status, sales_channel, discount_pct, total");
+  });
+
+  it("lists the real columns of the tables a failed query used", () => {
+    const hint = columnsHint("SELECT c.name FROM demo.customers c JOIN demo.order_items oi ON true");
+    expect(hint.split("\n")).toEqual([
+      "demo.customers: id, region_id, signup_date, segment, acquisition_channel",
+      "demo.order_items: id, order_id, product_id, quantity, unit_price",
+    ]);
+    expect(columnsHint("SELECT 1").split("\n")).toHaveLength(7);
   });
 });
 

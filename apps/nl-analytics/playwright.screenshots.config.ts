@@ -1,8 +1,8 @@
 import { defineConfig } from "@playwright/test";
 
 /**
- * README screenshots, captured from a RUNNING app (default http://localhost:3005) seeded with
- * `npm run db:seed -- --with-ai` and a real AI provider configured, so every AI output in the
+ * README screenshots, captured from a RUNNING app (default http://localhost:3005) seeded with `npm run db:seed`
+ * and a real AI provider configured, so every AI output in the
  * images comes from a real model call. Not part of CI.
  */
 export default defineConfig({

@@ -79,7 +79,9 @@ type Val = string | number | boolean | null;
 const close = (a: Val, b: Val) => {
   if (typeof a === "number" && typeof b === "number") return Math.abs(a - b) <= Math.max(0.01, Math.abs(b) * 0.005);
   if (a === null || b === null) return a === b;
-  return String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+  // date_trunc without ::date returns a midnight timestamp; it is the same value as the date.
+  const norm = (v: Val) => String(v).trim().toLowerCase().replace(/^(\d{4}-\d{2}-\d{2})t00:00:00(?:\.000)?z$/, "$1");
+  return norm(a) === norm(b);
 };
 /** Greedy one-to-one row matching; `rowMatch` decides whether a model row satisfies a reference row. */
 function matchRows(model: Val[][], ref: Val[][], rowMatch: (m: Val[], r: Val[]) => boolean) {

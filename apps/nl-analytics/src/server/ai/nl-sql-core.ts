@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { fence, UNTRUSTED_NOTICE, type ChatMessage } from "@portfolio/ai";
 import type { ChartSpec } from "@db/schema";
-import { DATASET_NAME, schemaPrompt } from "../sql/dataset";
+import { DATASET_NAME, schemaPrompt, TABLES } from "../sql/dataset";
 
 export const MAX_QUESTION_CHARS = 500;
 export const CHART_TYPES = ["bar", "line", "area", "pie", "number", "table"] as const;
@@ -47,23 +47,50 @@ export function buildSqlMessages(question: string, today: string): ChatMessage[]
 Tables (schema "demo"):
 ${schemaPrompt()}
 
+Joins (these are the ONLY relationships; no other id columns exist):
+  demo.orders.customer_id = demo.customers.id
+  demo.customers.region_id = demo.regions.id
+  demo.order_items.order_id = demo.orders.id
+  demo.order_items.product_id = demo.products.id
+  demo.support_tickets.customer_id = demo.customers.id
+  demo.marketing_spend.channel matches demo.customers.acquisition_channel (text, not an id)
+
 Rules:
-- Write ONE read-only SELECT (CTEs allowed). Always qualify tables with "demo.". Never modify data.
-- Use only the tables and columns listed. Give every output column a short unique snake_case alias.
+- ALWAYS write SQL in "sql": ONE read-only SELECT (CTEs allowed), tables qualified with "demo.". Never modify data.
+- Use only the tables and columns listed above. Give every output column a short unique snake_case alias.
 - Revenue = sum(orders.total) for status = 'completed' unless the question says otherwise.
 - Dates: today is ${today}; use CURRENT_DATE for relative periods ("last 30 days" -> order_date >= CURRENT_DATE - 30).
   For months use date_trunc('month', <date>)::date. Round money to 2 decimals.
 - Rankings ("top", "best") need ORDER BY and LIMIT (10 if no number is given). Order time series by time.
-- If the question can't be answered from these tables, return "sql": "" and say why in "explanation".
+- Do NOT add filters (dates, statuses, limits) the question doesn't ask for. "this year" means
+  order_date >= date_trunc('year', CURRENT_DATE). "average" means avg(); "how many X" counts X rows.
+- When the question lists categories ("completed, refunded and cancelled", "each channel"), GROUP BY that column.
+- Only if the question is about something that is not in these tables at all (e.g. weather, employees), return
+  "sql": "" and say why in "explanation".
 Chart: "line" or "area" for a value over time (x = the date column), "bar" to compare categories, "pie" only for
 shares of a whole with at most 6 slices, "number" for a single value, "table" otherwise. x and y must be output
 column names; y are numeric columns.
-Return JSON: {"sql": "...", "title": "short title", "chart": {"type": "...", "x": "...", "y": ["..."]}, "explanation": "one or two sentences on how the query answers the question"}.
+
+Examples:
+Q: Number of products in each category
+{"sql": "SELECT category, count(*) AS products FROM demo.products GROUP BY category ORDER BY products DESC", "title": "Products per category", "chart": {"type": "bar", "x": "category", "y": ["products"]}, "explanation": "Counts products in each category."}
+Q: Average discount per sales channel in the last 30 days
+{"sql": "SELECT sales_channel, round(avg(discount_pct), 2) AS avg_discount FROM demo.orders WHERE order_date >= CURRENT_DATE - 30 GROUP BY sales_channel ORDER BY avg_discount DESC", "title": "Average discount by channel (30 days)", "chart": {"type": "bar", "x": "sales_channel", "y": ["avg_discount"]}, "explanation": "Averages the discount percentage of orders from the last 30 days for each sales channel."}
+
+Return only JSON: {"sql": "...", "title": "short title", "chart": {"type": "...", "x": "...", "y": ["..."]}, "explanation": "one or two sentences on how the query answers the question"}.
 ${UNTRUSTED_NOTICE}`;
   return [
     { role: "system", content: system },
     { role: "user", content: `Question:\n${fence("question", question, MAX_QUESTION_CHARS)}\nReturn only the JSON object.` },
   ];
+}
+
+/** Follow-up turn when the SQL was rejected by the guard or failed in the database. */
+/** Real columns of the dataset tables a failed query mentions (small models ignore the error text alone). */
+export function columnsHint(sql: string): string {
+  const lower = sql.toLowerCase();
+  const used = TABLES.filter((t) => new RegExp(String.raw`\b${t.name}\b`).test(lower));
+  return (used.length ? used : TABLES).map((t) => `demo.${t.name}: ${t.columns.map((c) => c.name).join(", ")}`).join("\n");
 }
 
 /** Follow-up turn when the SQL was rejected by the guard or failed in the database. */
@@ -73,7 +100,11 @@ export function repairMessages(base: ChatMessage[], previous: SqlAnswer, error: 
     { role: "assistant", content: JSON.stringify(previous) },
     {
       role: "user",
-      content: `That SQL failed: ${error.slice(0, 400)}\nFix it. Use only the listed demo tables and columns, one SELECT statement, unique column aliases. Return the full JSON object again.`,
+      content: `That SQL failed: ${error.slice(0, 400)}
+The tables you used have ONLY these columns:
+${columnsHint(previous.sql)}
+Joins: orders.customer_id = customers.id; customers.region_id = regions.id; order_items.order_id = orders.id; order_items.product_id = products.id.
+Fix the query (one SELECT, every table alias defined in FROM/JOIN, unique column aliases). Return the full JSON object again.`,
     },
   ];
 }

@@ -68,7 +68,16 @@ export async function askQuestion(user: AppUser, raw: unknown, opts: { source?: 
   for (let attempt = 1; ; attempt++) {
     const common = { question, title: answer.title, sql: answer.sql, explanation: answer.explanation, attempts: attempt, model: { provider: res.provider, model: res.model } };
     if (!answer.sql.trim()) {
-      return { ...common, ok: false, code: "unanswerable", error: answer.explanation || "This question can't be answered from the dataset." };
+      // The app states what happened; the model's own words are quoted, never presented as fact
+      // (in the eval, a model claimed a table "was successfully dropped" when nothing had run).
+      const note = answer.explanation.trim().slice(0, 300);
+      return {
+        ...common,
+        explanation: "",
+        ok: false,
+        code: "unanswerable",
+        error: `No query was run: the AI didn't write SQL for this question.${note ? ` Its note: “${note}”` : ""}`,
+      };
     }
     try {
       const result = await runReadOnly(answer.sql, { userId: user.id, source: opts.source ?? "ai", question });

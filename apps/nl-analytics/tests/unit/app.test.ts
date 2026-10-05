@@ -82,7 +82,9 @@ describe("asking questions (stub AI)", () => {
   });
 
   it("reports questions the data can't answer (stub AI)", async () => {
-    expect(await askQuestion(alice, { question: "what was the weather like?" })).toMatchObject({ ok: false, code: "unanswerable" });
+    const r = await askQuestion(alice, { question: "what was the weather like?" });
+    expect(r).toMatchObject({ ok: false, code: "unanswerable", explanation: "" });
+    expect(!r.ok && r.error).toBe("No query was run: the AI didn't write SQL for this question. Its note: “[stub] The dataset has no weather data.”");
   });
 
   it("validates input and rate limits per user (stub AI)", async () => {
