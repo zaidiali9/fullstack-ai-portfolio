@@ -53,7 +53,14 @@ function convert(value: unknown, oid: number): string | number | boolean | null 
     if (value instanceof Date) return `${value.getUTCFullYear()}-${pad(value.getUTCMonth() + 1)}-${pad(value.getUTCDate())}`;
     return String(value).slice(0, 10);
   }
-  if (TIMESTAMP_OIDS.has(oid)) return value instanceof Date ? value.toISOString() : String(value);
+  if (TIMESTAMP_OIDS.has(oid)) {
+    // Drivers return Date objects or strings like "2026-01-01 00:00:00+00" (session time zone is UTC).
+    const d = value instanceof Date ? value : new Date(String(value).replace(" ", "T").replace(/([+-]\d{2})$/, "$1:00"));
+    if (Number.isNaN(d.getTime())) return String(value);
+    const iso = d.toISOString();
+    // Midnight UTC (e.g. date_trunc('month', ...)) reads better as a plain date.
+    return iso.endsWith("T00:00:00.000Z") ? iso.slice(0, 10) : iso;
+  }
   if (BOOL_OIDS.has(oid)) return Boolean(value);
   if (typeof value === "bigint") return Number(value);
   if (typeof value === "number" || typeof value === "boolean") return value;
@@ -124,6 +131,8 @@ export async function runReadOnly(input: string, ctx: { userId: string | null; s
     await tx.execute(dsql.raw("SET TRANSACTION READ ONLY"));
     await tx.execute(dsql.raw(`SET LOCAL statement_timeout = ${Math.floor(timeoutMs)}`));
     await tx.execute(dsql.raw("SET LOCAL search_path = demo"));
+    // Same answers on every server: CURRENT_DATE, date_trunc and timestamps are evaluated in UTC.
+    await tx.execute(dsql.raw("SET LOCAL TIME ZONE 'UTC'"));
     if (useRole) await tx.execute(dsql.raw("SET LOCAL ROLE analytics_reader"));
     const plan = rowsOf(await tx.execute(dsql.raw(`EXPLAIN (FORMAT JSON) ${wrapped}`)))[0] as Record<string, unknown> | undefined;
     const planJson = plan ? Object.values(plan)[0] : null;

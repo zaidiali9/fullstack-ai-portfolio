@@ -41,6 +41,15 @@ describe("runReadOnly", () => {
     expect(r.truncated).toBe(false);
   });
 
+  it("evaluates time in UTC and returns midnight timestamps as dates", async () => {
+    const r = await runReadOnly(
+      "SELECT date_trunc('month', order_date) AS month, min(opened_at) AS first_ticket, current_setting_free AS x FROM demo.orders o, (SELECT 1 AS current_setting_free) s, demo.support_tickets t WHERE t.customer_id = o.customer_id GROUP BY 1, 3 ORDER BY 1 LIMIT 1",
+      ctx,
+    );
+    expect(r.rows[0]![0]).toMatch(/^\d{4}-\d{2}-01$/);
+    expect(r.rows[0]![1]).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  });
+
   it("caps rows and reports truncation", async () => {
     const r = await runReadOnly("SELECT o.id, r.id AS region FROM demo.orders o CROSS JOIN demo.regions r", ctx);
     expect(r.rowCount).toBe(1000);
