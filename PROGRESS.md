@@ -107,11 +107,11 @@ Environment flags (see DECISIONS.md):
 - [x] Lighthouse run recorded (100/100/100/100 mobile; axe 0 light/dark) — portfolio-site/README.md
 
 ## Step 4 — Profile and outreach docs
-- [ ] docs/upwork-profile.md
-- [ ] docs/cold-emails.md
-- [ ] docs/fiverr-gigs.md
-- [ ] docs/improvements.md
-- [ ] docs/HUMAN-TODO.md
+- [x] docs/upwork-profile.md
+- [x] docs/cold-emails.md
+- [x] docs/fiverr-gigs.md
+- [x] docs/improvements.md
+- [x] docs/HUMAN-TODO.md
 
 ## Step 5 — Final QA
 - [ ] Fresh-clone test following each README quickstart
