@@ -1,26 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Inter, Lora } from "next/font/google";
+import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
 import { Toaster } from "@portfolio/ui/sonner";
 import { ThemeProvider } from "@portfolio/ui/theme-provider";
 import { TooltipProvider } from "@portfolio/ui/tooltip";
 import "./globals.css";
 
 const sans = Inter({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
-const heading = Lora({ variable: "--font-heading", subsets: ["latin"], display: "swap", weight: ["500", "600"] });
+const heading = Space_Grotesk({ variable: "--font-heading", subsets: ["latin"], display: "swap", weight: ["500", "600", "700"] });
 const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3005"),
-  title: { default: "Lumen Wellness Studio — book online", template: "%s · Lumen Wellness Studio" },
-  description: "Book massage, facials and acupuncture online with live availability. A Tally portfolio demo with a fictional studio.",
+  title: { default: "Tally — ask your data in plain English", template: "%s · Tally" },
+  description: "Natural-language analytics: questions become safe, read-only SQL with charts, saved queries, shareable dashboards and CSV export. A portfolio demo on fictional data.",
   applicationName: "Tally",
-  openGraph: { type: "website", siteName: "Tally", title: "Lumen Wellness Studio — book online", description: "Live availability, instant confirmation." },
+  openGraph: { type: "website", siteName: "Tally", title: "Tally — ask your data in plain English", description: "Questions in, charts out. Every query visible and read-only." },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbf9f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#12181c" },
+    { media: "(prefers-color-scheme: light)", color: "#fafaff" },
+    { media: "(prefers-color-scheme: dark)", color: "#13141f" },
   ],
 };
 

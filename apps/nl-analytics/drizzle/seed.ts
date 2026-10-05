@@ -3,7 +3,7 @@
  * and an example dashboard built from HAND-WRITTEN SQL (labelled source "manual", not AI output).
  * Usage: npm run db:seed
  */
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { hashPassword } from "better-auth/crypto";
 import { inArray, sql } from "drizzle-orm";
 import { db, dbHandle, schema } from "@/db";
@@ -92,7 +92,13 @@ async function main() {
     .returning();
   const [dash] = await db
     .insert(schema.dashboards)
-    .values({ ownerId: ids.analyst!, title: "Sales overview (example)", description: "Example dashboard from hand-written SQL over the fictional seed dataset." })
+    .values({
+      ownerId: ids.analyst!,
+      title: "Sales overview (example)",
+      description: "Example dashboard from hand-written SQL over the fictional seed dataset.",
+      // Shared so the landing page can link to a public read-only example.
+      shareToken: randomBytes(24).toString("base64url"),
+    })
     .returning();
   await db.insert(schema.dashboardTiles).values(saved.map((q, i) => ({ dashboardId: dash!.id, queryId: q.id, position: i, width: EXAMPLES[i]!.width })));
 

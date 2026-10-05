@@ -12,8 +12,8 @@ export default function NotFound() {
         title="Page not found"
         description="This page doesn't exist, or you don't have access to it."
         action={
-          <Link href="/" className={buttonVariants()}>
-            Back to booking
+          <Link href="/ask" className={buttonVariants()}>
+            Go to Tally
           </Link>
         }
       />

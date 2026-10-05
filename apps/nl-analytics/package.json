@@ -17,7 +17,7 @@
     "db:migrate": "tsx --env-file-if-exists=.env drizzle/migrate.ts",
     "db:seed": "tsx --conditions=react-server --env-file-if-exists=.env drizzle/seed.ts",
     "setup": "npm run db:migrate && npm run db:seed",
-    "eval": "tsx --env-file-if-exists=.env scripts/eval-nl-sql.ts",
+    "eval": "tsx --conditions=react-server --env-file-if-exists=.env scripts/eval-nl-sql.ts",
     "screenshots": "playwright test --config playwright.screenshots.config.ts"
   },
   "dependencies": {

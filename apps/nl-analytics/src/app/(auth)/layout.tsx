@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
     <div className="grid min-h-full lg:grid-cols-2">
       <div className="flex flex-col px-4 py-6 sm:px-8">
         <div className="flex items-center justify-between">
-          <Brand label="Lumen Wellness" />
+          <Brand />
           <ThemeToggle />
         </div>
         <main id="main" className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
@@ -28,9 +28,9 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
           ))}
         </svg>
         <blockquote className="relative max-w-md text-lg font-medium">
-          Live availability, holds while you confirm, and a database that simply refuses to double-book.
+          Ask in plain English, see the SQL, trust the numbers: every query is checked by a real PostgreSQL parser and runs read-only.
         </blockquote>
-        <p className="relative mt-3 text-sm opacity-80">Tally · portfolio demo</p>
+        <p className="relative mt-3 text-sm opacity-80">Tally · portfolio demo on fictional data</p>
       </aside>
     </div>
   );

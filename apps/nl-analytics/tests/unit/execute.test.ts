@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { beforeAll, describe, expect, it } from "vitest";
 import { HttpError } from "@portfolio/kit";
+import { rowsOf } from "@portfolio/kit/db";
 import { db, schema } from "@/db";
 import { readerRoleUsable, runReadOnly } from "@/server/sql/execute";
 import { seedDataset } from "@db/seed-data";
@@ -51,7 +52,7 @@ describe("runReadOnly", () => {
     expect(err.status).toBe(422);
     const [last] = await db.select().from(schema.queryRuns).orderBy(sql`created_at desc`).limit(1);
     expect(last).toMatchObject({ status: "rejected", question: "delete everything", sql: "DELETE FROM demo.orders" });
-    const [{ n }] = (await db.execute(sql`select count(*)::int as n from demo.orders`)).rows as { n: number }[];
+    const [{ n }] = rowsOf<{ n: number }>(await db.execute(sql`select count(*)::int as n from demo.orders`));
     expect(n).toBeGreaterThan(0);
   });
 

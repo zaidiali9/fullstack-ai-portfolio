@@ -13,7 +13,7 @@ import { DEMO_ACCOUNTS, DEMO_PASSWORD, type DemoRole } from "@/lib/demo";
 
 /** Only allow same-site relative redirects after sign-in (prevents open redirects). */
 export function safeNext(next: string | null) {
-  return next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\") ? next : "/app";
+  return next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/\\") ? next : "/ask";
 }
 
 export function AuthForm({ mode, githubEnabled }: { mode: "sign-in" | "sign-up"; githubEnabled: boolean }) {
