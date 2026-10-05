@@ -114,3 +114,18 @@ describe("assertSameOrigin", () => {
     expect(() => assertSameOrigin(req({ host: "app.test", "sec-fetch-site": "cross-site" }))).toThrow(/Cross-site/);
   });
 });
+
+describe("listen/notify (PGlite)", () => {
+  it("delivers NOTIFY payloads and stops after unsubscribe", async () => {
+    const h = createDatabase(schema, { dataDir: "memory://kit-listen" });
+    const got: string[] = [];
+    const stop = await h.listen("kit_events", (p) => got.push(p));
+    await h.db.execute(sql`select pg_notify('kit_events', 'one')`);
+    await new Promise((r) => setTimeout(r, 50));
+    await stop();
+    await h.db.execute(sql`select pg_notify('kit_events', 'two')`);
+    await new Promise((r) => setTimeout(r, 50));
+    expect(got).toEqual(["one"]);
+    await h.close();
+  });
+});

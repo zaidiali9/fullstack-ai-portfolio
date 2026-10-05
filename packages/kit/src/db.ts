@@ -21,6 +21,8 @@ export interface DbHandle<S extends Record<string, unknown>> {
   db: Database<S>;
   driver: "postgres" | "pglite";
   migrate(migrationsFolder: string): Promise<void>;
+  /** LISTEN on a channel (NOTIFY payloads); resolves to an unsubscribe function. Works on both drivers. */
+  listen(channel: string, onPayload: (payload: string) => void): Promise<() => Promise<void>>;
   close(): Promise<void>;
 }
 
@@ -31,6 +33,8 @@ export interface DbOptions {
   dataDir: string;
   /** postgres-js pool size (keep small for serverless). */
   max?: number;
+  /** Extra PGlite extensions (e.g. btree_gist from "@electric-sql/pglite/contrib/btree_gist"). */
+  pgliteExtensions?: Record<string, unknown>;
 }
 
 const g = globalThis as unknown as { __portfolioDb?: Map<string, DbHandle<Record<string, unknown>>> };
@@ -55,12 +59,18 @@ export function createDatabase<S extends Record<string, unknown>>(schema: S, opt
           await migrator.end();
         }
       },
+      listen: async (channel, onPayload) => {
+        const sub = await client.listen(channel, (p) => onPayload(p));
+        return () => sub.unlisten();
+      },
       close: () => client.end(),
     };
   } else {
     const inMemory = opts.dataDir.startsWith("memory://");
     if (!inMemory) acquireLock(opts.dataDir);
-    const client = new PGlite(inMemory ? "memory://" : opts.dataDir, { extensions: { vector } });
+    const client = new PGlite(inMemory ? "memory://" : opts.dataDir, {
+      extensions: { vector, ...(opts.pgliteExtensions as Record<string, never> | undefined) },
+    });
     handle = {
       db: drizzlePglite(client, { schema }) as unknown as Database<S>,
       driver: "pglite",
@@ -68,6 +78,7 @@ export function createDatabase<S extends Record<string, unknown>>(schema: S, opt
         await client.exec("CREATE EXTENSION IF NOT EXISTS vector;");
         await migratePglite(drizzlePglite(client), { migrationsFolder });
       },
+      listen: async (channel, onPayload) => client.listen(channel, onPayload),
       close: async () => {
         await client.close();
         cache.delete(key);

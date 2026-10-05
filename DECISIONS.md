@@ -79,3 +79,18 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Search embeds the query, so it is rate limited per IP with silent keyword fallback** — protects CPU/API cost without breaking browsing.
 - **Description rules in the zod schema (repair turns) but length as a warning** — measured: rules-in-schema cut banned content from 8/15 to 0; a 30-word minimum dropped validity to 33%, so it became an advisory.
 - **Bug fix (A, B, C): sign-in demo buttons dropped the `next` redirect** — found by storefront E2E.
+
+## App D — Bookwell (booking)
+- **Single business, not multi-tenant** — scope rule; the interesting problems (concurrency, time zones, realtime) don't need tenancy, and helpdesk already shows multi-tenancy.
+- **Stripe deposit dropped** — scope rule 9; storefront already demonstrates Stripe Checkout + webhooks. Listed in docs/improvements.md.
+- **Double booking prevented by a Postgres exclusion constraint (btree_gist, `tstzrange [starts_at, blocked_until)`, only held/confirmed rows)** — app-level checks race; the constraint can't. App catches SQLSTATE 23P01 and answers 409 with the nearest alternatives.
+- **Hold → confirm with a 5-minute hold (HOLD_MINUTES), one active hold per customer** — stops a slot being taken while the customer types notes; expired holds are deleted lazily before inserts (no cron needed).
+- **Optimistic concurrency via `version` on cancel/reschedule/outcome** — a stale tab gets a clear 409 "changed by someone else" instead of overwriting.
+- **Reschedule updates the row in place** — keeps the reference and history; availability ignores the booking itself so small nudges work.
+- **Realtime = Postgres LISTEN/NOTIFY fanned out to SSE** — NOTIFY inside the transaction only fires on commit; works across instances on real Postgres; SSE is one-way, proxy friendly and needs no extra service. Public stream only carries {date, staffId}; staff stream adds references.
+- **Kit: `DbHandle.listen()` and `pgliteExtensions` option** — additive shared-package change needed for LISTEN and btree_gist; A/B/C typecheck and kit tests re-run.
+- **NL booking: model extracts service/staff/time preference only; dates are parsed deterministically** — small local models are unreliable at calendar arithmetic and a wrong date books the wrong day. The resolved range is shown to the user. The model never sees the calendar and cannot book.
+- **Date conventions: weeks start Monday; bare/"this" weekday = next occurrence incl. today; "next <weekday>" = that weekday in next week** — ambiguous in English; chosen once, unit-tested and displayed back.
+- **Weekly digest = SQL/JS stats + model narrative, with an unverified-number check** — any number in the narrative not present in the stats is flagged to the owner instead of trusted.
+- **Owner-only digest; staff see calendar/activity** — business value figures are owner information.
+- **Timezone: America/New_York for the seed studio, all slot math via @date-fns/tz TZDate** — DST days (23/25 h) are unit-tested.
