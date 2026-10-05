@@ -205,7 +205,7 @@ labeled attribution + deterministic decoding. All runs are kept in `docs/metrics
 |---|---|---|
 | Qwen2.5-1.5B-Instruct (ONNX) | huggingface.co/onnx-community/Qwen2.5-1.5B-Instruct | Apache-2.0 |
 | all-MiniLM-L6-v2 | huggingface.co/Xenova/all-MiniLM-L6-v2 | Apache-2.0 |
-| Plus Jakarta Sans, Geist Mono fonts | via `next/font/google` | SIL Open Font License 1.1 |
+| Plus Jakarta Sans, Geist Mono fonts | self-hosted from [`packages/ui/fonts`](../../packages/ui/fonts) (Fontsource 5.3.0 variable builds of the Google Fonts releases) via `next/font/local` | SIL Open Font License 1.1 |
 | Lucide icons | lucide.dev | ISC |
 | shadcn/ui components | ui.shadcn.com | MIT |
 | Logo mark | drawn for this project (inline SVG) | same as this repo |

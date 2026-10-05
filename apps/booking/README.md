@@ -175,7 +175,7 @@ request on this CPU-only machine). It is a small hand-written set, so treat the 
 | Server-Sent Events | one-way updates are all the UI needs; proxy-friendly, auto-reconnect, no extra service |
 | @date-fns/tz | DST-correct wall-clock ↔ UTC conversion for availability |
 | PGlite for dev/tests | real Postgres (WASM) with btree_gist, so tests exercise the actual constraint |
-| Lora + Inter (Google Fonts, OFL) | calm serif headings for a wellness brand, readable UI face |
+| Lora + Inter (OFL, self-hosted) | calm serif headings for a wellness brand, readable UI face |
 | Vitest, Playwright, axe-core | integration tests on a real database, multi-browser E2E and accessibility |
 
 ## Environment variables
@@ -202,7 +202,7 @@ request on this CPU-only machine). It is a small hand-written set, so treat the 
 | Asset | Source | License |
 |---|---|---|
 | Qwen2.5-1.5B-Instruct (ONNX) | huggingface.co/onnx-community/Qwen2.5-1.5B-Instruct | Apache-2.0 |
-| Lora, Inter, Geist Mono fonts | via `next/font/google` | SIL Open Font License 1.1 |
+| Lora, Inter, Geist Mono fonts | self-hosted from [`packages/ui/fonts`](../../packages/ui/fonts) (Fontsource 5.3.0 variable builds of the Google Fonts releases) via `next/font/local` | SIL Open Font License 1.1 |
 | Logo (sun over horizon) | drawn as inline SVG for this project | same as this repo |
 | Lucide icons / shadcn/ui | lucide.dev / ui.shadcn.com | ISC / MIT |
 | Studio, staff, customers, bookings | written for this project; fictional seed data | same as this repo |

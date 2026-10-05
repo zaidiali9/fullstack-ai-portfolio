@@ -1,13 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "@portfolio/ui/sonner";
 import { ThemeProvider } from "@portfolio/ui/theme-provider";
 import { TooltipProvider } from "@portfolio/ui/tooltip";
 import "./globals.css";
 
-const sans = Inter({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
-const heading = Space_Grotesk({ variable: "--font-heading", subsets: ["latin"], display: "swap", weight: ["500", "600", "700"] });
-const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+// Fonts are committed to the repo (packages/ui/fonts, OFL) so builds never depend on fetching from Google.
+const sans = localFont({ src: "../../../../packages/ui/fonts/inter-latin-wght-normal.woff2", weight: "100 900", variable: "--font-sans", display: "swap" });
+const heading = localFont({ src: "../../../../packages/ui/fonts/space-grotesk-latin-wght-normal.woff2", weight: "300 700", variable: "--font-heading", display: "swap" });
+const mono = localFont({
+  src: "../../../../packages/ui/fonts/geist-mono-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-geist-mono",
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3005"),

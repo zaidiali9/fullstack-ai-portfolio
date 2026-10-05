@@ -1,12 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "@portfolio/ui/sonner";
 import { ThemeProvider } from "@portfolio/ui/theme-provider";
 import { TooltipProvider } from "@portfolio/ui/tooltip";
 import "./globals.css";
 
-const sans = Geist({ variable: "--font-sans", subsets: ["latin"], display: "swap" });
-const mono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+// Fonts are committed to the repo (packages/ui/fonts, OFL) so builds never depend on fetching from Google.
+const sans = localFont({ src: "../../../../packages/ui/fonts/geist-latin-wght-normal.woff2", weight: "100 900", variable: "--font-sans", display: "swap" });
+const mono = localFont({
+  src: "../../../../packages/ui/fonts/geist-mono-latin-wght-normal.woff2",
+  weight: "100 900",
+  variable: "--font-geist-mono",
+  display: "swap",
+  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3001"),

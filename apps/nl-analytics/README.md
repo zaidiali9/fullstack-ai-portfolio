@@ -175,7 +175,7 @@ The scorer compares result sets (any row order, numbers within 0.5%), not SQL te
 | PostgreSQL (Drizzle), PGlite for dev/tests | the role, read-only transactions and EXPLAIN work the same in both |
 | libpg-query | the real PostgreSQL parser for the guard, instead of a hand-written or approximate SQL parser |
 | Recharts | accessible SVG charts with little code |
-| Space Grotesk + Inter + Geist Mono (Google Fonts, OFL) | technical headings, readable UI, monospaced SQL |
+| Space Grotesk + Inter + Geist Mono (OFL, self-hosted) | technical headings, readable UI, monospaced SQL |
 | Vitest, Playwright, axe-core | guard/executor tests on a real database, browser E2E and accessibility |
 
 ## Environment variables
@@ -212,7 +212,7 @@ The scorer compares result sets (any row order, numbers within 0.5%), not SQL te
 | Qwen2.5-1.5B-Instruct (ONNX), baseline in the eval | huggingface.co/onnx-community/Qwen2.5-1.5B-Instruct | Apache-2.0 |
 | libpg-query | github.com/constructive-io/libpg-query-node | MIT (npm package; built on pganalyze libpg_query, BSD-3-Clause, which contains PostgreSQL source under the PostgreSQL License) |
 | Recharts | recharts.org | MIT |
-| Space Grotesk, Inter, Geist Mono fonts | via `next/font/google` | SIL Open Font License 1.1 |
+| Space Grotesk, Inter, Geist Mono fonts | self-hosted from [`packages/ui/fonts`](../../packages/ui/fonts) (Fontsource 5.3.0 variable builds of the Google Fonts releases) via `next/font/local` | SIL Open Font License 1.1 |
 | Logo (tally marks) | drawn as inline SVG for this project | same as this repo |
 | Lucide icons / shadcn/ui | lucide.dev / ui.shadcn.com | ISC / MIT |
 | Dataset, users, example queries | generated/written for this project; fictional seed data | same as this repo |

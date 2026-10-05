@@ -153,7 +153,7 @@ ranking on this set. A stricter description schema (≥30 words) was tried and r
 | PostgreSQL + pgvector (Drizzle) | catalog, orders and vector search in one database; CHECK constraints for money/stock invariants |
 | Stripe Checkout + webhooks | PCI scope stays with Stripe; webhook-driven state is the source of truth |
 | sharp + inline SVG art | license-free product imagery generated at seed time, served as optimized WebP |
-| Fraunces + Inter (Google Fonts, OFL) | distinctive serif headings with a readable UI face |
+| Fraunces + Inter (OFL, self-hosted) | distinctive serif headings with a readable UI face |
 | Vitest, Playwright, axe-core | integration tests on a real database, browser E2E and accessibility |
 
 ## Environment variables
@@ -182,7 +182,7 @@ ranking on this set. A stricter description schema (≥30 words) was tried and r
 |---|---|---|
 | Qwen2.5-1.5B-Instruct (ONNX) | huggingface.co/onnx-community/Qwen2.5-1.5B-Instruct | Apache-2.0 |
 | all-MiniLM-L6-v2 | huggingface.co/Xenova/all-MiniLM-L6-v2 | Apache-2.0 |
-| Fraunces, Inter, Geist Mono fonts | via `next/font/google` | SIL Open Font License 1.1 |
+| Fraunces, Inter, Geist Mono fonts | self-hosted from [`packages/ui/fonts`](../../packages/ui/fonts) (Fontsource 5.3.0 variable builds of the Google Fonts releases) via `next/font/local` | SIL Open Font License 1.1 |
 | Product illustrations, logo | generated/drawn for this project ([`drizzle/product-art.ts`](drizzle/product-art.ts)) | same as this repo |
 | Lucide icons / shadcn/ui | lucide.dev / ui.shadcn.com | ISC / MIT |
 | Catalog, orders | written for this project; fictional seed data | same as this repo |
