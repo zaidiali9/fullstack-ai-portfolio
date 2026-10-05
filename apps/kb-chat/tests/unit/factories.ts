@@ -30,4 +30,4 @@ export async function team(overrides: Partial<typeof schema.workspaces.$inferIns
 }
 
 /** A File-like upload for services that accept browser File objects. */
-export const file = (name: string, content: string | Buffer, type = "text/plain") => new File([typeof content === "string" ? Buffer.from(content) : content], name, { type });
+export const file = (name: string, content: string | Buffer, type = "text/plain") => new File([new Uint8Array(typeof content === "string" ? Buffer.from(content) : content)], name, { type });

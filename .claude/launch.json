@@ -1,6 +1,27 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "helpdesk", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--workspace", "apps/helpdesk"], "port": 3001 }
+    {
+      "name": "helpdesk",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "apps/helpdesk"
+      ],
+      "port": 3001
+    },
+    {
+      "name": "kb-chat",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "apps/kb-chat"
+      ],
+      "port": 3002
+    }
   ]
 }

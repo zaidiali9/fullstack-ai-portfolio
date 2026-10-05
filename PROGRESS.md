@@ -59,8 +59,8 @@ Environment flags (see DECISIONS.md):
 - [x] Security: SSRF IP-literal hole found by tests and fixed; untrusted fencing; rate limits
 - [x] Seed (5 docs in 4 formats via real pipeline) + demo logins (owner/editor/viewer@cairn.demo)
 - [x] RAG eval (22 cases, real local model): hit@5 100%, fact 100%, citations correct 88.2%, refusals 5/5, 0 leaks -> docs/metrics/eval-rag.json
-- [ ] NEXT: fix failing test "recovers jobs whose worker died" in tests/unit/pipeline-chat.test.ts (a job left queued by the previous test is claimed first; isolate by draining/clearing jobs before claiming). 41/42 pass.
-- [ ] Action/route authz tests (viewer cannot upload; widget origin check), coverage %
+- [x] Fixed job-isolation test (54/54 unit+integration tests pass)
+- [x] Action/route authz tests (viewer cannot upload, CSRF, widget origin/rate limit, cron auth); coverage 87.75% lines
 - [ ] UI verification in browser (dev server :3002), E2E (Playwright), Lighthouse x2, screenshots
 - [ ] .env.example, docker-compose, CI workflow (.github/workflows/kb-chat.yml), audit
 - [ ] README, docs/kb-chat/case-study.md + marketing.md, docs/verification.md; commit "feat(kb-chat): complete app, tests, docs"

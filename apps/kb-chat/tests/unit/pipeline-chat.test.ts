@@ -64,6 +64,7 @@ describe("ingestion pipeline (stub embeddings, real parsers, PGlite)", () => {
   });
 
   it("recovers jobs whose worker died (stale lock) and never double-claims", async () => {
+    await db.delete(schema.ingestionJobs); // isolate from jobs queued by earlier tests in this file
     const t = await team();
     const doc = await uploadFile(t.editor, file("x.md", "Some text that is long enough to index properly."));
     const first = await claimNextJob();

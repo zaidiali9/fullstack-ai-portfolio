@@ -82,6 +82,7 @@ export function ChatPanel({ endpoint, chunkEndpoint, initialConversationId, init
   const [open, setOpen] = useState<UiSource | null>(null);
   const [openText, setOpenText] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const seq = useRef(0);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -102,8 +103,9 @@ export function ChatPanel({ endpoint, chunkEndpoint, initialConversationId, init
     setError(null);
     setInput("");
     setBusy(true);
-    const assistantId = `a-${Date.now()}`;
-    setMessages((m) => [...m, { id: `u-${Date.now()}`, role: "user", content: q, status: "ok", sources: [] }, { id: assistantId, role: "assistant", content: "", status: "streaming", sources: [] }]);
+    const n = ++seq.current;
+    const assistantId = `a-${n}`;
+    setMessages((m) => [...m, { id: `u-${n}`, role: "user", content: q, status: "ok", sources: [] }, { id: assistantId, role: "assistant", content: "", status: "streaming", sources: [] }]);
     const controller = new AbortController();
     abortRef.current = controller;
     const update = (patch: Partial<UiMessage>) => setMessages((m) => m.map((x) => (x.id === assistantId ? { ...x, ...patch } : x)));
