@@ -1,0 +1,14 @@
+# Files never uploaded by `railway up` (mirrors .dockerignore; secrets and local data stay local)
+**/node_modules
+**/.next
+**/.data
+**/coverage
+**/playwright-report
+**/test-results
+**/.env
+**/.env.*
+!**/.env.example
+.git
+.claude
+docs
+portfolio-site
