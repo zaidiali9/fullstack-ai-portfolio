@@ -33,6 +33,17 @@
         "apps/storefront"
       ],
       "port": 3003
+    },
+    {
+      "name": "booking",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--workspace",
+        "apps/booking"
+      ],
+      "port": 3004
     }
   ]
 }

@@ -12,9 +12,8 @@ export async function GET() {
   } catch {
     database = "error";
   }
-  const ai = aiStatus();
   return Response.json(
-    { status: database === "ok" ? "ok" : "degraded", database, ai: { chat: ai.chat?.provider ?? "unavailable", embeddings: ai.embeddings?.provider ?? "unavailable" } },
+    { status: database === "ok" ? "ok" : "degraded", database, ai: { chat: aiStatus()?.provider ?? "unavailable" } },
     { status: database === "ok" ? 200 : 503, headers: { "cache-control": "no-store" } },
   );
 }

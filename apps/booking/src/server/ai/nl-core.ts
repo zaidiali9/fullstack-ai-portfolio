@@ -216,14 +216,12 @@ export function resolveNl<S extends { slug: string; id: string; staffIds: string
 /** Local-time start window from the parsed preference (minutes from midnight). */
 export function timeWindow(p: Pick<NlRequest, "timeOfDay" | "after" | "before">): { fromMin: number; toMin: number } | null {
   const toMin = (s: string) => Number(s.slice(0, 2)) * 60 + Number(s.slice(3, 5));
-  let from = 0;
-  let to = 24 * 60;
-  if (p.timeOfDay === "morning") to = 12 * 60;
-  if (p.timeOfDay === "afternoon") [from, to] = [12 * 60, 17 * 60];
-  if (p.timeOfDay === "evening") from = 17 * 60;
-  if (p.after) from = Math.max(from, toMin(p.after));
-  if (p.before) to = Math.min(to, toMin(p.before));
+  const tod = { morning: [0, 12 * 60], afternoon: [12 * 60, 17 * 60], evening: [17 * 60, 24 * 60], any: [0, 24 * 60] }[p.timeOfDay];
+  // An explicit time replaces the matching time-of-day bound ("after 4pm" is not "after 5pm" just
+  // because the model also said "evening").
+  const from = p.after ? toMin(p.after) : tod[0]!;
+  let to = p.before ? toMin(p.before) : tod[1]!;
+  if (from >= to) to = 24 * 60; // contradictory ("morning after 3pm"): trust the explicit time
   if (from === 0 && to === 24 * 60) return null;
-  if (from >= to) return { fromMin: p.after ? toMin(p.after) : from, toMin: 24 * 60 }; // contradictory: trust the explicit time
   return { fromMin: from, toMin: to };
 }

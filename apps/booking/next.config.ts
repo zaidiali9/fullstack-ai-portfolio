@@ -20,9 +20,7 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders({
           isDev,
-          connectSrc: ["https://api.stripe.com"],
-          frameSrc: ["https://checkout.stripe.com", "https://js.stripe.com"],
-          formAction: ["https://checkout.stripe.com", "https://billing.stripe.com", "https://github.com"],
+          formAction: ["https://github.com"],
           imgSrc: ["https://avatars.githubusercontent.com"],
         }),
       },

@@ -46,15 +46,35 @@ export function unverifiedNumbers(text: string, stats: DigestStats): string[] {
   return [...found];
 }
 
+/** One plain-English fact per line: small models copy these more faithfully than nested JSON. */
+export function digestFacts(stats: DigestStats): string[] {
+  const p = stats.past7;
+  const n = stats.next7;
+  const facts = [
+    `Last 7 days: ${p.appointments} appointments.`,
+    `Last 7 days: ${p.completed} completed.`,
+    `Last 7 days: ${p.noShows} no-shows.`,
+    `Last 7 days: ${p.cancellations} cancellations.`,
+    `Last 7 days: booked value $${p.bookedValueUsd} (excluding no-shows).`,
+  ];
+  if (p.topService) facts.push(`Last 7 days: most booked service was ${p.topService.name} with ${p.topService.count} bookings.`);
+  if (p.busiestDay) facts.push(`Last 7 days: busiest weekday was ${p.busiestDay.day} with ${p.busiestDay.count} appointments.`);
+  facts.push(`Next 7 days: ${n.appointments} appointments booked so far.`);
+  for (const s of n.byStaff) facts.push(`Next 7 days: ${s.name} has ${s.appointments} appointments, ${s.utilizationPct}% of working hours booked.`);
+  if (n.quietestDay) facts.push(`Next 7 days: quietest open day is ${n.quietestDay.day} with ${n.quietestDay.appointments} booked.`);
+  return facts;
+}
+
 export function buildDigestMessages(businessName: string, stats: DigestStats): ChatMessage[] {
   const system = `You write a short weekly schedule digest for the owner of ${businessName}, a wellness studio.
 Rules:
-- Use ONLY the numbers in the JSON stats. Never calculate new numbers, estimate, or invent facts.
-- Write 3 to 5 bullet points starting with "- ", then one line starting with "Suggestion:" with a practical idea
-  (for example promoting the quietest day or following up on no-shows). At most 140 words. Plain text, no headings.
-- If a number is 0, say so plainly. Don't mention customer names.`;
+- Use ONLY the facts provided. Copy numbers exactly as written. Never add, combine, total or estimate numbers.
+- Keep "last 7 days" and "next 7 days" separate.
+- Write 3 to 5 bullet points starting with "- ", then one line starting with "Suggestion:" with one practical idea
+  (for example promoting the quietest day or following up on no-shows). At most 120 words.
+- Plain text only: no headings, no bold, no markdown. Don't mention customer names.`;
   return [
     { role: "system", content: system },
-    { role: "user", content: `Stats for the week:\n${fence("stats", JSON.stringify(stats, null, 2), 4000)}\nWrite the digest.` },
+    { role: "user", content: `Facts:\n${fence("facts", digestFacts(stats).map((f) => `- ${f}`).join("\n"), 4000)}\nWrite the digest.` },
   ];
 }

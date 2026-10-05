@@ -12,8 +12,8 @@ export default function NotFound() {
         title="Page not found"
         description="This page doesn't exist, or you don't have access to it."
         action={
-          <Link href="/app" className={buttonVariants()}>
-            Go to your helpdesk
+          <Link href="/" className={buttonVariants()}>
+            Back to booking
           </Link>
         }
       />

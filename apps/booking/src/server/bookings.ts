@@ -325,6 +325,13 @@ export async function setOutcome(user: AppUser, raw: unknown) {
 
 /* -------------------------------------------------------------------- reads */
 
+/** What the current moment allows for a booking (kept out of render for purity). */
+export async function bookingTiming(startsAt: Date) {
+  const b = await getBusiness();
+  const msUntil = startsAt.getTime() - Date.now();
+  return { started: msUntil <= 0, customerCanChange: msUntil >= b.minNoticeMin * 60_000 };
+}
+
 const bookingView = {
   id: schema.bookings.id,
   reference: schema.bookings.reference,
@@ -395,6 +402,10 @@ export async function dayAgenda(date: DateStr) {
   const now = Date.now();
   const bookings = rows.filter((r) => r.status !== "held" || (r.holdExpiresAt && r.holdExpiresAt.getTime() > now));
   return { timezone: b.timezone, staff, rules, bookings };
+}
+
+export async function bookingHistory(bookingId: string) {
+  return db.select().from(schema.activity).where(eq(schema.activity.bookingId, bookingId)).orderBy(desc(schema.activity.createdAt)).limit(20);
 }
 
 export async function listActivity(limit = 50) {

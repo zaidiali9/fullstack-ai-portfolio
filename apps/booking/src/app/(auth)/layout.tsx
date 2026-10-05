@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
     <div className="grid min-h-full lg:grid-cols-2">
       <div className="flex flex-col px-4 py-6 sm:px-8">
         <div className="flex items-center justify-between">
-          <Brand />
+          <Brand label="Lumen Wellness" />
           <ThemeToggle />
         </div>
         <main id="main" className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-10">
@@ -28,7 +28,7 @@ export default function AuthLayout({ children }: LayoutProps<"/">) {
           ))}
         </svg>
         <blockquote className="relative max-w-md text-lg font-medium">
-          Triage, first drafts and summaries handled by AI, with every drafted answer traceable to your own knowledge base.
+          Live availability, holds while you confirm, and a database that simply refuses to double-book.
         </blockquote>
         <p className="relative mt-3 text-sm opacity-80">Bookwell · portfolio demo</p>
       </aside>

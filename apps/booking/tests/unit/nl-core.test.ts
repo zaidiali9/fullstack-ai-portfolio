@@ -96,6 +96,8 @@ describe("model output normalization and validation", () => {
     expect(timeWindow({ timeOfDay: "evening", after: null, before: "19:30" })).toEqual({ fromMin: 1020, toMin: 1170 });
     // Contradictory ("morning after 3pm"): the explicit time wins.
     expect(timeWindow({ timeOfDay: "morning", after: "15:00", before: null })).toEqual({ fromMin: 900, toMin: 1440 });
+    // "after 4pm" + model said "evening": the explicit time sets the lower bound.
+    expect(timeWindow({ timeOfDay: "evening", after: "16:00", before: null })).toEqual({ fromMin: 960, toMin: 1440 });
   });
 
   it("fences the customer's text as untrusted data in the prompt", () => {
