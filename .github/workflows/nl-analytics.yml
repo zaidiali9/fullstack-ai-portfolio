@@ -1,6 +1,7 @@
 name: nl-analytics
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["apps/nl-analytics/**", "packages/**", "package-lock.json", ".github/workflows/nl-analytics.yml"]

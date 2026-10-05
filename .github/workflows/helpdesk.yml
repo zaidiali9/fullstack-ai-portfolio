@@ -1,6 +1,7 @@
 name: helpdesk
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["apps/helpdesk/**", "packages/**", "package-lock.json", ".github/workflows/helpdesk.yml"]

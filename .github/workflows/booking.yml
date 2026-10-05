@@ -1,6 +1,7 @@
 name: booking
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["apps/booking/**", "packages/**", "package-lock.json", ".github/workflows/booking.yml"]

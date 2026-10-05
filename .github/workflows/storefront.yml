@@ -1,6 +1,7 @@
 name: storefront
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: ["apps/storefront/**", "packages/**", "package-lock.json", ".github/workflows/storefront.yml"]
