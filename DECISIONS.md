@@ -94,3 +94,12 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Weekly digest = SQL/JS stats + model narrative, with an unverified-number check** — any number in the narrative not present in the stats is flagged to the owner instead of trusted.
 - **Owner-only digest; staff see calendar/activity** — business value figures are owner information.
 - **Timezone: America/New_York for the seed studio, all slot math via @date-fns/tz TZDate** — DST days (23/25 h) are unit-tested.
+- **Exact dates and clock times are parsed in code; the model's clock times are dropped unless the request contains a time** — eval baseline: the model invented "after 14:00" for "Friday afternoon" and turned "after 4pm" into "evening". With code parsing the final time-window accuracy is 100% (raw model 73.7%).
+- **Service-name fallback when the model abstains** — if the model returns no valid service and the request names exactly one service by a distinctive word, use it (end-to-end accuracy 78.9% → 89.5% on the eval). Shared words like "massage" never match.
+- **Few-shot examples not added** — rules-only prompt changes were enough, and few-shot made app B worse; examples would also overlap the small eval set.
+- **Digest stats are passed as plain fact lines, not JSON** — with JSON the 1.5B model added last week and next week together ("35 appointments"); with fact lines the observed runs were grounded. The number check stays either way.
+- **Release a customer's previous hold before checking availability** — otherwise their own hold could block their new pick (found as a flaky unit test).
+- **Availability `exclude` parameter for rescheduling, honoured only for the booking's owner/team** — the booking's own slot must look free while moving it, without letting anyone probe other bookings.
+- **Canonical URLs per page, not in the root layout** — a layout canonical made every page claim to be "/" (Lighthouse SEO 91 on the booking page).
+- **robots.txt and sitemap.xml are dynamic** — they read APP_URL at runtime so a deployment never advertises the build-time URL.
+- **Toast colors darkened in this app only** — sonner's rich success text is 4.25:1; earlier apps are left as they are (rule 11; their axe runs didn't hit a visible toast). Listed in docs/improvements.

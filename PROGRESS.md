@@ -78,17 +78,18 @@ Environment flags (see DECISIONS.md):
 - [x] Dependency audit (prod 0 vulns)
 - [x] README, case study, marketing, verification; commit
 
-## App D — Real-time Booking & Scheduling (`apps/booking`) — swapped in for Project Manager
-- [ ] Plan + scaffold
-- [ ] Schema: businesses, staff, services, availability rules, bookings (exclusion constraint vs double booking, version), activity, notifications
-- [ ] Public booking flow: pick service/staff/slot, hold, confirm; Stripe test-mode deposit (graceful if not configured)
-- [ ] Live availability via SSE; optimistic UI; conflict handling (slot taken -> clear recovery)
-- [ ] Owner/staff dashboard: calendar/day view, reschedule/cancel, activity feed, notifications
-- [ ] AI: natural-language booking request -> zod-validated slot search; weekly schedule digest; alternative-time suggestions
-- [ ] Seed + demo logins; UI quality bar
-- [ ] Unit, E2E, coverage, Lighthouse x2, eval (>=15, NL request parsing accuracy)
-- [ ] Docker, compose, CI, env table, audit
-- [ ] README, case study, marketing, verification; commit
+## App D — Real-time Booking & Scheduling (`apps/booking`, "Bookwell") — swapped in for Project Manager
+- [x] Plan + scaffold
+- [x] Schema: business, staff, services, availability rules, time off, bookings (btree_gist exclusion constraint vs double booking, version), activity, notifications
+- [x] Public booking flow: pick service/staff/slot, hold (5 min), confirm; reschedule/cancel with notice window
+- [~] Stripe test-mode deposit — dropped under the scope rule (storefront covers Stripe); listed in README limitations and DECISIONS.md
+- [x] Live availability via SSE (Postgres LISTEN/NOTIFY); optimistic hold UI; conflict handling (409 + nearest alternatives)
+- [x] Owner/staff dashboard: live day calendar, reschedule/cancel/outcomes, activity feed, notifications
+- [x] AI: natural-language booking request -> zod-validated filters -> real slot search; weekly digest with number check; alternative times (algorithmic)
+- [x] Seed + demo logins; UI quality bar (360 px, axe light/dark, dark mode, skeletons, empty/error states, toasts)
+- [x] Unit (91, 90.15% lines), E2E (18), Lighthouse x2 (90/100/100/100 both), eval (22 cases: 89.5% end-to-end)
+- [~] Docker, compose, CI, env table, audit — written; audit 0 vulnerabilities; Docker/compose/CI not run (no Docker, no remote)
+- [x] README, case study, marketing, verification; commit
 
 ## App E — NL Analytics Dashboard (`apps/nl-analytics`)
 - [ ] Plan + scaffold
