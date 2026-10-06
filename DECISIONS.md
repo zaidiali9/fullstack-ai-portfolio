@@ -138,3 +138,4 @@ Commands run: `node -v`, `npm -v`, `pnpm -v`, `docker --version`, `ollama --vers
 - **Setup job drops the host service's `APP_URL` before seeding** — the first run failed kb-chat's env validation with "Invalid URL" at APP_URL (the deploy captured it before the domain existed); seeds don't need it.
 - **Secrets come from Railway's `${{secret(N)}}` and service references** — nothing secret is typed, printed or committed.
 - **Railway CLI runs from PowerShell** — the Git Bash sandbox here has no DNS for the CLI's API calls.
+- **Portfolio page on GitHub Pages via an Actions workflow** — Pages' branch mode can only serve the repo root or `/docs`; the workflow publishes just `portfolio-site/`. Name on the page is the public commit-author name; email and Upwork lines were left off because the user hadn't provided them.

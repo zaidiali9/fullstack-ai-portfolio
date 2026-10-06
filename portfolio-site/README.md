@@ -1,11 +1,12 @@
 # Portfolio site
 
 A single static page (`index.html`, inline CSS, no build step, no JavaScript) that introduces the five apps in this
-repository. Host it anywhere that serves static files (GitHub Pages, Netlify, Vercel, Cloudflare Pages).
+repository. Live on GitHub Pages: https://zaidiali9.github.io/fullstack-ai-portfolio/
+(published by `.github/workflows/pages.yml` on every push to `main` that changes this folder).
 
-## Before publishing
-Replace every placeholder (they are shown in monospace on the page so none can be missed):
-`[YOUR NAME]`, `[YOUR EMAIL]`, `[UPWORK PROFILE LINK]`, helpdesk and storefront show "Demo: not deployed yet" until they are deployed (the repo and the other three demos are linked).
+## Placeholders
+Name is filled in. Email and Upwork lines were left off until you choose to publish them; add them to the Contact
+list in `index.html`. Helpdesk and storefront show "Demo: not deployed yet" until they are deployed.
 Keep the metric sentences as they are unless you re-run the evals; each names the command and file it came from.
 
 ## Preview locally

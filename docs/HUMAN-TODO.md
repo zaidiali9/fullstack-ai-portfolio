@@ -8,6 +8,8 @@ build agent must not make on your behalf. Items are ordered by value: do the top
 - [x] All 5 CI workflows green (lint, typecheck, unit + E2E, Docker image builds, real-Postgres jobs incl. booking's
       concurrency tests and Tally's SQL safety tests, production audit) on commit 86bbfa9.
 - [x] Repo topics: ai, full-stack, llm, nextjs, pgvector, playwright, portfolio, postgresql, rag, stripe, text-to-sql, typescript.
+- [x] Portfolio page live on GitHub Pages: https://zaidiali9.github.io/fullstack-ai-portfolio/
+- [ ] Add a contact email and your Upwork link to the page's Contact section when you're ready (left off on purpose).
 - [ ] Pin the repo on your profile (web only — GitHub's API has no pin mutation): github.com/zaidiali9 → "Customize your pins".
 
 ## 2. Deploy demos — 3 of 5 live on Railway (2026-10-05)
